@@ -3,6 +3,13 @@
     height: 100%;
 }
 
+ion-card {
+    --background: var(--ion-item-background, var(--ion-background-color));
+    color: var(--ion-text-color);
+    margin-bottom: 1rem;
+}
+
+
 ion-content {
     --background: var(--ion-background-color);
     color: var(--ion-text-color);

@@ -21,6 +21,9 @@ export class RegistroKilometrajePage {
     });
   }
 
+  // Valor simulado por ahora
+  vehiculoAsignado = 'Toyota Corolla 2020 - ABCD12';
+
   // Método que se ejecuta al enviar el formulario
   registrarKilometraje() {
     if (this.formularioKilometraje.valid) {
