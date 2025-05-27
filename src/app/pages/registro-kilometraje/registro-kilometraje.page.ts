@@ -1,20 +1,42 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { IonicModule } from '@ionic/angular';
 
 @Component({
   selector: 'app-registro-kilometraje',
-  templateUrl: './registro-kilometraje.page.html',
-  styleUrls: ['./registro-kilometraje.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [CommonModule, IonicModule, FormsModule, ReactiveFormsModule],
+  templateUrl: './registro-kilometraje.page.html',
+  styleUrls: ['./registro-kilometraje.page.scss']
 })
-export class RegistroKilometrajePage implements OnInit {
+export class RegistroKilometrajePage {
+  formularioKilometraje: FormGroup;
 
-  constructor() { }
-
-  ngOnInit() {
+  constructor(private fb: FormBuilder) {
+    // Inicializamos el formulario con validaciones
+    this.formularioKilometraje = this.fb.group({
+      fecha: ['', Validators.required],
+      kilometros: ['', [Validators.required, Validators.min(0)]]
+    });
   }
 
+  // Método que se ejecuta al enviar el formulario
+  registrarKilometraje() {
+    if (this.formularioKilometraje.valid) {
+      console.log('Kilometraje registrado:', this.formularioKilometraje.value);
+      // Aquí podrías enviar los datos a una API o servicio
+    } else {
+      this.formularioKilometraje.markAllAsTouched();
+    }
+  }
+
+  // Getters para mostrar errores en la plantilla
+  get fecha() {
+    return this.formularioKilometraje.get('fecha');
+  }
+
+  get kilometros() {
+    return this.formularioKilometraje.get('kilometros');
+  }
 }
