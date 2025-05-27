@@ -1,13 +1,45 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>registro-esquema-pago</ion-title>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Registro Esquema de Pago</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">registro-esquema-pago</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <form [formGroup]="formularioEsquema" (ngSubmit)="registrarEsquema()">
+    <ion-item>
+      <ion-label position="floating">Nombre del esquema</ion-label>
+      <ion-input formControlName="nombreEsquema" type="text" required></ion-input>
+    </ion-item>
+    <ion-note color="danger" *ngIf="nombreEsquema?.invalid && nombreEsquema?.touched">
+      Este campo es obligatorio.
+    </ion-note>
+
+    <ion-item>
+      <ion-label>Tipo</ion-label>
+      <ion-select formControlName="tipo" interface="popover" placeholder="Selecciona tipo">
+        <ion-select-option *ngFor="let tipo of tipos" [value]="tipo">{{ tipo }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-note color="danger" *ngIf="tipo?.invalid && tipo?.touched">
+      Debes seleccionar un tipo.
+    </ion-note>
+
+    <ion-item *ngIf="tipo?.value === 'Cuota fija'">
+      <ion-label position="floating">Monto mensual</ion-label>
+      <ion-input formControlName="montoMensual" type="number" min="0"></ion-input>
+    </ion-item>
+    <ion-note color="danger" *ngIf="montoMensual?.invalid && montoMensual?.touched">
+      Ingresa un monto válido mayor o igual a 0.
+    </ion-note>
+
+    <ion-item *ngIf="tipo?.value === 'Porcentaje'">
+      <ion-label position="floating">% de ganancias</ion-label>
+      <ion-input formControlName="porcentajeGanancia" type="number" min="0" max="100"></ion-input>
+    </ion-item>
+    <ion-note color="danger" *ngIf="porcentajeGanancia?.invalid && porcentajeGanancia?.touched">
+      Ingresa un porcentaje válido (0 - 100).
+    </ion-note>
+
+    <ion-button expand="block" type="submit" [disabled]="formularioEsquema.invalid">Registrar</ion-button>
+  </form>
 </ion-content>
