@@ -1,0 +1,51 @@
+:host {
+    display: block;
+    height: 100%;
+}
+
+ion-content {
+    --background: var(--ion-background-color);
+    color: var(--ion-text-color);
+}
+
+// Estilo claro
+@media (prefers-color-scheme: light) {
+    :host {
+        --ion-background-color: #ffffff;
+        --ion-text-color: #000000;
+    }
+
+    ion-item {
+        --background: #ffffff;
+        --color: #000000;
+    }   
+
+    ion-label,
+    ion-input,
+    ion-datetime {
+        --color: #000000;
+    }
+}
+
+// Estilo oscuro
+@media (prefers-color-scheme: dark) {
+    :host {
+        --ion-background-color: #121212;
+        --ion-text-color: #ffffff;
+    }
+
+    ion-item {
+        --background: #1e1e1e;
+        --color: #ffffff;
+    }
+
+    ion-label,
+    ion-input,
+    ion-datetime {
+        --color: #ffffff;
+    }
+}
+
+ion-button {
+    margin-top: 1rem;
+}
