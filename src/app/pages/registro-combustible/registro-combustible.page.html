@@ -1,13 +1,47 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>registro-combustible</ion-title>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Registro de Combustible</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">registro-combustible</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <!-- Vehículo asignado (no editable) -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Vehículo asignado</ion-card-subtitle>
+      <ion-card-title>{{ vehiculoAsignado }}</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+
+  <!-- Formulario -->
+  <form [formGroup]="formularioCombustible" (ngSubmit)="registrarCombustible()">
+    <!-- Fecha -->
+    <ion-item>
+      <ion-label position="floating">Fecha</ion-label>
+      <ion-datetime presentation="date" formControlName="fecha"></ion-datetime>
+    </ion-item>
+    <ion-text color="danger" *ngIf="fecha?.invalid && fecha?.touched">
+      <p>La fecha es obligatoria.</p>
+    </ion-text>
+
+    <!-- Monto -->
+    <ion-item>
+      <ion-label position="floating">Monto</ion-label>
+      <ion-input type="number" formControlName="monto"></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="monto?.invalid && monto?.touched">
+      <p *ngIf="monto?.errors?.['required']">El monto es obligatorio.</p>
+      <p *ngIf="monto?.errors?.['min']">El monto no puede ser negativo.</p>
+    </ion-text>
+
+    <!-- Carga de archivo o imagen -->
+    <ion-item>
+      <ion-label>Adjuntar archivo</ion-label>
+      <input type="file" (change)="manejarArchivo($event)" />
+    </ion-item>
+
+    <ion-button expand="block" type="submit" [disabled]="formularioCombustible.invalid">
+      Registrar
+    </ion-button>
+  </form>
 </ion-content>
