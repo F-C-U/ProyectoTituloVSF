@@ -38,7 +38,7 @@
 
     <!-- Carga de archivo o imagen -->
     <ion-item class="adjuntar-archivo-item">
-      <ion-label class="adjuntar-archivo-label">Adjuntar archivo</ion-label>
+      <ion-label class="adjuntar-archivo-label">Adjuntar boleta</ion-label>
       <input type="file" accept="image/*,.pdf" (change)="manejarArchivo($event)" />
     </ion-item>
     <ion-text color="danger" *ngIf="archivo?.invalid && archivo?.touched">
