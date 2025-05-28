@@ -15,13 +15,17 @@ export class RegistroCombustiblePage {
   formularioCombustible: FormGroup;
   vehiculoAsignado: string = 'Toyota Corolla 2020 - ABCD12';
   archivoAdjunto: File | null = null;
+  montoFormateado: String = ''; // Monto mostrado con puntos
 
   constructor(private fb: FormBuilder) {
+    const hoy = new Date();
+    const fechaFormateada = hoy.toLocaleDateString('es-CL'); // DD-MM-YYYY
+
     // Inicialización del formulario con validaciones básicas
     this.formularioCombustible = this.fb.group({
-      fecha: ['', Validators.required],
+      fecha: [{ value: fechaFormateada, disabled: true }, Validators.required],
       monto: ['', [Validators.required, Validators.min(0)]],
-      archivo: [null]
+      archivo: [null, Validators.required]
     });
   }
 
@@ -31,6 +35,21 @@ export class RegistroCombustiblePage {
     if (input.files && input.files.length > 0) {
       this.archivoAdjunto = input.files[0];
       this.formularioCombustible.patchValue({ archivo: this.archivoAdjunto });
+    }
+  }
+
+  agregarPuntos(valor: string): string {
+    return valor.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  }
+
+  formatearMonto(event: any) {
+    const valorIngresado = event.target.value.replace(/\./g, '').replace(/\D/g, '');
+    if (valorIngresado) {
+      this.montoFormateado = this.agregarPuntos(valorIngresado);
+      this.formularioCombustible.patchValue({ monto: parseInt(valorIngresado, 10) });
+    } else {
+      this.montoFormateado = '';
+      this.formularioCombustible.patchValue({ monto: null });
     }
   }
 
@@ -50,5 +69,9 @@ export class RegistroCombustiblePage {
 
   get monto() {
     return this.formularioCombustible.get('monto');
+  }
+
+  get archivo(){
+    return this.formularioCombustible.get('archivo')
   }
 } 

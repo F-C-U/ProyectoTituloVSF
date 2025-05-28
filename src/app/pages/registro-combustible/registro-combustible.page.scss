@@ -18,6 +18,16 @@ ion-item {
     --background: transparent;
 }
 
+.adjuntar-archivo-label {
+    flex-grow: 1;
+    margin-right: 1rem;
+}
+
+.adjuntar-archivo-item{
+    display: flex;
+    align-items: center;
+}
+
 // Estilos claros
 @media (prefers-color-scheme: light) {
     :host {

@@ -17,17 +17,19 @@
   <form [formGroup]="formularioCombustible" (ngSubmit)="registrarCombustible()">
     <!-- Fecha -->
     <ion-item>
-      <ion-label position="floating">Fecha</ion-label>
-      <ion-datetime presentation="date" formControlName="fecha"></ion-datetime>
+      <ion-label position="stacked">Fecha</ion-label>
+      <ion-input [value]="formularioCombustible.get('fecha')?.value" readonly></ion-input>
     </ion-item>
-    <ion-text color="danger" *ngIf="fecha?.invalid && fecha?.touched">
-      <p>La fecha es obligatoria.</p>
-    </ion-text>
 
     <!-- Monto -->
     <ion-item>
       <ion-label position="floating">Monto</ion-label>
-      <ion-input type="number" formControlName="monto"></ion-input>
+      <ion-input
+        type="text"
+        [value]="montoFormateado"
+        (ionInput)="formatearMonto($event)"
+        inputmode="numeric"
+      ></ion-input>
     </ion-item>
     <ion-text color="danger" *ngIf="monto?.invalid && monto?.touched">
       <p *ngIf="monto?.errors?.['required']">El monto es obligatorio.</p>
@@ -35,10 +37,13 @@
     </ion-text>
 
     <!-- Carga de archivo o imagen -->
-    <ion-item>
-      <ion-label>Adjuntar archivo</ion-label>
+    <ion-item class="adjuntar-archivo-item">
+      <ion-label class="adjuntar-archivo-label">Adjuntar archivo</ion-label>
       <input type="file" (change)="manejarArchivo($event)" />
     </ion-item>
+    <ion-text color="danger" *ngIf="archivo?.invalid && archivo?.touched">
+      <p>Debes adjuntar la boleta</p>
+    </ion-text>
 
     <ion-button expand="block" type="submit" [disabled]="formularioCombustible.invalid">
       Registrar
