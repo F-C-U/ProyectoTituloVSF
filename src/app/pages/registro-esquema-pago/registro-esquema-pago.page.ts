@@ -39,6 +39,21 @@ export class RegistroEsquemaPagoPage {
     });
   }
 
+  agregarPuntos(valor: string): string {
+    return valor.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  }
+
+  formatearMonto(event: any) {
+    const valorIngresado = event.target.value.replace(/\./g, '').replace(/\D/g, '');
+    if (valorIngresado) {
+      const conPuntos = this.agregarPuntos(valorIngresado);
+      event.target.value = conPuntos;
+      this.formularioEsquema.patchValue({ montoMensual: parseInt(valorIngresado, 10) });
+    } else {
+      this.formularioEsquema.patchValue({ montoMensual: null });
+    }
+  }
+
   registrarEsquema() {
     if (this.formularioEsquema.valid) {
       console.log('Esquema de pago registrado:', this.formularioEsquema.value);
