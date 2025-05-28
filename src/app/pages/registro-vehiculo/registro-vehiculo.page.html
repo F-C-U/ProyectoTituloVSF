@@ -8,7 +8,13 @@
   <form [formGroup]="vehiculoForm" (ngSubmit)="onSubmit()">
     <ion-item>
       <ion-label position="floating">Patente</ion-label>
-      <ion-input formControlName="patente" type="text"></ion-input>
+      <ion-input
+        type="text"
+        inputmode="text"
+        maxlength="8"
+        [value]="formatearPatente(patente?.value || '')"
+        (ionInput)="procesarPatente($event)">
+      </ion-input>
     </ion-item>
     <ion-text color="danger" *ngIf="patente?.invalid && patente?.touched">
       <p *ngIf="patente?.errors?.['required']">La patente es obligatoria.</p>
