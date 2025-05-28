@@ -23,7 +23,7 @@ export class RegistroCombustiblePage {
 
     // Inicialización del formulario con validaciones básicas
     this.formularioCombustible = this.fb.group({
-      fecha: [{ value: fechaFormateada, disabled: true }, Validators.required],
+      fecha: [{ value: fechaFormateada, disabled: false }, Validators.required],
       monto: ['', [Validators.required, Validators.min(0)]],
       archivo: [null, Validators.required]
     });
@@ -33,8 +33,24 @@ export class RegistroCombustiblePage {
   manejarArchivo(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      this.archivoAdjunto = input.files[0];
-      this.formularioCombustible.patchValue({ archivo: this.archivoAdjunto });
+      const archivo = input.files[0];
+      const tiposPermitidos = [
+        'image/png',
+        'image/jpeg',
+        'image/jpg',
+        'image/heic',
+        'application/pdf'
+      ];
+
+      if (tiposPermitidos.includes(archivo.type)) {
+        this.archivoAdjunto = archivo;
+        this.formularioCombustible.patchValue({ archivo: this.archivoAdjunto });
+        this.archivo?.setErrors(null); // Limpia errores si los hubo
+      } else {
+        this.archivoAdjunto = null;
+        this.formularioCombustible.patchValue({ archivo: null });
+        this.archivo?.setErrors({ tipoInvalido: true });
+      }
     }
   }
 
