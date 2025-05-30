@@ -53,5 +53,6 @@ export class FirebaseService {
   getCurrentUser() {
     return getAuth().currentUser;
   }
+  
 }
 
