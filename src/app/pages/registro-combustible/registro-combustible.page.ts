@@ -1,15 +1,22 @@
 // src/app/pages/registro-combustible.page.ts
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { FirebaseService } from 'src/app/services/firebase.service';
 
 @Component({
   selector: 'app-registro-combustible',
   standalone: true,
   imports: [CommonModule, IonicModule, FormsModule, ReactiveFormsModule],
   templateUrl: './registro-combustible.page.html',
-  styleUrls: ['./registro-combustible.page.scss']
+  styleUrls: ['./registro-combustible.page.scss'],
 })
 export class RegistroCombustiblePage {
   formularioCombustible: FormGroup;
@@ -17,7 +24,7 @@ export class RegistroCombustiblePage {
   archivoAdjunto: File | null = null;
   montoFormateado: String = ''; // Monto mostrado con puntos
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private firebase: FirebaseService) {
     const hoy = new Date();
     const fechaFormateada = hoy.toLocaleDateString('es-CL'); // DD-MM-YYYY
 
@@ -25,7 +32,7 @@ export class RegistroCombustiblePage {
     this.formularioCombustible = this.fb.group({
       fecha: [{ value: fechaFormateada, disabled: false }, Validators.required],
       monto: ['', [Validators.required, Validators.min(0)]],
-      archivo: [null, Validators.required]
+      archivo: [null, Validators.required],
     });
   }
 
@@ -39,7 +46,7 @@ export class RegistroCombustiblePage {
         'image/jpeg',
         'image/jpg',
         'image/heic',
-        'application/pdf'
+        'application/pdf',
       ];
 
       if (tiposPermitidos.includes(archivo.type)) {
@@ -59,10 +66,14 @@ export class RegistroCombustiblePage {
   }
 
   formatearMonto(event: any) {
-    const valorIngresado = event.target.value.replace(/\./g, '').replace(/\D/g, '');
+    const valorIngresado = event.target.value
+      .replace(/\./g, '')
+      .replace(/\D/g, '');
     if (valorIngresado) {
       this.montoFormateado = this.agregarPuntos(valorIngresado);
-      this.formularioCombustible.patchValue({ monto: parseInt(valorIngresado, 10) });
+      this.formularioCombustible.patchValue({
+        monto: parseInt(valorIngresado, 10),
+      });
     } else {
       this.montoFormateado = '';
       this.formularioCombustible.patchValue({ monto: null });
@@ -70,10 +81,16 @@ export class RegistroCombustiblePage {
   }
 
   // Acción al enviar el formulario
-  registrarCombustible() {
+  async registrarCombustible() {
     if (this.formularioCombustible.valid) {
       console.log('Datos registrados:', this.formularioCombustible.value);
       // Aquí se puede conectar a una API o guardar localmente
+      try {
+        await this.firebase.setDocument(
+          'combustible/',
+          this.formularioCombustible.value
+        );
+      } catch (error) {}
     } else {
       this.formularioCombustible.markAllAsTouched();
     }
@@ -87,7 +104,7 @@ export class RegistroCombustiblePage {
     return this.formularioCombustible.get('monto');
   }
 
-  get archivo(){
-    return this.formularioCombustible.get('archivo')
+  get archivo() {
+    return this.formularioCombustible.get('archivo');
   }
-} 
+}
