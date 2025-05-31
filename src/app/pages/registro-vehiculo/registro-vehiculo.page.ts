@@ -1,7 +1,5 @@
 // src/app/pages/registro-vehiculo.page.ts
 import { Component } from '@angular/core';
-// src/app/pages/registro-vehiculo.page.ts
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormsModule,
@@ -15,8 +13,6 @@ import { FirebaseService } from 'src/app/services/firebase.service';
 
 @Component({
   selector: 'app-registro-vehiculo',
-  standalone: true,
-  imports: [CommonModule, IonicModule, FormsModule, ReactiveFormsModule],
   standalone: true,
   imports: [CommonModule, IonicModule, FormsModule, ReactiveFormsModule],
   templateUrl: './registro-vehiculo.page.html',
