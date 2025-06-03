@@ -1,0 +1,38 @@
+@use 'sass:color';
+
+:host {
+    --color-fondo-claro: #ffffff;
+    --color-texto-claro: #000000;
+    --color-fondo-oscuro: #000000;
+    --color-texto-oscuro: #ffffff;
+    --color-principal: #007bff; // azul principal
+
+    ion-content {
+        background-color: var(--color-fondo-claro);
+
+        @media (prefers-color-scheme: dark) {
+            background-color: var(--color-fondo-oscuro);
+        }
+    }
+
+    ion-item {
+        --background: transparent;
+        border-bottom: 1px solid #ccc;
+
+        @media (prefers-color-scheme: dark) {
+            color: var(--color-texto-oscuro);
+        }
+    }
+
+    ion-label {
+        color: var(--color-texto-claro);
+        @media (prefers-color-scheme: dark) {
+            color: var(--color-texto-oscuro);
+        }
+    }
+
+    ion-toolbar {
+        --background: var(--color-principal);
+        --color: white;
+    }
+}

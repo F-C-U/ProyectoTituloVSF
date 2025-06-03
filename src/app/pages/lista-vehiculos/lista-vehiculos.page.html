@@ -1,13 +1,28 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>lista-vehiculos</ion-title>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Lista de vehículos</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">lista-vehiculos</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-refresher slot="fixed" (ionRefresh)="obtenerVehiculos()">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list *ngIf="!cargando() && vehiculos().length > 0; else mensajeCarga">
+    <ion-item *ngFor="let vehiculo of vehiculos()">
+      <ion-label>
+        <h2>Patente: {{ vehiculo.patente }}</h2>
+        <p>Modelo: {{ vehiculo.modelo }}</p>
+        <p>Año: {{ vehiculo.anio }}</p>
+      </ion-label>
+      <ion-button fill="clear" slot="end" (click)="editarVehiculo(vehiculo.id)">Editar</ion-button>
+    </ion-item>
+  </ion-list>
+
+  <ng-template #mensajeCarga>
+    <ion-text color="medium">
+      <p class="ion-padding">No se encontraron vehículos o está cargando...</p>
+    </ion-text>
+  </ng-template>
 </ion-content>
