@@ -43,6 +43,7 @@ export class GananciasVehiculoPage implements OnInit {
   deduccionEsquema: number = 20000;
   deduccionCombustible: number = 15000;
 
+  // comentario pa cerrar la tarea
   get gananciaNeta(): number {
     return this.gananciaBruta - this.deduccionEsquema - this.deduccionCombustible;
   }
