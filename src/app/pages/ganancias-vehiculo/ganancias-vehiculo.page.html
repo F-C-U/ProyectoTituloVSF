@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Ganancias del vehículo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Vehículo</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-label>{{ vehiculoAsignado }}</ion-label>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Resumen del día</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+
+      <ion-item lines="none">
+        <ion-label>Ganancia bruta</ion-label>
+        <ion-note slot="end">{{ gananciaBruta | currency:'CLP':'symbol' }}</ion-note>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-label>Deducción por esquema</ion-label>
+        <ion-note slot="end">{{ deduccionEsquema | currency:'CLP':'symbol' }}</ion-note>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-label>Deducción por combustible</ion-label>
+        <ion-note slot="end">{{ deduccionCombustible | currency:'CLP':'symbol' }}</ion-note>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-label><strong>Ganancia neta</strong></ion-label>
+        <ion-note slot="end"><strong>{{ gananciaNeta | currency:'CLP':'symbol' }}</strong></ion-note>
+      </ion-item>
+
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>
