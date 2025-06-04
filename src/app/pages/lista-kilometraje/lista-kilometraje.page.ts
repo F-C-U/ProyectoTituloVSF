@@ -43,4 +43,11 @@ export class ListaKilometrajePage {
       );
     });
   }
+
+  // Método para editar un registro (futura funcionalidad)
+  editarRegistro(kilometraje: { fecha: string; kilometraje: number }) {
+    console.log('Editar registro:', kilometraje);
+    // Aquí puedes abrir un modal o navegar a otra página
+  }
+
 }

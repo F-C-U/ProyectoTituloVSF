@@ -32,12 +32,18 @@
           <tr>
             <th>Fecha</th>
             <th>Kilometraje</th>
+            <th>Editar</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let k of kilometrajesFiltrados">
             <td>{{ k.fecha }}</td>
             <td>{{ k.kilometraje | number }}</td>
+            <td>
+              <ion-button size="small" color="primary" (click)="editarRegistro(k)">
+                Editar
+              </ion-button>
+            </td>
           </tr>
           <tr *ngIf="kilometrajesFiltrados.length === 0">
             <td colspan="2">No hay registros para este filtro</td>
