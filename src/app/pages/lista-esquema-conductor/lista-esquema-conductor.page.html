@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Esquemas por conductor</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-item>
+    <ion-label>Filtrar por esquema</ion-label>
+    <ion-select [(ngModel)]="tipoSeleccionado" placeholder="Todos">
+      <ion-select-option value="">Todos</ion-select-option>
+      <ion-select-option value="Cuota fija">Cuota fija</ion-select-option>
+      <ion-select-option value="Porcentaje">Porcentaje</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <div class="tabla-responsive">
+    <table>
+      <thead>
+        <tr>
+          <th>Conductor</th>
+          <th>Esquema</th>
+          <th>Monto</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let r of registrosFiltrados">
+          <td>{{ r.nombre }}</td>
+          <td>{{ r.esquema }}</td>
+          <td>
+            {{ r.esquema === 'Porcentaje' ? (r.monto + '%') : ('$' + r.monto) }}
+          </td>
+          <td>
+            <ion-button size="small" color="tertiary" (click)="editarEsquemaConductor(r)">
+              Editar
+            </ion-button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ion-content>

@@ -61,6 +61,10 @@ export const routes: Routes = [
   {
     path: 'registro-vehiculo',
     loadComponent: () => import('./pages/registro-vehiculo/registro-vehiculo.page').then( m => m.RegistroVehiculoPage)
+  },  {
+    path: 'lista-esquema-conductor',
+    loadComponent: () => import('./pages/lista-esquema-conductor/lista-esquema-conductor.page').then( m => m.ListaEsquemaConductorPage)
   },
+
 
 ];

@@ -1,0 +1,36 @@
+.tabla-responsive {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background-color: var(--ion-background-color);
+
+    th, td {
+        padding: 8px 12px;
+        border-bottom: 1px solid #ccc;
+        text-align: left;
+        color: var(--ion-text-color);
+    }
+
+    th {
+        background-color: var(--ion-color-primary);
+        color: white;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    table {
+        background-color: #121212;
+    }
+
+    th {
+        background-color: var(--ion-color-primary);
+    }
+
+    td {
+        color: #ccc;
+    }
+}
