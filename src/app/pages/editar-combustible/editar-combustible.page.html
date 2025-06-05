@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Editar registro de combustible</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <!-- Vehículo asignado (no editable) -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Vehículo asignado</ion-card-subtitle>
+      <ion-card-title>{{ vehiculoAsignado }}</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+
+  <!-- Formulario -->
+  <form [formGroup]="formularioCombustible" (ngSubmit)="registrarCombustible()">
+    <!-- Fecha -->
+    <ion-item>
+      <ion-label position="stacked">Fecha</ion-label>
+      <ion-input [value]="formularioCombustible.get('fecha')?.value" readonly></ion-input>
+    </ion-item>
+
+    <!-- Monto -->
+    <ion-item>
+      <ion-label position="floating">Monto</ion-label>
+      <ion-input
+        type="text"
+        [value]="montoFormateado"
+        (ionInput)="formatearMonto($event)"
+        inputmode="numeric"
+      ></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="monto?.invalid && monto?.touched">
+      <p *ngIf="monto?.errors?.['required']">El monto es obligatorio.</p>
+      <p *ngIf="monto?.errors?.['min']">El monto no puede ser negativo.</p>
+    </ion-text>
+
+    <!-- Carga de archivo o imagen -->
+    <ion-item class="adjuntar-archivo-item">
+      <ion-label class="adjuntar-archivo-label">Adjuntar boleta</ion-label>
+      <input type="file" accept="image/*,.pdf" (change)="manejarArchivo($event)" />
+    </ion-item>
+    <ion-text color="danger" *ngIf="archivo?.invalid && archivo?.touched">
+      <p *ngIf="archivo?.errors?.['required']">Debes adjuntar la boleta.</p>
+      <p *ngIf="archivo?.errors?.['tipoInvalido']">Solo se permiten imágenes o PDF.</p>
+    </ion-text>
+
+    <ion-button expand="block" type="submit" [disabled]="formularioCombustible.invalid">
+      Guardar cambios
+    </ion-button>
+  </form>
+</ion-content>
