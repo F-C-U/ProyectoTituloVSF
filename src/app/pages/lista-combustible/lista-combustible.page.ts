@@ -12,10 +12,10 @@ import { FormsModule } from '@angular/forms';
 })
 export class ListaCombustiblePage {
   // Datos falsos con monto y patente
-  registrosCombustible: { fecha: string; monto: number; patente: string }[] = [
-    { fecha: '2025-06-01', monto: 25000, patente: 'ABC123' },
-    { fecha: '2025-07-10', monto: 28000, patente: 'XYZ789' },
-    { fecha: '2025-07-22', monto: 30000, patente: 'LMN456' },
+  registrosCombustible: { fecha: string; monto: number; patente: string; urlBoleta: string; }[] = [
+    { fecha: '2025-06-01', monto: 25000, patente: 'ABC123', urlBoleta: 'assets/boletas/boleta1.jpg' },
+    { fecha: '2025-07-10', monto: 28000, patente: 'XYZ789', urlBoleta: 'assets/boletas/boleta2.pdf' },
+    { fecha: '2025-07-22', monto: 30000, patente: 'LMN456', urlBoleta: 'assets/boletas/boleta3.png' },
   ];
 
   mesSeleccionado: string = '';
@@ -41,7 +41,17 @@ export class ListaCombustiblePage {
     });
   }
 
-  editarCombustible(registro: { fecha: string; monto: number; patente: string }) {
+  esImagen(ruta: string): boolean {
+    return /\.(png|jpe?g|heic)$/i.test(ruta);
+  }
+
+  verBoleta(ruta: string): void {
+    // Abre la boleta en una nueva pestaña
+    window.open(ruta, '_blank');
+  }
+
+
+  editarCombustible(registro: { fecha: string; monto: number; patente: string; urlBoleta: string }) {
     console.log('Editar registro:', registro);
     // Aquí podrías abrir un modal de edición
   }

@@ -29,28 +29,43 @@
     <ion-card-content>
       <table class="tabla-combustible">
         <thead>
-          <tr>
-            <th>Fecha</th>
-            <th>Monto</th>
-            <th>Patente</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let r of registrosFiltrados">
-            <td>{{ r.fecha }}</td>
-            <td>{{ r.monto | currency:'CLP' }}</td>
-            <td>{{ r.patente }}</td>
-            <td>
-              <ion-button size="small" color="tertiary" (click)="editarCombustible(r)">
-                Editar
-              </ion-button>
-            </td>
-          </tr>
-          <tr *ngIf="registrosFiltrados.length === 0">
-            <td colspan="4">No hay registros para este filtro</td>
-          </tr>
-        </tbody>
+  <tr>
+    <th>Fecha</th>
+    <th>Monto</th>
+    <th>Patente</th>
+    <th>Boleta</th>
+    <th>Acciones</th>
+  </tr>
+</thead>
+<tbody>
+  <tr *ngFor="let r of registrosFiltrados">
+    <td>{{ r.fecha }}</td>
+    <td>{{ r.monto | currency:'CLP' }}</td>
+    <td>{{ r.patente }}</td>
+    <td>
+      <ng-container *ngIf="esImagen(r.urlBoleta); else pdfIcono">
+        <img
+          [src]="r.urlBoleta"
+          alt="Boleta"
+          class="miniatura-boleta"
+          (click)="verBoleta(r.urlBoleta)"
+        />
+      </ng-container>
+      <ng-template #pdfIcono>
+        <ion-button size="small" fill="clear" (click)="verBoleta(r.urlBoleta)">
+          <ion-icon slot="start" name="document-outline"></ion-icon>
+          PDF
+        </ion-button>
+      </ng-template>
+    </td>
+    <td>
+      <ion-button size="small" color="tertiary" (click)="editarCombustible(r)">
+        Editar
+      </ion-button>
+    </td>
+  </tr>
+</tbody>
+
       </table>
     </ion-card-content>
   </ion-card>

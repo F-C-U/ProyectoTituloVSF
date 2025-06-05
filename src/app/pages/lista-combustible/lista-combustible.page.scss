@@ -37,6 +37,18 @@
     }
 }
 
+.miniatura-boleta {
+    width: 40px;
+    height: auto;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: transform 0.2s;
+
+    &:hover {
+        transform: scale(1.1);
+    }
+}
+
 /* Modo oscuro */
 @media (prefers-color-scheme: dark) {
     .tabla-combustible {
