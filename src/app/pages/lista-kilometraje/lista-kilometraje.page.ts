@@ -12,10 +12,10 @@ import { FormsModule } from '@angular/forms';
 })
 export class ListaKilometrajePage {
   // Lista de registros de kilometraje
-  kilometrajes: { fecha: string; kilometraje: number }[] = [
-    { fecha: '2025-06-01', kilometraje: 12000 },
-    { fecha: '2025-07-15', kilometraje: 12500 },
-    { fecha: '2025-07-28', kilometraje: 12800 },
+  kilometrajes: { fecha: string; kilometraje: number; patenteVehiculo: String }[] = [
+    { fecha: '2025-06-01', kilometraje: 12000, patenteVehiculo: 'ABC123' },
+    { fecha: '2025-07-15', kilometraje: 12500, patenteVehiculo: 'XYZ789' },
+    { fecha: '2025-07-28', kilometraje: 12800, patenteVehiculo: 'LMN456' },
   ];
 
   // Valores seleccionados en el filtro
@@ -45,9 +45,8 @@ export class ListaKilometrajePage {
   }
 
   // Método para editar un registro (futura funcionalidad)
-  editarRegistro(kilometraje: { fecha: string; kilometraje: number }) {
+  editarRegistro(kilometraje: { fecha: string; kilometraje: number; patenteVehiculo: String }) {
     console.log('Editar registro:', kilometraje);
     // Aquí puedes abrir un modal o navegar a otra página
   }
-
 }

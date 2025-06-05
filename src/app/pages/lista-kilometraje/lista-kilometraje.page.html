@@ -32,6 +32,7 @@
           <tr>
             <th>Fecha</th>
             <th>Kilometraje</th>
+            <th>Patente</th>
             <th>Editar</th>
           </tr>
         </thead>
@@ -39,6 +40,7 @@
           <tr *ngFor="let k of kilometrajesFiltrados">
             <td>{{ k.fecha }}</td>
             <td>{{ k.kilometraje | number }}</td>
+            <td>{{ k.patenteVehiculo }}</td>
             <td>
               <ion-button size="small" color="primary" (click)="editarRegistro(k)">
                 Editar

@@ -31,6 +31,10 @@
     td {
         background-color: var(--ion-background-color, #fff);
     }
+
+    td:last-child {
+        width: 100px;
+    }
 }
 
 /* Modo oscuro */
