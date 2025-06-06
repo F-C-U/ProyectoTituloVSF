@@ -70,4 +70,9 @@ export const routes: Routes = [
     path: 'editar-kilometraje',
     loadComponent: () => import('./pages/editar-kilometraje/editar-kilometraje.page').then( m => m.EditarKilometrajePage)
   },
+  {
+    path: 'editar-combustible',
+    loadComponent: () => import('./pages/editar-combustible/editar-combustible.page').then( m => m.EditarCombustiblePage)
+  },
+
 ];
