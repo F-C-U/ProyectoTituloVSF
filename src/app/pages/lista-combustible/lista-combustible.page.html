@@ -1,13 +1,72 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>lista-combustible</ion-title>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Editar registro de combustible</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">lista-combustible</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <!-- Filtros -->
+  <div class="filtros">
+    <ion-item>
+      <ion-label>Mes</ion-label>
+      <ion-select [(ngModel)]="mesSeleccionado" interface="popover" placeholder="Todos">
+        <ion-select-option *ngFor="let mes of mesesDisponibles" [value]="mes">{{ mes }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Año</ion-label>
+      <ion-select [(ngModel)]="anioSeleccionado" interface="popover" placeholder="Todos">
+        <ion-select-option *ngFor="let anio of aniosDisponibles" [value]="anio">{{ anio }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </div>
+
+  <!-- Tabla -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Registros</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <table class="tabla-combustible">
+        <thead>
+  <tr>
+    <th>Fecha</th>
+    <th>Monto</th>
+    <th>Patente</th>
+    <th>Boleta</th>
+    <th>Acciones</th>
+  </tr>
+</thead>
+<tbody>
+  <tr *ngFor="let r of registrosFiltrados">
+    <td>{{ r.fecha }}</td>
+    <td>{{ r.monto | currency:'CLP' }}</td>
+    <td>{{ r.patente }}</td>
+    <td>
+      <ng-container *ngIf="esImagen(r.urlBoleta); else pdfIcono">
+        <img
+          [src]="r.urlBoleta"
+          alt="Boleta"
+          class="miniatura-boleta"
+          (click)="verBoleta(r.urlBoleta)"
+        />
+      </ng-container>
+      <ng-template #pdfIcono>
+        <ion-button size="small" fill="clear" (click)="verBoleta(r.urlBoleta)">
+          <ion-icon slot="start" name="document-outline"></ion-icon>
+          PDF
+        </ion-button>
+      </ng-template>
+    </td>
+    <td>
+      <ion-button size="small" color="tertiary" (click)="editarCombustible(r)">
+        Editar
+      </ion-button>
+    </td>
+  </tr>
+</tbody>
+
+      </table>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
