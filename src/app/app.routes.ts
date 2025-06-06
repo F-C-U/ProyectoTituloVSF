@@ -82,4 +82,8 @@ export const routes: Routes = [
     path: 'lista-esquema-conductor',
     loadComponent: () => import('./pages/lista-esquema-conductor/lista-esquema-conductor.page').then( m => m.ListaEsquemaConductorPage)
   },
+  {
+    path: 'ganancias-vehiculo',
+    loadComponent: () => import('./pages/ganancias-vehiculo/ganancias-vehiculo.page').then( m => m.GananciasVehiculoPage)
+  },
 ];

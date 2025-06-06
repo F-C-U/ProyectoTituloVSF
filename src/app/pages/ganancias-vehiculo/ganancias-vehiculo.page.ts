@@ -16,9 +16,9 @@ import {
 } from '@ionic/angular/standalone';
 
 @Component({
-  selector: 'app-ganancias',
-  templateUrl: './ganancias.page.html',
-  styleUrls: ['./ganancias.page.scss'],
+  selector: 'app-ganancias-vehiculo',
+  templateUrl: './ganancias-vehiculo.page.html',
+  styleUrls: ['./ganancias-vehiculo.page.scss'],
   standalone: true,
   imports: [
     CommonModule,
@@ -36,13 +36,14 @@ import {
     IonNote
   ]
 })
-export class GananciasPage implements OnInit {
-  conductor: string = 'Vito Bozzano';
+export class GananciasVehiculoPage implements OnInit {
+  vehiculoAsignado: string = 'Toyota Corolla 2020 - ABCD12';
 
   gananciaBruta: number = 100000;
   deduccionEsquema: number = 20000;
   deduccionCombustible: number = 15000;
 
+  // comentario pa cerrar la tarea
   get gananciaNeta(): number {
     return this.gananciaBruta - this.deduccionEsquema - this.deduccionCombustible;
   }
