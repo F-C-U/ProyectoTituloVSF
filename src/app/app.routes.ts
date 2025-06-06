@@ -61,7 +61,8 @@ export const routes: Routes = [
   {
     path: 'registro-vehiculo',
     loadComponent: () => import('./pages/registro-vehiculo/registro-vehiculo.page').then( m => m.RegistroVehiculoPage)
-  },  {
+  },
+  {
     path: 'asignar-esquema-pago',
     loadComponent: () => import('./pages/asignar-esquema-pago/asignar-esquema-pago.page').then( m => m.AsignarEsquemaPagoPage)
   },
@@ -77,6 +78,8 @@ export const routes: Routes = [
     path: 'editar-combustible',
     loadComponent: () => import('./pages/editar-combustible/editar-combustible.page').then( m => m.EditarCombustiblePage)
   },
-
-
+  {
+    path: 'lista-esquema-conductor',
+    loadComponent: () => import('./pages/lista-esquema-conductor/lista-esquema-conductor.page').then( m => m.ListaEsquemaConductorPage)
+  },
 ];
