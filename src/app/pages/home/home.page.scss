@@ -1,0 +1,52 @@
+/* Fondo blanco permanente para toda la página */
+ion-content {
+    --background: white !important;
+    --ion-background-color: white !important;
+    background: white !important;
+  }
+  
+  /* Contenedor de botones con fondo blanco */
+  .contenedor-botones {
+    display: grid;
+    gap: 24px;
+    padding: 24px;
+    max-width: 800px;
+    margin: 0 auto;
+    background: white; /* Fondo blanco adicional */
+  }
+  
+  /* Botones blancos con relieve */
+  .boton-blanco {
+    --background: white;
+    --color: black;
+    --border-radius: 12px;
+    --box-shadow: 
+      0 2px 4px rgba(0, 0, 0, 0.1),
+      inset 0 -3px 0 rgba(0, 0, 0, 0.1),
+      inset 0 2px 0 rgba(255, 255, 255, 0.5);
+    
+    --background-activated: #f0f0f0;
+    --box-shadow-activated: 
+      0 1px 2px rgba(0, 0, 0, 0.1),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+    
+    --border-width: 1px;
+    --border-color: rgba(0, 0, 0, 0.1);
+    
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  
+    &:hover:not(.ion-activated) {
+      transform: translateY(-2px);
+      --box-shadow: 
+        0 4px 8px rgba(0, 0, 0, 0.15),
+        inset 0 -3px 0 rgba(0, 0, 0, 0.1),
+        inset 0 2px 0 rgba(255, 255, 255, 0.5);
+    }
+  }
+  
+  /* Iconos negros */
+  ion-icon {
+    margin-right: 8px;
+    color: black;
+  }
+  
