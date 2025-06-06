@@ -1,0 +1,62 @@
+:host {
+    --ion-color-primary: #007bff;
+    --ion-color-primary-contrast: #ffffff;
+}
+
+.ion-padding {
+    padding: 16px;
+}
+
+.filtros {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.tabla-kilometraje {
+    width: 100%;
+    border-collapse: collapse;
+
+    th, td {
+        border: 1px solid var(--ion-color-medium, #ccc);
+        padding: 8px;
+        text-align: center;
+    }
+
+    th {
+        background-color: var(--ion-color-light, #e6f0ff);
+    }
+
+    td {
+        background-color: var(--ion-background-color, #fff);
+    }
+
+    td:last-child {
+        width: 100px;
+    }
+}
+
+/* Modo oscuro */
+@media (prefers-color-scheme: dark) {
+    .tabla-kilometraje {
+        th {
+            background-color: #0a3a6d;
+            color: #ccc;
+        }
+
+        td {
+            background-color: #0b0b0b;
+            color: #ccc;
+        }
+    }
+
+    ion-card {
+        background-color: #121212;
+    }
+
+    ion-content {
+        --background: #000;
+        color: #ccc;
+    }
+}

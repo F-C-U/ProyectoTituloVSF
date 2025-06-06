@@ -1,13 +1,57 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>lista-kilometraje</ion-title>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Kilometrajes</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">lista-kilometraje</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <!-- Filtros -->
+  <div class="filtros">
+    <ion-item>
+      <ion-label>Mes</ion-label>
+      <ion-select [(ngModel)]="mesSeleccionado" interface="popover" placeholder="Todos">
+        <ion-select-option *ngFor="let mes of mesesDisponibles" [value]="mes">{{ mes }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Año</ion-label>
+      <ion-select [(ngModel)]="anioSeleccionado" interface="popover" placeholder="Todos">
+        <ion-select-option *ngFor="let anio of aniosDisponibles" [value]="anio">{{ anio }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </div>
+
+  <!-- Tabla de kilometrajes -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Registros</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <table class="tabla-kilometraje">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Kilometraje</th>
+            <th>Patente</th>
+            <th>Editar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let k of kilometrajesFiltrados">
+            <td>{{ k.fecha }}</td>
+            <td>{{ k.kilometraje | number }}</td>
+            <td>{{ k.patenteVehiculo }}</td>
+            <td>
+              <ion-button size="small" color="primary" (click)="editarRegistro(k)">
+                Editar
+              </ion-button>
+            </td>
+          </tr>
+          <tr *ngIf="kilometrajesFiltrados.length === 0">
+            <td colspan="2">No hay registros para este filtro</td>
+          </tr>
+        </tbody>
+      </table>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

@@ -1,20 +1,52 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 
 @Component({
-  selector: 'app-lista-kilometraje',
+  selector: 'app-kilometraje',
+  standalone: true,
+  imports: [CommonModule, IonicModule, FormsModule],
   templateUrl: './lista-kilometraje.page.html',
   styleUrls: ['./lista-kilometraje.page.scss'],
-  standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
 })
-export class ListaKilometrajePage implements OnInit {
+export class ListaKilometrajePage {
+  // Lista de registros de kilometraje
+  kilometrajes: { fecha: string; kilometraje: number; patenteVehiculo: String }[] = [
+    { fecha: '2025-06-01', kilometraje: 12000, patenteVehiculo: 'ABC123' },
+    { fecha: '2025-07-15', kilometraje: 12500, patenteVehiculo: 'XYZ789' },
+    { fecha: '2025-07-28', kilometraje: 12800, patenteVehiculo: 'LMN456' },
+  ];
 
-  constructor() { }
+  // Valores seleccionados en el filtro
+  mesSeleccionado: string = '';
+  anioSeleccionado: string = '';
 
-  ngOnInit() {
+  // Getters para filtros únicos de año y mes
+  get aniosDisponibles(): string[] {
+    const anios = new Set(this.kilometrajes.map(k => k.fecha.split('-')[0]));
+    return Array.from(anios).sort();
   }
 
+  get mesesDisponibles(): string[] {
+    const meses = new Set(this.kilometrajes.map(k => k.fecha.split('-')[1]));
+    return Array.from(meses).sort();
+  }
+
+  // Filtra los datos según el mes y año seleccionados
+  get kilometrajesFiltrados() {
+    return this.kilometrajes.filter(k => {
+      const [anio, mes] = k.fecha.split('-');
+      return (
+        (!this.mesSeleccionado || mes === this.mesSeleccionado) &&
+        (!this.anioSeleccionado || anio === this.anioSeleccionado)
+      );
+    });
+  }
+
+  // Método para editar un registro (futura funcionalidad)
+  editarRegistro(kilometraje: { fecha: string; kilometraje: number; patenteVehiculo: String }) {
+    console.log('Editar registro:', kilometraje);
+    // Aquí puedes abrir un modal o navegar a otra página
+  }
 }
