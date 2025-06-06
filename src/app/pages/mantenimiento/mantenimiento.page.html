@@ -1,13 +1,29 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>mantenimiento</ion-title>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Mantenimiento</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">mantenimiento</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-list lines="none" class="lista-mantenimiento">
+    <ion-item *ngFor="let tipo of tiposMantenimiento" class="item-mantenimiento">
+      <ion-label class="etiqueta">{{ tipo }}</ion-label>
+
+      <ion-input
+        type="number"
+        [(ngModel)]="configuraciones[tipo]"
+        placeholder="Intervalo en km"
+        inputmode="numeric"
+        class="input-km">
+      </ion-input>
+
+      <ion-button
+        fill="solid"
+        size="small"
+        (click)="guardar(tipo)"
+        class="btn-guardar">
+        Guardar
+      </ion-button>
+    </ion-item>
+  </ion-list>
 </ion-content>
