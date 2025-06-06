@@ -61,10 +61,13 @@ export const routes: Routes = [
   {
     path: 'registro-vehiculo',
     loadComponent: () => import('./pages/registro-vehiculo/registro-vehiculo.page').then( m => m.RegistroVehiculoPage)
-  },  {
+  },
+  {
     path: 'editar-vehiculo',
     loadComponent: () => import('./pages/editar-vehiculo/editar-vehiculo.page').then( m => m.EditarVehiculoPage)
   },
-
-
+  {
+    path: 'editar-kilometraje',
+    loadComponent: () => import('./pages/editar-kilometraje/editar-kilometraje.page').then( m => m.EditarKilometrajePage)
+  },
 ];

@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Editar kilometraje</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Vehículo asignado</ion-card-subtitle>
+      <ion-card-title>{{ vehiculoAsignado }}</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+
+  <form [formGroup]="formularioKilometraje" (ngSubmit)="editarKilometraje()">
+    <ion-item>
+      <ion-label position="stacked">Fecha</ion-label>
+      <ion-input [value]="fechaActual" readonly></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Kilómetros</ion-label>
+      <ion-input type="number" formControlName="kilometros"></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="kilometros?.invalid && kilometros?.touched">
+      <p *ngIf="kilometros?.errors?.['required']">El valor de km es obligatorio.</p>
+      <p *ngIf="kilometros?.errors?.['min']">El valor no puede ser negativo.</p>
+    </ion-text>
+
+    <ion-button expand="block" type="submit" [disabled]="formularioKilometraje.invalid">
+      Guardar cambios
+    </ion-button>
+  </form>
+</ion-content>
