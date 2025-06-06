@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { FirebaseService } from 'src/app/services/firebase.service';
+import { UtilsService } from 'src/app/services/utils.service';
 
 @Component({
   selector: 'app-registro-vehiculo',
@@ -21,7 +22,11 @@ import { FirebaseService } from 'src/app/services/firebase.service';
 export class RegistroVehiculoPage {
   vehiculoForm: FormGroup;
 
-  constructor(private fb: FormBuilder,private firebase: FirebaseService) {
+  constructor(
+    private fb: FormBuilder,
+    private firebase: FirebaseService,
+    private utils: UtilsService
+  ) {
     // Inicializamos el formulario con validaciones básicas
     this.vehiculoForm = this.fb.group({
       patente: [
@@ -81,7 +86,12 @@ export class RegistroVehiculoPage {
   async onSubmit() {
     if (this.vehiculoForm.valid) {
       try {
-        await this.firebase.setDocument('vehiculos/' + this.vehiculoForm.value.patente, this.vehiculoForm.value);
+        await this.firebase.setDocument(
+          'vehiculos/' + this.vehiculoForm.value.patente,
+          this.vehiculoForm.value
+        );
+        this.utils.saveInLocalStorage('vehiculo', this.vehiculoForm.value);
+        this.vehiculoForm.reset();
       } catch (error) {}
       console.log('Formulario enviado:', this.vehiculoForm.value);
       // Aquí podrías enviar los datos a una API, por ejemplo
