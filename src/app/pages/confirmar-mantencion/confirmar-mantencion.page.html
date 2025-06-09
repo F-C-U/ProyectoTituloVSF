@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Confirmar Mantención</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Detalles de la alerta -->
+  <ion-item>
+    <ion-label>
+      <h2>{{ alerta.titulo }}</h2>
+      <p>{{ alerta.mensaje }}</p>
+      <p><small>Fecha alerta: {{ alerta.fecha }}</small></p>
+    </ion-label>
+    <ion-badge [color]="alerta.prioridad === 'alta' ? 'danger' : (alerta.prioridad === 'media' ? 'warning' : 'success')">
+      {{ alerta.prioridad | uppercase }}
+    </ion-badge>
+  </ion-item>
+
+  <!-- Formulario -->
+  <ion-item>
+    <ion-input 
+      label="Fecha de mantención *" 
+      type="date" 
+      [(ngModel)]="mantencion.fecha"
+      required
+    ></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-input 
+      label="Costo (CLP) *" 
+      type="number" 
+      [(ngModel)]="mantencion.costo"
+      required
+    ></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-textarea 
+      label="Comentarios" 
+      [(ngModel)]="mantencion.comentarios"
+      placeholder="Ej: Se cambió aceite y filtros"
+    ></ion-textarea>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Factura (opcional)</ion-label>
+    <input 
+      type="file" 
+      (change)="onFileSelected($event)" 
+      accept=".pdf,.jpg,.png"
+    >
+  </ion-item>
+
+  <!-- Botón de acción -->
+  <ion-button 
+    expand="block" 
+    (click)="guardar()" 
+    [disabled]="!formValido"
+  >
+    <ion-icon name="checkmark-circle" slot="start"></ion-icon>
+    Marcar como resuelto y guardar
+  </ion-button>
+</ion-content>

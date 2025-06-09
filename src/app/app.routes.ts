@@ -89,5 +89,9 @@ export const routes: Routes = [
     path: 'listar-alertas',
     loadComponent: () => import('./pages/listar-alertas/listar-alertas.page').then( m => m.ListarAlertasPage)
   },
+  {
+    path: 'confirmar-mantencion',
+    loadComponent: () => import('./pages/confirmar-mantencion/confirmar-mantencion.page').then( m => m.ConfirmarMantencionPage)
+  },
 
 ];

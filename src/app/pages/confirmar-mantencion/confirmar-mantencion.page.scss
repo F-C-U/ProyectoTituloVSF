@@ -1,0 +1,10 @@
+/* Estilo para campos obligatorios no completados */
+ion-input[required].ng-invalid,
+ion-datetime[required].ng-invalid {
+  border-left: 3px solid var(--ion-color-danger);
+}
+
+/* Estilo para el botón deshabilitado */
+ion-button[disabled] {
+  opacity: 0.6;
+}
