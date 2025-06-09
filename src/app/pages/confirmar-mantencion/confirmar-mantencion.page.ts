@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { 
   IonHeader, IonToolbar, IonTitle, IonContent, 
   IonItem, IonLabel, IonInput, IonButton, 
-  IonDatetime, IonTextarea, IonIcon, IonBadge } from '@ionic/angular/standalone';
+  IonTextarea, IonIcon, IonBadge } from '@ionic/angular/standalone';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
