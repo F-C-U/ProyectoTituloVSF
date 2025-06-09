@@ -1,0 +1,17 @@
+/* listar-alertas.page.scss */
+.alta-prioridad {
+  --background: rgba(255, 0, 0, 0.1);
+  border-left: 4px solid var(--ion-color-danger);
+}
+
+ion-badge {
+  margin-left: 8px;
+}
+
+ion-item {
+  margin-bottom: 8px;
+  border-left: 4px solid;
+  &[color="danger"] { border-left-color: var(--ion-color-danger); }
+  &[color="warning"] { border-left-color: var(--ion-color-warning); }
+  &[color="success"] { border-left-color: var(--ion-color-success); }
+}

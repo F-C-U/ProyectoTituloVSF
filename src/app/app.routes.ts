@@ -85,5 +85,9 @@ export const routes: Routes = [
   {
     path: 'ganancias-vehiculo',
     loadComponent: () => import('./pages/ganancias-vehiculo/ganancias-vehiculo.page').then( m => m.GananciasVehiculoPage)
+  },  {
+    path: 'listar-alertas',
+    loadComponent: () => import('./pages/listar-alertas/listar-alertas.page').then( m => m.ListarAlertasPage)
   },
+
 ];
