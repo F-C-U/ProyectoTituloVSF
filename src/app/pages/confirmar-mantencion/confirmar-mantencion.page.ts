@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { 
   IonHeader, IonToolbar, IonTitle, IonContent, 
   IonItem, IonLabel, IonInput, IonButton, 
-  IonTextarea, IonIcon, IonBadge } from '@ionic/angular/standalone';
+  IonTextarea, IonIcon, IonBadge, IonNote } from '@ionic/angular/standalone';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './confirmar-mantencion.page.html',
   styleUrls: ['./confirmar-mantencion.page.scss'],
   standalone: true,
-  imports: [IonBadge, 
+  imports: [IonNote, IonBadge, 
     IonHeader, IonToolbar, IonTitle, IonContent,
     IonItem, IonLabel, IonInput, IonButton,
     IonTextarea, IonIcon,
@@ -19,7 +19,7 @@ import { CommonModule } from '@angular/common';
   ]
 })
 export class ConfirmarMantencionPage {
-  @Input() alerta: any; // Recibe la alerta desde la página anterior
+  @Input() alerta: any;
 
   mantencion = {
     fecha: '',
@@ -28,7 +28,12 @@ export class ConfirmarMantencionPage {
     comentarios: ''
   };
 
-  // Validación de campos obligatorios
+  // *** Nueva función para validar costo positivo ***
+  actualizarCosto(event: any) {
+    const valor = parseFloat(event.target.value);
+    this.mantencion.costo = isNaN(valor) ? null : Math.max(0, valor); // Fuerza mínimo 0
+  }
+
   get formValido(): boolean {
     return !!this.mantencion.fecha && this.mantencion.costo !== null;
   }
@@ -44,7 +49,6 @@ export class ConfirmarMantencionPage {
         ...this.mantencion,
         estado: 'resuelto'
       });
-      // Aquí iría la lógica para enviar a tu API/servicio
     }
   }
 }

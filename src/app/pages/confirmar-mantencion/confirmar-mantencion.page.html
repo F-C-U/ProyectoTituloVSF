@@ -27,13 +27,22 @@
     ></ion-input>
   </ion-item>
 
+  <!-- *** Campo Costo (CLP) actualizado *** -->
   <ion-item>
     <ion-input 
       label="Costo (CLP) *" 
       type="number" 
       [(ngModel)]="mantencion.costo"
+      (ionChange)="actualizarCosto($event)"
+      min="0"
+      step="1"
+      placeholder="0"
       required
     ></ion-input>
+    <!-- Mostrar valor formateado como CLP -->
+    <ion-note slot="end" *ngIf="mantencion.costo !== null">
+      {{ mantencion.costo | currency:'CLP':'symbol':'1.0-0' }}
+    </ion-note>
   </ion-item>
 
   <ion-item>
