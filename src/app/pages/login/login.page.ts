@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { IonicModule, ToastController } from '@ionic/angular';
+import { FirebaseService } from 'src/app/services/firebase.service';
+import { User } from 'src/app/models/user.model';
+import { UtilsService } from 'src/app/services/utils.service';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +16,7 @@ import { IonicModule, ToastController } from '@ionic/angular';
 export class LoginPage {
   formularioLogin: FormGroup;
 
-  constructor(private fb: FormBuilder, private toastController: ToastController) {
+  constructor(private fb: FormBuilder, private toastController: ToastController,private firebase:FirebaseService,private utils:UtilsService) {
     // Creamos el formulario con validaciones necesarias
     this.formularioLogin = this.fb.group({
       correo: ['', [Validators.required, Validators.email]],
@@ -39,10 +42,27 @@ export class LoginPage {
     }
 
     const { correo, contrasena } = this.formularioLogin.value;
-
+    // Aquí podrías llamar a un servicio de autenticación
+    this.firebase.signIn(this.formularioLogin.value as User).then(res => {
+      this.getUserInfo(res.user.uid);
+    })
     // Aquí se realizaría la lógica de autenticación (ej. llamada HTTP al backend)
     console.log('Intento de login:', correo, contrasena);
     this.mostrarMensaje('Inicio de sesión exitoso.');
     this.formularioLogin.reset();
+  }
+
+  async getUserInfo(uid: string) {
+    if (this.formularioLogin.valid){
+      let path = `usuarios/${uid}`;	
+      this.firebase.getDocument(path).then((user: any | null) => {
+        if (user) {
+          this.utils.saveInLocalStorage('user', user);
+          
+        } else {
+          this.mostrarMensaje('No se encontró información del usuario.', 'danger');
+        }
+      })
+    }
   }
 }
