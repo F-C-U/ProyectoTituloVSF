@@ -24,6 +24,12 @@ export class LoginPage {
     });
   }
 
+  ngOninit(){
+    if(this.utils.getFromlocalStorage('usuario')!==null){
+      this.utils.routerLink('/home');
+    }
+  }
+
   async mostrarMensaje(mensaje: string, color: string = 'primary') {
     const toast = await this.toastController.create({
       message: mensaje,
@@ -55,10 +61,11 @@ export class LoginPage {
   async getUserInfo(uid: string) {
     if (this.formularioLogin.valid){
       let path = `usuarios/${uid}`;	
-      this.firebase.getDocument(path).then((user: any | null) => {
+      await this.firebase.getDocument(path).then((user: any | null) => {
         if (user) {
-          this.utils.saveInLocalStorage('user', user);
-          
+          this.utils.saveInLocalStorage('usuario', user);
+          this.utils.routerLink('home');
+          this.formularioLogin.reset();
         } else {
           this.mostrarMensaje('No se encontró información del usuario.', 'danger');
         }
