@@ -1,0 +1,34 @@
+/* Estilos para la nueva sección */
+.report-section {
+  margin-top: 20px;
+  animation: fadeIn 0.3s ease-in;
+
+  .report-card {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .pre-report {
+    text-align: center;
+    padding: 20px;
+    color: var(--ion-color-medium);
+
+    .pre-icon {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+  }
+
+  .generate-btn {
+    margin-top: 16px;
+    --background: var(--ion-color-success);
+    --background-activated: var(--ion-color-success-shade);
+    --box-shadow: 0 4px 8px rgba(0, 128, 0, 0.2);
+  }
+}
+
+/* Animación para aparecer suavemente */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -85,7 +85,8 @@ export const routes: Routes = [
   {
     path: 'ganancias-vehiculo',
     loadComponent: () => import('./pages/ganancias-vehiculo/ganancias-vehiculo.page').then( m => m.GananciasVehiculoPage)
-  },  {
+  },
+  {
     path: 'listar-alertas',
     loadComponent: () => import('./pages/listar-alertas/listar-alertas.page').then( m => m.ListarAlertasPage)
   },
@@ -100,6 +101,10 @@ export const routes: Routes = [
   {
     path: 'login',
     loadComponent: () => import('./pages/login/login.page').then( m => m.LoginPage)
+  },
+  {
+    path: 'generar-informe',
+    loadComponent: () => import('./pages/generar-informe/generar-informe.page').then( m => m.GenerarInformePage)
   },
 
 ];
