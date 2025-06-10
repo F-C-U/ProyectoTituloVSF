@@ -16,11 +16,11 @@ export class FirebaseService {
 
   // === MÉTODOS EXISTENTES (autenticación) ===
   signIn(user: User) {
-    return signInWithEmailAndPassword(this.auth, user.email, user.password);
+    return signInWithEmailAndPassword(this.auth, user.correo, user.contrasena);
   }
 
   signUp(user: User) {
-    return createUserWithEmailAndPassword(this.auth, user.email, user.password);
+    return createUserWithEmailAndPassword(this.auth, user.correo, user.contrasena);
   }
 
   signOut() {
