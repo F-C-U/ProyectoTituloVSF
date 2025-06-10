@@ -3,7 +3,7 @@ import {
   IonHeader, IonToolbar, IonTitle, IonContent, 
   IonItem, IonInput, IonButton, 
   IonCard, IonCardHeader, IonCardTitle, 
-  IonCardContent, IonIcon, IonDatetime, AlertController, IonList, IonCardSubtitle } from '@ionic/angular/standalone';
+  IonCardContent, IonIcon, IonDatetime, AlertController } from '@ionic/angular/standalone';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -22,27 +22,31 @@ import { CommonModule } from '@angular/common';
 export class GenerarInformePage {
   constructor(private alertController: AlertController) {}
 
-  // Variables para el formulario
+  // ===== VARIABLES DEL FORMULARIO =====
   patente: string = '';
   mesConsulta: string = '';
+  combustibleConsumido: number = 0;  // Nuevo campo (litros)
+  ganancias: number = 0;             // Nuevo campo (pesos)
+  kilometraje: number = 0;           // Nuevo campo (kilómetros)
   fechaMaxima: string = new Date().toISOString();
 
-  // Flags de estado
+  // ===== FLAGS DE ESTADO =====
   datosConsultados: boolean = false;
   datosDisponibles: boolean = false;
   informeGenerado: boolean = false;
   informeHTML: string = '';
 
-  // Datos simulados del vehículo
+  // ===== DATOS DEL VEHÍCULO =====
   vehiculo = {
     marca: '',
     modelo: '',
-    kilometraje: 0,
+    kilometrajeTotal: 0,
     gastoCombustible: 0,
-    rendimiento: 0
+    rendimiento: 0,
+    gananciasTotales: 0
   };
 
-  // === VALIDACIONES ===
+  // ===== VALIDACIONES =====
   formatearPatente() {
     if (this.patente.length >= 4) {
       this.patente = this.patente.toUpperCase().replace(/([A-Za-z]{2})(\d{3})([A-Za-z]{2})/, '$1-$2-$3');
@@ -77,26 +81,35 @@ export class GenerarInformePage {
     await alert.present();
   }
 
-  // === LÓGICA PRINCIPAL ===
+  // ===== LÓGICA PRINCIPAL =====
   consultarDatosVehiculo() {
+    // Validación de campos obligatorios
+    if (!this.patente || !this.mesConsulta || 
+        !this.combustibleConsumido || !this.ganancias || !this.kilometraje) {
+      this.mostrarAlerta('Datos incompletos', 'Debe completar todos los campos');
+      return;
+    }
+
+    // Validación de valores numéricos positivos
+    if (this.combustibleConsumido <= 0 || this.ganancias <= 0 || this.kilometraje <= 0) {
+      this.mostrarAlerta('Valores inválidos', 'Los valores numéricos deben ser mayores a cero');
+      return;
+    }
+
     // Validación de fecha futura
     if (new Date(this.mesConsulta) > new Date()) {
       this.mostrarAlertaFechaInvalida();
       return;
     }
 
-    if (!this.patente || !this.mesConsulta) {
-      this.mostrarAlerta('Datos incompletos', 'Debe ingresar patente y mes de consulta');
-      return;
-    }
-
-    // Simulación de datos
+    // Simulación de datos (actualizada con nuevos campos)
     this.vehiculo = {
       marca: 'Toyota',
       modelo: 'Hilux',
-      kilometraje: 15000 + Math.floor(Math.random() * 5000),
-      gastoCombustible: 500000 + Math.floor(Math.random() * 200000),
-      rendimiento: 10 + Math.floor(Math.random() * 5)
+      kilometrajeTotal: this.kilometraje,
+      gastoCombustible: this.combustibleConsumido * 1200, // Simula precio por litro
+      rendimiento: parseFloat((this.kilometraje / this.combustibleConsumido).toFixed(2)),
+      gananciasTotales: this.ganancias
     };
 
     this.datosConsultados = true;
@@ -107,19 +120,50 @@ export class GenerarInformePage {
   generarInforme() {
     if (!this.datosDisponibles) return;
 
+    // Cálculo de métricas adicionales
+    const costoPorKm = this.vehiculo.gastoCombustible / this.vehiculo.kilometrajeTotal;
+    const gananciaNeta = this.vehiculo.gananciasTotales - this.vehiculo.gastoCombustible;
+
     this.informeHTML = `
       <div class="report-section">
-        <h3>Informe de Rendimiento</h3>
-        <p><strong>Vehículo:</strong> ${this.vehiculo.marca} ${this.vehiculo.modelo}</p>
-        <p><strong>Patente:</strong> ${this.patente}</p>
-        <p><strong>Período:</strong> ${new Date(this.mesConsulta).toLocaleDateString('es-CL', { month: 'long', year: 'numeric' })}</p>
+        <h3>📊 Informe de Rendimiento Mensual</h3>
+        
+        <div class="vehicle-info">
+          <p><strong>🚗 Vehículo:</strong> ${this.vehiculo.marca} ${this.vehiculo.modelo}</p>
+          <p><strong>🔢 Patente:</strong> ${this.patente}</p>
+          <p><strong>📅 Período:</strong> ${new Date(this.mesConsulta).toLocaleDateString('es-CL', { month: 'long', year: 'numeric' })}</p>
+        </div>
         
         <div class="data-grid">
-          <div class="data-item">
-            <span class="data-label">Kilometraje:</span>
-            <span class="data-value">${this.vehiculo.kilometraje.toLocaleString('es-CL')} km</span>
+          <div class="data-item highlight">
+            <span class="data-label">⛽ Combustible consumido:</span>
+            <span class="data-value">${this.combustibleConsumido} L</span>
           </div>
-          <!-- Resto del HTML del informe -->
+          
+          <div class="data-item highlight">
+            <span class="data-label">💰 Ganancias:</span>
+            <span class="data-value">$${this.ganancias.toLocaleString('es-CL')}</span>
+          </div>
+          
+          <div class="data-item highlight">
+            <span class="data-label">🛣️ Kilometraje:</span>
+            <span class="data-value">${this.kilometraje.toLocaleString('es-CL')} km</span>
+          </div>
+          
+          <div class="data-item">
+            <span class="data-label">⚡ Rendimiento:</span>
+            <span class="data-value">${this.vehiculo.rendimiento} km/L</span>
+          </div>
+          
+          <div class="data-item">
+            <span class="data-label">💵 Costo por km:</span>
+            <span class="data-value">$${costoPorKm.toFixed(2)}</span>
+          </div>
+          
+          <div class="data-item ${gananciaNeta >= 0 ? 'positive' : 'negative'}">
+            <span class="data-label">🏆 Ganancia neta:</span>
+            <span class="data-value">$${gananciaNeta.toLocaleString('es-CL')}</span>
+          </div>
         </div>
       </div>
     `;
@@ -127,7 +171,7 @@ export class GenerarInformePage {
     this.informeGenerado = true;
   }
 
-  // === FUNCIONES AUXILIARES ===
+  // ===== FUNCIONES AUXILIARES =====
   private async mostrarAlerta(titulo: string, mensaje: string) {
     const alert = await this.alertController.create({
       header: titulo,
