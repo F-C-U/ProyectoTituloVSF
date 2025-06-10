@@ -16,7 +16,7 @@ export class ListaCombustiblePage {
     this.obtenerRegistros();
   }
   // Datos falsos con monto y patente
-  registrosCombustible: { fecha: string; monto: number; patente: string; urlBoleta: string; }[] = [];
+  registrosCombustible: {id:string, fecha: string; monto: number; patente: string; urlBoleta: string; }[] = [];
 
   mesSeleccionado: string = '';
   anioSeleccionado: string = '';
@@ -55,9 +55,15 @@ export class ListaCombustiblePage {
     console.log('Editar registro:', registro);
     // Aquí podrías abrir un modal de edición
   }
+
+  eliminarCombustible(fecha:any){
+    return this.firebase.deleteDocument('combustible/'+ fecha)
+  }
   obtenerRegistros() {
     this.firebase.getCollection('combustible').subscribe((data: any[]) => {
+      console.log('Datos obtenidos:', data);
       this.registrosCombustible = data.map(item => ({
+        id: item.id,
         fecha: item.fecha,
         monto: item.monto,
         patente: item.patente,

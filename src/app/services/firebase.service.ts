@@ -61,7 +61,7 @@ export class FirebaseService {
 
   getCollection(path:string){
     const colRef = collection(this.firestore,path)
-    return collectionData(colRef);
+    return collectionData(colRef,{idField:'id'});
   }
 
   getCurrentUser() {
