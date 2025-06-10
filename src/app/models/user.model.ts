@@ -4,4 +4,6 @@ export interface User{
     password:string,
     name:string,
     lastname:string
+    isOwner?: boolean,
+    isDriver?: boolean
 }
