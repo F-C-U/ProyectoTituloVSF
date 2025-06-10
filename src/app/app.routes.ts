@@ -114,5 +114,9 @@ export const routes: Routes = [
     path: 'editar-esquema-pago',
     loadComponent: () => import('./pages/editar-esquema-pago/editar-esquema-pago.page').then( m => m.EditarEsquemaPagoPage)
   },
+  {
+    path: 'registro-mantenimiento',
+    loadComponent: () => import('./pages/registro-mantenimiento/registro-mantenimiento.page').then( m => m.RegistroMantenimientoPage)
+  },
 
 ];
