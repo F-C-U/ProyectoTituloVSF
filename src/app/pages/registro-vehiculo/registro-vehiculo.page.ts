@@ -29,7 +29,7 @@ export class RegistroVehiculoPage {
   ) {
     // Inicializamos el formulario con validaciones básicas
     this.vehiculoForm = this.fb.group({
-      dueno :[''],
+      dueno: [''],
       patente: [
         '',
         [Validators.required, Validators.pattern(/^[A-Z]{4}[0-9]{2}$/)],
@@ -92,11 +92,11 @@ export class RegistroVehiculoPage {
         if (currentUser) {
           this.vehiculoForm.patchValue({ dueno: currentUser.uid });
           await this.firebase.setDocument(
-          'vehiculos/' + this.vehiculoForm.value.patente,
-          this.vehiculoForm.value
-        );
-        this.utils.saveInLocalStorage('vehiculo', this.vehiculoForm.value);
-        this.vehiculoForm.reset();
+            'vehiculos/' + this.vehiculoForm.value.patente,
+            this.vehiculoForm.value
+          );
+          this.utils.saveInLocalStorage('vehiculo', this.vehiculoForm.value);
+          this.vehiculoForm.reset();
         }
       } catch (error) {}
       console.log('Formulario enviado:', this.vehiculoForm.value);
@@ -110,7 +110,7 @@ export class RegistroVehiculoPage {
   get patente() {
     return this.vehiculoForm.get('patente');
   }
-
+  
   get modelo() {
     return this.vehiculoForm.get('modelo');
   }
