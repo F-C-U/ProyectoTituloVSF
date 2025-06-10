@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { 
   IonHeader, IonToolbar, IonTitle, IonContent, 
-  IonItem, IonLabel, IonInput, IonButton, 
+  IonItem, IonInput, IonButton, 
   IonCard, IonCardHeader, IonCardTitle, 
   IonCardContent, IonIcon, IonDatetime, AlertController, IonList, IonCardSubtitle } from '@ionic/angular/standalone';
 import { FormsModule } from '@angular/forms';
