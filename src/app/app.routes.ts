@@ -110,5 +110,9 @@ export const routes: Routes = [
   {
     path: 'generar-informe',
     loadComponent: () => import('./pages/generar-informe/generar-informe.page').then( m => m.GenerarInformePage)
+  },  {
+    path: 'editar-esquema-pago',
+    loadComponent: () => import('./pages/editar-esquema-pago/editar-esquema-pago.page').then( m => m.EditarEsquemaPagoPage)
   },
+
 ];

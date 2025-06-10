@@ -1,0 +1,35 @@
+:host {
+    display: block;
+    height: 100%;
+}
+
+ion-content {
+    --background: var(--ion-background-color);
+    color: var(--ion-text-color);
+}
+
+ion-item {
+    --background: transparent;
+}
+
+ion-button {
+    margin-top: 1rem;
+}
+
+// Estilo responsivo y minimalista, claro y oscuro
+
+// Tema claro
+@media (prefers-color-scheme: light) {
+    :host {
+        --ion-background-color: #ffffff;
+        --ion-text-color: #000000;
+    }
+}
+
+// Tema oscuro
+@media (prefers-color-scheme: dark) {
+    :host {
+        --ion-background-color: #121212;
+        --ion-text-color: #ffffff;
+    }
+}
