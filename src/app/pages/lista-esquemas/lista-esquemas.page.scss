@@ -1,0 +1,164 @@
+/* Estilos generales para el modo claro (sin cambios significativos, se mantienen los azules y blancos originales) */
+ion-header {
+    ion-toolbar {
+        --background: var(--ion-color-primary, #3880ff); // Azul principal de Ionic
+        --color: var(--ion-color-primary-contrast, #fff); // Texto blanco
+    }
+
+    ion-title {
+        color: var(--ion-color-primary-contrast, #fff);
+    }
+}
+
+ion-content {
+    --background: var(--ion-color-step-50, #f2f2f2); // Fondo blanco/gris claro para el contenido
+
+    ion-list {
+        background: transparent; // La lista es transparente para que el fondo de la página se vea
+    }
+
+    ion-item {
+        --background: var(--ion-color-step-100, #ffffff); // Fondo blanco para cada item
+        --border-color: var(--ion-color-step-200, #cccccc); // Bordes gris claro
+        margin-bottom: 8px; // Espacio entre ítems
+        border-radius: 8px; // Bordes redondeados
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // Sombra sutil para profundidad
+
+        ion-label {
+            h2 {
+                color: var(--ion-color-dark, #000); // Negro para el nombre del esquema
+                font-weight: bold;
+            }  
+
+            p {
+                color: var(--ion-color-medium, #666); // Gris oscuro para los detalles
+                font-size: 0.9em;
+            }
+
+            .monto, .porcentaje {
+                color: var(--ion-color-secondary, #0cd1e8); // Azul claro para montos/porcentajes (puede ser otro azul)
+                font-weight: 600;
+            }
+        }
+
+        .esquema-icon {
+        color: var(--ion-color-primary, #3880ff); // Icono azul
+        }
+
+        .button-group {
+            display: flex;
+            --padding-start: 8px;
+            --padding-end: 8px;
+            --padding-top: 4px;
+            --padding-bottom: 4px;
+            height: auto;
+            min-width: unset;
+            font-size: 0.75em;
+            margin-left: 4px;
+        }
+    }
+
+  // Estilos para el mensaje de "No hay ítems"
+    .no-items-message {
+        --background: var(--ion-color-light, #f4f5f8);
+        color: var(--ion-color-medium, #666);
+        text-align: center;
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+  // Estilos para el mensaje de error
+    error-message {
+        --background: var(--ion-color-danger-tint, #ff8a8a); // Tono rojo claro
+        color: var(--ion-color-danger-contrast, #fff); // Texto blanco
+        padding: 15px;
+        border-radius: 8px;
+        margin: 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+
+        ion-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: var(--ion-color-danger, #eb445a); // Rojo para el icono
+        }
+
+        p {
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        ion-button {
+        --background: var(--ion-color-danger, #eb445a); // Botón rojo
+        --color: var(--ion-color-danger-contrast, #fff); // Texto blanco
+        }
+    }
+}
+
+/* Estilos para el modo oscuro, inspirados en la imagen proporcionada */
+@media (prefers-color-scheme: dark) {
+    ion-header {
+        ion-toolbar {
+            --background: #007bff; // Negro puro para el encabezado (similar a la imagen)
+            --color: #000000; // Azul para el texto del título (similar al azul de la tabla)
+        }
+
+        ion-title {
+            color: #000000; // Azul para el título grande
+        }
+    }
+
+    ion-content {
+        --background: #000000; // Fondo negro puro para el contenido
+
+        ion-item {
+            --background: #1a1a1a; // Un gris oscuro para el fondo de cada ítem, similar a la tabla
+            --border-color: #333333; // Un gris un poco más claro para los bordes
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); // Sombra más pronunciada en modo oscuro
+
+            ion-label {
+                h2 {
+                    color: #3880ff; // Azul para el nombre del esquema (similar al azul de la tabla)
+                }
+
+                p {
+                    color: #cccccc; // Gris claro para los detalles, para que se vea bien
+                }
+
+                .monto, .porcentaje {
+                    color: #64b5f6; // Un azul más claro para montos/porcentajes, que contraste bien con el gris oscuro
+                }
+            }
+
+            .esquema-icon {
+                color: #3880ff; // Icono azul
+            }
+        }
+
+        // Estilos para el mensaje de "No hay ítems" en modo oscuro
+        .no-items-message {
+            --background: #1a1a1a; // Fondo oscuro
+            color: #cccccc; // Texto gris claro
+            border: 1px solid #333333; // Borde sutil
+        }
+
+        // Estilos para el mensaje de error en modo oscuro
+        .error-message {
+            --background: #330000; // Un rojo muy oscuro, casi negro con un tinte rojo
+            color: #ffcccc; // Texto rojo muy claro para contrastar
+            border: 1px solid #660000; // Borde rojo oscuro
+            ion-icon {
+                color: #ff4d4d; // Rojo un poco más vivo para el icono
+            }
+            ion-button {
+                --background: #b30000; // Un rojo más oscuro para el botón
+                --color: #fff; // Texto blanco
+            }
+        }
+    }
+}
