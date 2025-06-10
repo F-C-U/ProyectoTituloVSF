@@ -1,0 +1,116 @@
+/* Estilo para el botón principal de acción */
+.save-button {
+  --background: #2ecc71; /* Verde vibrante */
+  --background-hover: #27ae60; /* Verde más oscuro al pasar el mouse */
+  --background-activated: #27ae60;
+  --color: white;
+  --padding-start: 24px;
+  --padding-end: 24px;
+  font-weight: 600;
+  margin: 20px auto;
+  display: block;
+  width: 90%;
+  max-width: 300px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(46, 204, 113, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(46, 204, 113, 0.4);
+  }
+
+  ion-icon {
+    margin-right: 8px;
+    font-size: 1.2em;
+  }
+}
+
+/* Botón "Agregar" verde secundario */
+.add-button {
+  --background: #27ae60;
+  --color: white;
+  --border-radius: 8px;
+  margin-left: 10px;
+  height: 40px;
+  width: 40px;
+
+  ion-icon {
+    font-size: 1.4em;
+  }
+}
+
+/* Ajustes para inputs y tarjetas */
+.custom-input {
+  --highlight-color-focused: #2ecc71;
+  --border-color: #e0e0e0;
+}
+
+.data-card, .earnings-card, .summary-card {
+  border-left: 4px solid #2ecc71; /* Acento verde */
+}
+
+/* Añade estos estilos */
+.generate-button {
+  --background: #10b981;
+  --padding-start: 1rem;
+  --padding-end: 1rem;
+  
+  /* Asegura espacio para el texto */
+  min-width: 200px;
+  height: 50px;
+}
+
+.button-text {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Espacio entre icono y texto */
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+ion-icon {
+  font-size: 1.2rem; /* Tamaño controlado del icono */
+}
+
+/* Añade esto a tu archivo SCSS */
+.custom-input.ng-invalid {
+  border-left: 4px solid var(--ion-color-danger);
+}
+
+.currency-note {
+  color: var(--ion-color-success);
+  font-weight: bold;
+}
+
+.alerta-negativo {
+  --background: var(--ion-color-danger);
+  --color: white;
+}
+
+.query-card {
+  margin-bottom: 20px;
+  
+  .query-button {
+    margin-top: 15px;
+  }
+}
+
+.report-container {
+  min-height: 60vh;
+  
+  .report-card {
+    background: var(--ion-color-light);
+    
+    .empty-report {
+      text-align: center;
+      padding: 30px;
+      color: var(--ion-color-medium);
+      
+      .empty-icon {
+        font-size: 60px;
+        opacity: 0.3;
+      }
+    }
+  }
+}

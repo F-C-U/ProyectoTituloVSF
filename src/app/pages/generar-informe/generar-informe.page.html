@@ -1,0 +1,90 @@
+<ion-header>
+  <ion-toolbar class="toolbar-header">
+    <ion-title class="title-text">Informe de Vehículo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="content-background">
+  <!-- Formulario de consulta -->
+  <ion-card class="query-card">
+    <ion-card-header class="card-header">
+      <ion-card-title class="card-title">🔍 Consultar Datos</ion-card-title>
+    </ion-card-header>
+    <ion-card-content class="card-content">
+      <ion-item class="input-item">
+        <ion-input 
+          class="custom-input"
+          label="Patente del vehículo" 
+          label-placement="stacked"
+          [(ngModel)]="patente"
+          placeholder="Ej: AB123CD"
+          maxlength="8"
+          (ionChange)="formatearPatente()"
+          required
+        ></ion-input>
+      </ion-item>
+
+      <ion-item class="input-item">
+        <ion-datetime
+          class="custom-input"
+          label="Mes de consulta"
+          label-placement="stacked"
+          [(ngModel)]="mesConsulta"
+          display-format="MMM YYYY"
+          month-short-names="ene, feb, mar, abr, may, jun, jul, ago, sep, oct, nov, dic"
+          placeholder="Seleccione mes"
+          required
+        ></ion-datetime>
+      </ion-item>
+
+      <ion-button 
+        expand="block" 
+        class="query-button"
+        (click)="consultarDatosVehiculo()"
+        [disabled]="!patente || !mesConsulta"
+      >
+        <ion-icon name="search" slot="start"></ion-icon>
+        Buscar Datos
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Espacio para el informe generado -->
+  <div class="report-container" *ngIf="datosConsultados">
+    <ion-card class="report-card">
+      <ion-card-header class="report-header">
+        <ion-card-title class="report-title">
+          📋 Informe de {{ vehiculo.marca || 'Vehículo' }} ({{ patente }})
+        </ion-card-title>
+        <ion-card-subtitle class="report-subtitle">
+          Período: {{ mesConsulta | date:'MMMM yyyy' | titlecase }}
+        </ion-card-subtitle>
+      </ion-card-header>
+      
+      <ion-card-content class="report-content">
+        <!-- Aquí se inyectará dinámicamente el informe -->
+        <div *ngIf="!informeGenerado" class="empty-report">
+          <ion-icon name="document-text-outline" class="empty-icon"></ion-icon>
+          <p>Los datos del vehículo aparecerán aquí</p>
+        </div>
+
+        <div *ngIf="informeGenerado" [innerHTML]="informeHTML"></div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Botón Generar Informe (oculto inicialmente) -->
+  <div class="button-container" *ngIf="datosConsultados">
+    <ion-button 
+      class="generate-button"
+      expand="block" 
+      (click)="generarInforme()"
+      
+    >
+      <span class="button-text">
+        <ion-icon name="document-text" slot="start"></ion-icon>
+        Generar Informe PDF
+      </span>
+    </ion-button>
+  </div>
+</ion-content>
