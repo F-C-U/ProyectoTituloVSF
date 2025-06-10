@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Historial de mantenimiento</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Filtro por tipo de mantenimiento -->
+  <ion-item>
+    <ion-label>Filtrar por tipo</ion-label>
+    <ion-select [(ngModel)]="tipoSeleccionado" placeholder="Todos">
+      <ion-select-option value="">Todos</ion-select-option>
+      <ion-select-option value="Cambio de aceite">Cambio de aceite</ion-select-option>
+      <ion-select-option value="Frenos">Frenos</ion-select-option>
+      <ion-select-option value="Neumáticos">Neumáticos</ion-select-option>
+      <ion-select-option value="Motor">Motor</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <!-- Tabla de historial -->
+  <div class="tabla-responsive">
+    <table>
+      <thead>
+        <tr>
+          <th>Patente</th>
+          <th>Fecha</th>
+          <th>Tipo</th>
+          <th>Costo</th>
+          <th>Factura</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let r of registrosFiltrados">
+          <td>{{ r.patente }}</td>
+          <td>{{ r.fecha }}</td>
+          <td>{{ r.tipo }}</td>
+          <td>${{ r.costo }}</td>
+          <td>
+            <ng-container *ngIf="r.facturaUrl">
+              <!-- Imagen -->
+              <img *ngIf="esImagen(r.facturaUrl)"
+                [src]="r.facturaUrl"
+                alt="Factura"
+                width="40"
+                height="40"
+                (click)="abrirFactura(r.facturaUrl)"
+                style="cursor: pointer;" />
+
+              <!-- PDF -->
+              <ion-icon *ngIf="esPDF(r.facturaUrl)"
+                        name="document"
+                        (click)="abrirFactura(r.facturaUrl)"
+                        style="font-size: 24px; cursor: pointer;">
+              </ion-icon>
+            </ng-container>
+            <ng-container *ngIf="!r.facturaUrl">-</ng-container>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ion-content>
