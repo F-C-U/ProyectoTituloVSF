@@ -97,5 +97,9 @@ export const routes: Routes = [
     path: 'crear-usuario',
     loadComponent: () => import('./pages/crear-usuario/crear-usuario.page').then( m => m.CrearUsuarioPage)
   },
+  {
+    path: 'login',
+    loadComponent: () => import('./pages/login/login.page').then( m => m.LoginPage)
+  },
 
 ];
