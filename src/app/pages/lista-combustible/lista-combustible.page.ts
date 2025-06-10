@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { FirebaseService } from 'src/app/services/firebase.service';
 
 @Component({
   standalone: true,
@@ -11,12 +12,11 @@ import { FormsModule } from '@angular/forms';
   imports: [IonicModule, CommonModule, FormsModule]
 })
 export class ListaCombustiblePage {
+  constructor(private firebase:FirebaseService){
+    this.obtenerRegistros();
+  }
   // Datos falsos con monto y patente
-  registrosCombustible: { fecha: string; monto: number; patente: string; urlBoleta: string; }[] = [
-    { fecha: '2025-06-01', monto: 25000, patente: 'ABC123', urlBoleta: 'assets/boletas/boleta1.jpg' },
-    { fecha: '2025-07-10', monto: 28000, patente: 'XYZ789', urlBoleta: 'assets/boletas/boleta2.pdf' },
-    { fecha: '2025-07-22', monto: 30000, patente: 'LMN456', urlBoleta: 'assets/boletas/boleta3.png' },
-  ];
+  registrosCombustible: { fecha: string; monto: number; patente: string; urlBoleta: string; }[] = [];
 
   mesSeleccionado: string = '';
   anioSeleccionado: string = '';
@@ -54,5 +54,16 @@ export class ListaCombustiblePage {
   editarCombustible(registro: { fecha: string; monto: number; patente: string; urlBoleta: string }) {
     console.log('Editar registro:', registro);
     // Aquí podrías abrir un modal de edición
+  }
+  obtenerRegistros() {
+    this.firebase.getCollection('combustible').subscribe((data: any[]) => {
+      this.registrosCombustible = data.map(item => ({
+        fecha: item.fecha,
+        monto: item.monto,
+        patente: item.patente,
+        urlBoleta: item.urlBoleta
+      }));
+      console.log('Registros de combustible obtenidos:', this.registrosCombustible);
+    })
   }
 }

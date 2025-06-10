@@ -1,7 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { 
   Firestore, doc, setDoc, getDoc, updateDoc, 
-  deleteDoc, collection, addDoc, serverTimestamp 
+  deleteDoc, collection, addDoc, serverTimestamp, 
+  collectionData
 } from '@angular/fire/firestore';
 import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, 
         sendPasswordResetEmail, updateProfile } from '@angular/fire/auth';
@@ -56,6 +57,11 @@ export class FirebaseService {
 
   deleteDocument(path: string) {
     return deleteDoc(doc(this.firestore, path));
+  }
+
+  getCollection(path:string){
+    const colRef = collection(this.firestore,path)
+    return collectionData(colRef);
   }
 
   getCurrentUser() {

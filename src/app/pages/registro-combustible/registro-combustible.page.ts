@@ -87,7 +87,7 @@ export class RegistroCombustiblePage {
       // Aquí se puede conectar a una API o guardar localmente
       try {
         await this.firebase.setDocument(
-          'combustible/',
+          'combustible/'+this.formularioCombustible.value.fecha.replace(/-/g, ''),
           this.formularioCombustible.value
         );
       } catch (error) {}
