@@ -1,0 +1,23 @@
+:host {
+  --ion-background-color: var(--ion-color-light);
+  --ion-text-color: var(--ion-color-dark);
+}
+
+@media (prefers-color-scheme: dark) {
+  :host {
+    --ion-background-color: #000000;
+    --ion-text-color: #cccccc;
+  }
+}
+
+ion-item, ion-label, ion-input {
+  color: var(--ion-text-color);
+}
+
+ion-button {
+  margin-top: 1rem;
+}
+
+ion-modal::part(content) {
+  background-color: var(--ion-background-color);
+}

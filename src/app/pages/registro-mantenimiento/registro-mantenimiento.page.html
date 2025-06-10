@@ -1,0 +1,72 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Registro de mantenimiento</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <form [formGroup]="formularioMantenimiento" (ngSubmit)="registrarMantenimiento()">
+    
+    <!-- Tipo de mantenimiento -->
+    <ion-item>
+      <ion-label position="floating">Tipo de mantenimiento</ion-label>
+      <ion-input formControlName="tipo" [readonly]="true"></ion-input>
+    </ion-item>
+
+    <!-- Fecha del servicio -->
+    <ion-item>
+      <ion-label>Fecha del servicio</ion-label>
+      <ion-datetime-button datetime="fechaServicio"></ion-datetime-button>
+    </ion-item>
+
+    <ion-datetime
+      id="fechaServicio"
+      presentation="date"
+      formControlName="fecha"
+      [min]="fechaMin"
+      [max]="fechaMax"
+      done-text="Aceptar"
+      cancel-text="Cancelar"
+      prefer-wheel="false"
+    ></ion-datetime>
+
+    <!-- Errores de fecha -->
+    <ion-text color="danger" *ngIf="formularioMantenimiento.get('fecha')?.hasError('fechaMayorAHoy')">
+      La fecha no puede ser mayor a hoy.
+    </ion-text>
+    <ion-text color="danger" *ngIf="formularioMantenimiento.get('fecha')?.hasError('fechaMuyAntigua')">
+      La fecha no puede ser anterior a hace 10 años.
+    </ion-text>
+
+    <!-- Costo -->
+    <ion-item>
+      <ion-label position="floating">Costo (CLP)</ion-label>
+      <ion-input
+        formControlName="costo"
+        inputmode="decimal"
+        (ionInput)="formatearCosto($event)"
+        placeholder="$0"
+      ></ion-input>
+    </ion-item>
+
+    <!-- Subida de archivo -->
+    <ion-item>
+      <ion-label>Imagen boleta</ion-label>
+      <input
+        type="file"
+        accept=".pdf,.jpg,.jpeg,.png,.heic"
+        (change)="manejarArchivo($event)"
+      />
+    </ion-item>
+
+    <!-- Mensaje general de error -->
+    <ion-text color="danger" *ngIf="mensajeError">
+      {{ mensajeError }}
+    </ion-text>
+
+    <!-- Botón de envío -->
+    <ion-button type="submit" expand="block" [disabled]="formularioMantenimiento.invalid">
+      Registrar Mantenimiento
+    </ion-button>
+  </form>
+</ion-content>
