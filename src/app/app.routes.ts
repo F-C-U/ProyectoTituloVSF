@@ -102,9 +102,13 @@ export const routes: Routes = [
     path: 'login',
     loadComponent: () => import('./pages/login/login.page').then( m => m.LoginPage)
   },
+    {
+    path: 'lista-esquemas',
+    loadComponent: () => import('./pages/lista-esquemas/lista-esquemas.page').then( m => m.ListaEsquemasPage)
+  },
+
   {
     path: 'generar-informe',
     loadComponent: () => import('./pages/generar-informe/generar-informe.page').then( m => m.GenerarInformePage)
   },
-
 ];
