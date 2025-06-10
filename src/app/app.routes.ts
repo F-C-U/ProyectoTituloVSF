@@ -93,5 +93,9 @@ export const routes: Routes = [
     path: 'confirmar-mantencion',
     loadComponent: () => import('./pages/confirmar-mantencion/confirmar-mantencion.page').then( m => m.ConfirmarMantencionPage)
   },
+  {
+    path: 'crear-usuario',
+    loadComponent: () => import('./pages/crear-usuario/crear-usuario.page').then( m => m.CrearUsuarioPage)
+  },
 
 ];

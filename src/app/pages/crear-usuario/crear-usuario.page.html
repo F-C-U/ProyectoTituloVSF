@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Crear Usuario</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <form [formGroup]="formularioUsuario" (ngSubmit)="onSubmit()">
+
+    <ion-item>
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input formControlName="nombre" type="text" required></ion-input>
+    </ion-item>
+    <ion-note color="danger" *ngIf="formularioUsuario.get('nombre')?.touched && formularioUsuario.get('nombre')?.invalid">
+      Nombre es obligatorio y debe tener máximo 50 caracteres.
+    </ion-note>
+
+    <ion-item>
+      <ion-label position="floating">Apellido</ion-label>
+      <ion-input formControlName="apellido" type="text" required></ion-input>
+    </ion-item>
+    <ion-note color="danger" *ngIf="formularioUsuario.get('apellido')?.touched && formularioUsuario.get('apellido')?.invalid">
+      Apellido es obligatorio y debe tener máximo 50 caracteres.
+    </ion-note>
+
+    <ion-item>
+      <ion-label position="floating">Correo Electrónico</ion-label>
+      <ion-input formControlName="correo" type="email" required></ion-input>
+    </ion-item>
+    <ion-note color="danger" *ngIf="formularioUsuario.get('correo')?.touched && formularioUsuario.get('correo')?.invalid">
+      Ingresa un correo válido.
+    </ion-note>
+
+    <ion-item>
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input formControlName="contrasena" type="password" required></ion-input>
+    </ion-item>
+    <ion-note color="danger" *ngIf="formularioUsuario.get('contrasena')?.touched && formularioUsuario.get('contrasena')?.invalid">
+      Mínimo 6 caracteres de contraseña.
+    </ion-note>
+
+    <ion-item lines="none">
+      <ion-checkbox formControlName="esDueno"></ion-checkbox>
+      <ion-label class="ion-margin-start">Dueño</ion-label>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-checkbox formControlName="esConductor"></ion-checkbox>
+      <ion-label class="ion-margin-start">Conductor</ion-label>
+    </ion-item>
+
+    <ion-button expand="block" type="submit" [disabled]="formularioUsuario.invalid">
+      Crear Usuario
+    </ion-button>
+
+  </form>
+</ion-content>

@@ -1,0 +1,31 @@
+:host {
+    --ion-background-color: #ffffff;
+    --ion-text-color: #000000;
+}
+
+@media (prefers-color-scheme: dark) {
+    :host {
+        --ion-background-color: #000000;
+        --ion-text-color: #cccccc;
+    }
+}
+
+ion-content {
+    background-color: var(--ion-background-color);
+    color: var(--ion-text-color);
+}
+
+ion-item, ion-label, ion-input, ion-note {
+    --color: var(--ion-text-color);
+    font-size: 14px;
+}
+
+ion-button {
+    margin-top: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
