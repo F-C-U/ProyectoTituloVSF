@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content class="content-background">
-  <!-- Formulario de consulta -->
+  <!-- Formulario de consulta (sin cambios) -->
   <ion-card class="query-card">
     <ion-card-header class="card-header">
       <ion-card-title class="card-title">🔍 Consultar Datos</ion-card-title>
@@ -49,42 +49,30 @@
     </ion-card-content>
   </ion-card>
 
-  <!-- Espacio para el informe generado -->
-  <div class="report-container" *ngIf="datosConsultados">
+  <!-- === NUEVA SECCIÓN PARA EL INFORME === -->
+  <div *ngIf="datosConsultados" class="report-section">
     <ion-card class="report-card">
-      <ion-card-header class="report-header">
-        <ion-card-title class="report-title">
-          📋 Informe de {{ vehiculo.marca || 'Vehículo' }} ({{ patente }})
-        </ion-card-title>
-        <ion-card-subtitle class="report-subtitle">
-          Período: {{ mesConsulta | date:'MMMM yyyy' | titlecase }}
-        </ion-card-subtitle>
-      </ion-card-header>
-      
-      <ion-card-content class="report-content">
-        <!-- Aquí se inyectará dinámicamente el informe -->
-        <div *ngIf="!informeGenerado" class="empty-report">
-          <ion-icon name="document-text-outline" class="empty-icon"></ion-icon>
-          <p>Los datos del vehículo aparecerán aquí</p>
+      <ion-card-content>
+        <!-- Estado inicial (antes de generar) -->
+        <div *ngIf="!informeGenerado" class="pre-report">
+          <ion-icon name="document-text-outline" class="pre-icon"></ion-icon>
+          <p>Datos listos para generar el informe</p>
         </div>
-
-        <div *ngIf="informeGenerado" [innerHTML]="informeHTML"></div>
+        
+        <!-- Informe generado -->
+        <div *ngIf="informeGenerado" [innerHTML]="informeHTML" class="generated-report"></div>
       </ion-card-content>
     </ion-card>
-  </div>
 
-  <!-- Botón Generar Informe (oculto inicialmente) -->
-  <div class="button-container" *ngIf="datosConsultados">
+    <!-- === BOTÓN VERDE DE GENERACIÓN (NUEVO) === -->
     <ion-button 
-      class="generate-button"
       expand="block" 
+      color="success" 
+      class="generate-btn"
       (click)="generarInforme()"
-      
-    >
-      <span class="button-text">
-        <ion-icon name="document-text" slot="start"></ion-icon>
-        Generar Informe PDF
-      </span>
+      [disabled]="!datosDisponibles">
+      <ion-icon name="document-attach-outline" slot="start"></ion-icon>
+      Generar Informe
     </ion-button>
   </div>
 </ion-content>
