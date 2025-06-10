@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { FirebaseService } from 'src/app/services/firebase.service';
 
 @Component({
   selector: 'app-registro-mantenimiento',
@@ -18,7 +19,7 @@ export class RegistroMantenimientoPage {
   fechaMin: string;
   fechaMax: string;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,private firebase: FirebaseService) {
     const hoy = new Date();
     const haceDiezAnios = new Date();
     haceDiezAnios.setFullYear(hoy.getFullYear() - 10);
@@ -86,6 +87,7 @@ export class RegistroMantenimientoPage {
       this.mensajeError = 'Todos los campos deben estar completos y el archivo debe ser válido.';
       return;
     }
+    this.firebase.setDocument("mantenimientos/"+this.formularioMantenimiento.value.fecha,this.formularioMantenimiento.value)
     console.log('Datos enviados:', this.formularioMantenimiento.getRawValue(), this.archivoSeleccionado);
     this.mensajeError = null;
   }
