@@ -1,7 +1,9 @@
 export interface User{
     uid:string
-    email:string,
-    password:string,
-    name:string,
-    lastname:string
+    correo:string,
+    contrasena:string,
+    nombre:string,
+    apellido:string
+    esDueno?: boolean,
+    esConductor?: boolean
 }

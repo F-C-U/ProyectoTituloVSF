@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonicModule, ToastController } from '@ionic/angular';
+import { FirebaseService } from 'src/app/services/firebase.service';
+import { User } from 'src/app/models/user.model';
+import { UtilsService } from 'src/app/services/utils.service';
 
 @Component({
   selector: 'app-crear-usuario',
@@ -13,9 +16,10 @@ import { IonicModule, ToastController } from '@ionic/angular';
 export class CrearUsuarioPage {
   formularioUsuario: FormGroup;
 
-  constructor(private fb: FormBuilder, private toastController: ToastController) {
+  constructor(private fb: FormBuilder, private toastController: ToastController,private firebase:FirebaseService,private utils:UtilsService) {
     // Creamos el formulario con validaciones necesarias
     this.formularioUsuario = this.fb.group({
+      uid: [''],
       nombre: ['', [Validators.required, Validators.maxLength(50)]],
       apellido: ['', [Validators.required, Validators.maxLength(50)]],
       correo: ['', [Validators.required, Validators.email]],
@@ -51,8 +55,23 @@ export class CrearUsuarioPage {
     }
 
     // Aquí se procesaría el formulario (por ejemplo, llamado a un servicio HTTP)
-    console.log('Datos del formulario:', this.formularioUsuario.value);
+    this.firebase.signUp(this.formularioUsuario.value as User).then(async res => {
+        await this.firebase.updateUser(this.formularioUsuario.value.nombre)
+        console.log("uid",res.user.uid);
+        let uid = res.user.uid;
+        this.formularioUsuario.controls['uid'].setValue(uid);
+        this.setUserInfo(uid);})
+    this.firebase.setDocument('usuarios/'+this.formularioUsuario.value,this.formularioUsuario.value)
     this.mostrarMensaje('Usuario creado exitosamente.');
-    this.formularioUsuario.reset();
+  }
+
+  setUserInfo(uid:string){
+    let path = 'usuarios/' + uid;
+    delete this.formularioUsuario.value.contrasena;
+
+    this.firebase.setDocument(path,this.formularioUsuario.value).then(()=>{
+      this.utils.saveInLocalStorage('usuario',this.formularioUsuario.value)
+      this.formularioUsuario.reset();
+    })
   }
 } 
