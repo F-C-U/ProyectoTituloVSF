@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule, ToastController } from '@ionic/angular';
-import { RouterModule } from '@angular/router';
+import { NavigationExtras, RouterModule } from '@angular/router';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { UtilsService } from 'src/app/services/utils.service';
 
@@ -43,6 +43,11 @@ export class ListaVehiculosPage {
   }
 
   editarVehiculo(vehiculoId: string) {
-    // Redirección simulada a la página de edición (reemplazar cuando se conecte base de datos)
+    let xtras: NavigationExtras = {
+      state: {
+        vehiculoId: vehiculoId
+      }
+    }
+    this.utils.routerLinkWithExtras('editar-vehiculo', xtras);
   }
 } 

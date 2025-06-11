@@ -10,6 +10,8 @@ import {
 } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { FirebaseService } from 'src/app/services/firebase.service';
+import { AnimateTimings } from '@angular/animations';
+import { UtilsService } from 'src/app/services/utils.service';
 
 @Component({
   selector: 'app-editar-vehiculo',
@@ -19,26 +21,50 @@ import { FirebaseService } from 'src/app/services/firebase.service';
   styleUrls: ['./editar-vehiculo.page.scss'],
 })
 export class EditarVehiculoPage {
-  vehiculoForm: FormGroup;
-
-  constructor(private fb: FormBuilder,private firebase: FirebaseService) {
+  vehiculoId: any;
+  vehiculo: any;
+  vehiculoForm!: FormGroup;
+  constructor(
+    private fb: FormBuilder,
+    private firebase: FirebaseService,
+    private utils: UtilsService
+  ) {
     // Inicializamos el formulario con validaciones básicas
+  }
+
+  ngOnInit() {
+    this.cargarDatosVehiculo();
+  }
+
+  async cargarDatosVehiculo() {
+    let xtras = this.utils.routerLinkExtras();
+    this.vehiculoId = xtras?.['vehiculoId'];
+    this.vehiculo = await this.firebase.getDocument(
+      'vehiculos/' + this.vehiculoId
+    );
+
     this.vehiculoForm = this.fb.group({
       patente: [
-        '',
+        this.vehiculo.patente || '',
         [Validators.required, Validators.pattern(/^[A-Z]{4}[0-9]{2}$/)],
       ],
-      modelo: ['', [Validators.required, Validators.maxLength(50)]],
+      modelo: [
+        this.vehiculo.modelo || '',
+        [Validators.required, Validators.maxLength(50)],
+      ],
       anio: [
-        '',
+        this.vehiculo.anio || '',
         [
           Validators.required,
           Validators.min(1900),
           Validators.max(new Date().getFullYear()),
         ],
       ],
-      tipoCombustible: ['', Validators.required],
-      activo: [false], // valor por defecto
+      tipoCombustible: [
+        this.vehiculo.tipoCombustible || '',
+        Validators.required,
+      ],
+      activo: [this.vehiculo.activo || false],
     });
   }
 
@@ -81,7 +107,10 @@ export class EditarVehiculoPage {
   async onSubmit() {
     if (this.vehiculoForm.valid) {
       try {
-        await this.firebase.setDocument('vehiculos/' + this.vehiculoForm.value.patente, this.vehiculoForm.value);
+        await this.firebase.updateDocument(
+          'vehiculos/' + this.vehiculoForm.value.patente,
+          this.vehiculoForm.value
+        );
       } catch (error) {}
       console.log('Formulario enviado:', this.vehiculoForm.value);
       // Aquí podrías enviar los datos a una API, por ejemplo
