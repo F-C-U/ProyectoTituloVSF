@@ -65,6 +65,9 @@ export class ListaCombustiblePage {
     const meses = new Set(
       this.registrosCombustible.map((r) => r.fecha.split('-')[1])
     );
+    const meses = new Set(
+      this.registrosCombustible.map((r) => r.fecha.split('-')[1])
+    );
     return Array.from(meses).sort();
   }
 
@@ -72,10 +75,14 @@ export class ListaCombustiblePage {
     const anios = new Set(
       this.registrosCombustible.map((r) => r.fecha.split('-')[0])
     );
+    const anios = new Set(
+      this.registrosCombustible.map((r) => r.fecha.split('-')[0])
+    );
     return Array.from(anios).sort();
   }
 
   get registrosFiltrados() {
+    return this.registrosCombustible.filter((r) => {
     return this.registrosCombustible.filter((r) => {
       const [anio, mes] = r.fecha.split('-');
       return (
@@ -92,11 +99,14 @@ export class ListaCombustiblePage {
 
   eliminarCombustible(fecha: any) {
     return this.firebase.deleteDocument('combustible/' + fecha);
+  eliminarCombustible(fecha: any) {
+    return this.firebase.deleteDocument('combustible/' + fecha);
   }
 
   obtenerRegistros() {
     this.firebase.getCollection('combustible').subscribe((data: any[]) => {
       console.log('Datos obtenidos:', data);
+      this.registrosCombustible = data.map((item) => ({
       this.registrosCombustible = data.map((item) => ({
         id: item.id,
         fecha: item.fecha,
@@ -116,3 +126,4 @@ export class ListaCombustiblePage {
     await modal.present();
   }
 }
+
