@@ -17,6 +17,13 @@ export class UtilsService {
   }
 
   routerLink(url:string){
-    return this.router.navigate([url]);
+    return this.router.navigateByUrl(url);
+  }
+
+  routerLinkWithExtras(url:string, extras:any){
+    return this.router.navigateByUrl(url, extras);
+  }
+  routerLinkExtras(){
+    return this.router.getCurrentNavigation()?.extras.state;
   }
 }
