@@ -1,0 +1,121 @@
+/* src/app/registrar-ganancia/registrar-ganancia.page.scss */
+ion-content {
+  --background: #f5f7fa;
+}
+
+/* Estructura principal */
+.reporte-vehiculo {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  margin: 16px;
+
+  h2 {
+    color: #2c3e50;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 10px;
+  }
+}
+
+/* Encabezado */
+.encabezado {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 20px;
+
+  p {
+    margin: 8px 0;
+    color: #34495e;
+    font-size: 0.95rem;
+
+    strong {
+      color: #2c3e50;
+      font-weight: 500;
+    }
+  }
+}
+
+/* Inputs y formulario */
+ion-item {
+  --background: transparent;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  --border-color: #e0e0e0;
+  margin-bottom: 16px;
+
+  ion-label[position="stacked"] {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  ion-input {
+    --background: #f8f9fa;
+    --padding-start: 12px;
+    --padding-end: 12px;
+    --padding-top: 10px;
+    --padding-bottom: 10px;
+    border-radius: 8px;
+    margin-top: 6px;
+    font-size: 1rem;
+    color: #2c3e50;
+
+    &[readonly] {
+      --background: #e8f4f8;
+      --color: #3498db;
+      font-weight: 500;
+    }
+  }
+}
+
+/* Botón principal */
+ion-button {
+  --background: #3498db;
+  --background-activated: #2980b9;
+  --background-hover: #2980b9;
+  --border-radius: 8px;
+  --padding-top: 16px;
+  --padding-bottom: 16px;
+  font-weight: 500;
+  margin-top: 24px;
+
+  &[disabled] {
+    --background: #bdc3c7;
+  }
+}
+
+/* Estilos para cards */
+ion-card {
+  box-shadow: none;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+
+  ion-card-header {
+    padding-bottom: 0;
+
+    ion-card-title {
+      font-size: 1.2rem;
+      color: #2c3e50;
+      font-weight: 600;
+    }
+  }
+
+  ion-card-content {
+    padding-top: 8px;
+  }
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+  .reporte-vehiculo {
+    max-width: 600px;
+    margin: 24px auto;
+  }
+}

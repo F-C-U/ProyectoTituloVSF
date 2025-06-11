@@ -1,0 +1,76 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registrar Ganancia</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>📊 Registrar Ganancia Diaria</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <!-- Patente (solo lectura) -->
+      <ion-item>
+        <ion-label position="stacked">Patente del Vehículo</ion-label>
+        <ion-input 
+          [value]="patente" 
+          readonly
+          label="Patente:"
+          placeholder="Ej: BBRR85">
+        </ion-input>
+      </ion-item>
+
+      <!-- Input para ganancia con validación mejorada -->
+      <ion-item>
+        <ion-label position="stacked">Ganancia del día ($)</ion-label>
+        <ion-input 
+          type="number" 
+          [(ngModel)]="ganancia" 
+          (keypress)="validarGanancia($event)"
+          (ionChange)="validarMonto()"
+          min="0"
+          label="Monto:"
+          placeholder="Ingrese el monto en pesos"
+          required
+          #montoInput>
+        </ion-input>
+        
+        <!-- Botones de incremento personalizados -->
+        <div slot="end" class="botones-monto">
+          <ion-button 
+            fill="clear" 
+            (click)="ajustarMonto(10000)" 
+            color="success">
+            +10.000
+          </ion-button>
+          <ion-button 
+            fill="clear" 
+            (click)="ajustarMonto(1000)" 
+            color="success">
+            +1.000
+          </ion-button>
+        </div>
+      </ion-item>
+
+      <!-- Fecha (auto-generada) -->
+      <ion-item>
+        <ion-label position="stacked">Fecha de Registro</ion-label>
+        <ion-input 
+          [value]="fechaRegistro | date: 'mediumDate'"
+          readonly
+          label="Fecha:">
+        </ion-input>
+      </ion-item>
+
+      <!-- Botón de acción -->
+      <ion-button 
+        expand="block" 
+        (click)="registrarGanancia()"
+        [disabled]="!ganancia || ganancia <= 0">
+        💰 Registrar Ganancia
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
