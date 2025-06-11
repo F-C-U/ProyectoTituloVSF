@@ -3,7 +3,8 @@ import { IonicModule, ModalController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FirebaseService } from 'src/app/services/firebase.service';
-
+import { UtilsService } from 'src/app/services/utils.service';
+import { NavigationExtras } from '@angular/router';
 @Component({
   standalone: true,
   selector: 'app-ver-boleta-modal',
@@ -61,17 +62,21 @@ export class ListaCombustiblePage {
   anioSeleccionado: string = '';
 
   get mesesDisponibles(): string[] {
-    const meses = new Set(this.registrosCombustible.map(r => r.fecha.split('-')[1]));
+    const meses = new Set(
+      this.registrosCombustible.map((r) => r.fecha.split('-')[1])
+    );
     return Array.from(meses).sort();
   }
 
   get aniosDisponibles(): string[] {
-    const anios = new Set(this.registrosCombustible.map(r => r.fecha.split('-')[0]));
+    const anios = new Set(
+      this.registrosCombustible.map((r) => r.fecha.split('-')[0])
+    );
     return Array.from(anios).sort();
   }
 
   get registrosFiltrados() {
-    return this.registrosCombustible.filter(r => {
+    return this.registrosCombustible.filter((r) => {
       const [anio, mes] = r.fecha.split('-');
       return (
         (!this.mesSeleccionado || mes === this.mesSeleccionado) &&
@@ -92,7 +97,7 @@ export class ListaCombustiblePage {
   obtenerRegistros() {
     this.firebase.getCollection('combustible').subscribe((data: any[]) => {
       console.log('Datos obtenidos:', data);
-      this.registrosCombustible = data.map(item => ({
+      this.registrosCombustible = data.map((item) => ({
         id: item.id,
         fecha: item.fecha,
         monto: item.monto,
