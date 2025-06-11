@@ -20,9 +20,8 @@ export class ListaVehiculosPage {
     this.obtenerVehiculos();
   }
   registroVehiculos : { patente:string , modelo:string, anio:number,tipoCombustible:string}[] = []
-  // Método simulado para obtener vehículos (datos falsos)
+
   obtenerVehiculos() {
-    
       this.firebase.getCollection('vehiculos').subscribe((data:any[]) => {
         this.registroVehiculos = data.map(vehiculo => ({
           patente: vehiculo.patente,

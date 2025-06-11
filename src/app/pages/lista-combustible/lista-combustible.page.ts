@@ -66,7 +66,7 @@ export class ListaCombustiblePage {
         fecha: item.fecha,
         monto: item.monto,
         patente: item.patente,
-        urlBoleta: item.urlBoleta
+        urlBoleta: item.archivo
       }));
       console.log('Registros de combustible obtenidos:', this.registrosCombustible);
     })
