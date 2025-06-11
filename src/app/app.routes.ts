@@ -110,7 +110,8 @@ export const routes: Routes = [
   {
     path: 'generar-informe',
     loadComponent: () => import('./pages/generar-informe/generar-informe.page').then( m => m.GenerarInformePage)
-  },  {
+  },
+  {
     path: 'editar-esquema-pago',
     loadComponent: () => import('./pages/editar-esquema-pago/editar-esquema-pago.page').then( m => m.EditarEsquemaPagoPage)
   },
@@ -124,7 +125,7 @@ export const routes: Routes = [
   },
   {
     path: 'registrar-ganancia',
-    loadComponent: () => import('./registrar-ganancia/registrar-ganancia.page').then( m => m.RegistrarGananciaPage)
+    loadComponent: () => import('./pages/registrar-ganancia/registrar-ganancia.page').then( m => m.RegistrarGananciaPage)
   },
 
 ];
