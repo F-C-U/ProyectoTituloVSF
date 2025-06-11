@@ -11,7 +11,7 @@ import {
 import { IonicModule } from '@ionic/angular';
 
 @Component({
-  selector: 'app-registro-esquema-pago',
+  selector: 'app-editar-esquema-pago',
   standalone: true,
   imports: [CommonModule, IonicModule, FormsModule, ReactiveFormsModule],
   templateUrl: './editar-esquema-pago.page.html',
@@ -74,9 +74,9 @@ export class EditarEsquemaPagoPage {
     }
   }
 
-  registrarEsquema() {
+  editarEsquema() {
     if (this.formularioEsquema.valid) {
-      console.log('Esquema de pago registrado:', this.formularioEsquema.value);
+      console.log('Esquema de pago editado:', this.formularioEsquema.value);
       // Aquí se puede conectar a una API o guardar localmente
     } else {
       this.formularioEsquema.markAllAsTouched();

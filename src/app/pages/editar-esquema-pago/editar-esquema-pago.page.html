@@ -1,11 +1,11 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>Editar Esquema de Pago</ion-title>
+    <ion-title>Editar esquema de pago</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
-  <form [formGroup]="formularioEsquema" (ngSubmit)="registrarEsquema()">
+  <form [formGroup]="formularioEsquema" (ngSubmit)="editarEsquema()">
     <ion-item>
       <ion-label position="floating">Nombre del esquema</ion-label>
       <ion-input formControlName="nombreEsquema" type="text" required></ion-input>
