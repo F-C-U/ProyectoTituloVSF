@@ -1,21 +1,61 @@
-import { Component } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { Component, Input } from '@angular/core';
+import { IonicModule, ModalController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FirebaseService } from 'src/app/services/firebase.service';
 
 @Component({
   standalone: true,
+  selector: 'app-ver-boleta-modal',
+  template: `
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Boleta</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="cerrar()">
+            <ion-icon name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="ion-padding">
+      <img *ngIf="esImagen(ruta)" [src]="ruta" alt="Boleta" style="max-width: 100%; height: auto;" />
+      <p *ngIf="!esImagen(ruta)">Formato no compatible para previsualización.</p>
+    </ion-content>
+  `,
+  imports: [IonicModule, CommonModule],
+})
+export class VerBoletaModalComponent {
+  @Input() ruta: string = '';
+
+  constructor(private modalCtrl: ModalController) {}
+
+  cerrar() {
+    this.modalCtrl.dismiss();
+  }
+
+  esImagen(ruta: string): boolean {
+    return ruta.startsWith('data:image') || /\.(png|jpe?g|heic)$/i.test(ruta);
+  }
+}
+
+@Component({
+  standalone: true,
   selector: 'app-lista-combustible',
   templateUrl: './lista-combustible.page.html',
   styleUrls: ['./lista-combustible.page.scss'],
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, VerBoletaModalComponent]
 })
 export class ListaCombustiblePage {
-  constructor(private firebase:FirebaseService){
+  constructor(
+    private firebase: FirebaseService,
+    private modalCtrl: ModalController
+  ) {
     this.obtenerRegistros();
   }
-  registrosCombustible: {id:string, fecha: string; monto: number; patente: string; urlBoleta: string; }[] = [];
+
+  registrosCombustible: { id: string, fecha: string; monto: number; patente: string; urlBoleta: string; }[] = [];
 
   mesSeleccionado: string = '';
   anioSeleccionado: string = '';
@@ -40,24 +80,15 @@ export class ListaCombustiblePage {
     });
   }
 
-  esImagen(ruta: string): boolean {
-    return /\.(png|jpe?g|heic)$/i.test(ruta);
-  }
-
-  verBoleta(ruta: string): void {
-    // Abre la boleta en una nueva pestaña
-    window.open(ruta, '_blank');
-  }
-
-
   editarCombustible(registro: { fecha: string; monto: number; patente: string; urlBoleta: string }) {
     console.log('Editar registro:', registro);
     // Aquí podrías abrir un modal de edición
   }
 
-  eliminarCombustible(fecha:any){
-    return this.firebase.deleteDocument('combustible/'+ fecha)
+  eliminarCombustible(fecha: any) {
+    return this.firebase.deleteDocument('combustible/' + fecha);
   }
+
   obtenerRegistros() {
     this.firebase.getCollection('combustible').subscribe((data: any[]) => {
       console.log('Datos obtenidos:', data);
@@ -69,6 +100,14 @@ export class ListaCombustiblePage {
         urlBoleta: item.archivo
       }));
       console.log('Registros de combustible obtenidos:', this.registrosCombustible);
-    })
+    });
+  }
+
+  async verBoleta(ruta: string): Promise<void> {
+    const modal = await this.modalCtrl.create({
+      component: VerBoletaModalComponent,
+      componentProps: { ruta }
+    });
+    await modal.present();
   }
 }

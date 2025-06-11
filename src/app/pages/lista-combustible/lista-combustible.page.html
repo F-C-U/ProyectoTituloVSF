@@ -43,7 +43,7 @@
     <td>{{ r.monto | currency:'CLP' }}</td>
     <td>{{ r.patente }}</td>
     <td>
-      <ng-container *ngIf="esImagen(r.urlBoleta); else pdfIcono">
+      <ng-container>
         <img
           [src]="r.urlBoleta"
           alt="Boleta"
@@ -65,9 +65,6 @@
       <ion-button size="small" color="danger" (click)="eliminarCombustible(r.id)">
         Eliminar
       </ion-button>
-    </td>
-    <td>
-      <img [src]="r.urlBoleta" alt="">
     </td>
   </tr>
 </tbody>
