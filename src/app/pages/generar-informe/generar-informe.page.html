@@ -5,13 +5,13 @@
 </ion-header>
 
 <ion-content class="content-background">
-  <!-- Formulario de consulta actualizado -->
+  <!-- Formulario de consulta simplificado -->
   <ion-card class="query-card">
     <ion-card-header class="card-header">
       <ion-card-title class="card-title">🔍 Consultar Datos</ion-card-title>
     </ion-card-header>
     <ion-card-content class="card-content">
-      <!-- Campo Patente (existente) -->
+      <!-- Campo Patente -->
       <ion-item class="input-item">
         <ion-input 
           class="custom-input"
@@ -21,11 +21,12 @@
           placeholder="Ej: AB123CD"
           maxlength="8"
           (ionChange)="formatearPatente()"
+          (keydown)="validarPatente($event)"
           required
         ></ion-input>
       </ion-item>
 
-      <!-- Campo Fecha (existente) -->
+      <!-- Campo Fecha -->
       <ion-item class="input-item">
         <ion-datetime
           class="custom-input"
@@ -35,60 +36,18 @@
           display-format="MMM YYYY"
           month-short-names="ene, feb, mar, abr, may, jun, jul, ago, sep, oct, nov, dic"
           placeholder="Seleccione mes"
+          [max]="fechaMaxima"
+          (ionChange)="validarFecha()"
           required
         ></ion-datetime>
       </ion-item>
 
-      <!-- ===== NUEVOS CAMPOS ===== -->
-      <!-- Combustible -->
-      <ion-item class="input-item">
-        <ion-input
-          class="custom-input"
-          type="number"
-          label="Combustible consumido (L)"
-          label-placement="stacked"
-          [(ngModel)]="combustibleConsumido"
-          placeholder="Ej: 120"
-          min="0"
-          required
-        ></ion-input>
-      </ion-item>
-
-      <!-- Ganancias -->
-      <ion-item class="input-item">
-        <ion-input
-          class="custom-input"
-          type="number"
-          label="Ganancias ($)"
-          label-placement="stacked"
-          [(ngModel)]="ganancias"
-          placeholder="Ej: 2500000"
-          min="0"
-          required
-        ></ion-input>
-      </ion-item>
-
-      <!-- Kilometraje -->
-      <ion-item class="input-item">
-        <ion-input
-          class="custom-input"
-          type="number"
-          label="Kilometraje (km)"
-          label-placement="stacked"
-          [(ngModel)]="kilometraje"
-          placeholder="Ej: 1500"
-          min="0"
-          required
-        ></ion-input>
-      </ion-item>
-      <!-- ===== FIN NUEVOS CAMPOS ===== -->
-
-      <!-- Botón Buscar (existente) -->
+      <!-- Botón Buscar - Simplificado -->
       <ion-button 
         expand="block" 
         class="query-button"
         (click)="consultarDatosVehiculo()"
-        [disabled]="!patente || !mesConsulta || !combustibleConsumido || !ganancias || !kilometraje"
+        [disabled]="!patente || !mesConsulta"
       >
         <ion-icon name="search" slot="start"></ion-icon>
         Buscar Datos
@@ -96,19 +55,22 @@
     </ion-card-content>
   </ion-card>
 
-  <!-- Sección Informe (existente) -->
+  <!-- Sección Informe -->
   <div *ngIf="datosConsultados" class="report-section">
     <ion-card class="report-card">
       <ion-card-content>
+        <!-- Estado previo a generar informe -->
         <div *ngIf="!informeGenerado" class="pre-report">
           <ion-icon name="document-text-outline" class="pre-icon"></ion-icon>
           <p>Datos listos para generar el informe</p>
         </div>
         
+        <!-- Informe generado dinámicamente -->
         <div *ngIf="informeGenerado" [innerHTML]="informeHTML" class="generated-report"></div>
       </ion-card-content>
     </ion-card>
 
+    <!-- Botón Generar Informe -->
     <ion-button 
       expand="block" 
       color="success" 
