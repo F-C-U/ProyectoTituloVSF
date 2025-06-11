@@ -1,0 +1,92 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Historial de Ganancias</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Sección de Filtros -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Filtrar por Fecha</ion-card-title>
+    </ion-card-header>
+    
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12" size-md="6">
+            <ion-item>
+              <ion-label position="stacked">Desde</ion-label>
+              <ion-input type="date" [(ngModel)]="filtro.desde"></ion-input>
+            </ion-item>
+          </ion-col>
+          
+          <ion-col size="12" size-md="6">
+            <ion-item>
+              <ion-label position="stacked">Hasta</ion-label>
+              <ion-input type="date" [(ngModel)]="filtro.hasta"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <ion-button expand="block" (click)="aplicarFiltros()">
+              <ion-icon name="search" slot="start"></ion-icon>
+              Aplicar Filtros
+            </ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button expand="block" fill="outline" (click)="limpiarFiltros()">
+              Limpiar Filtros
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Lista de Resultados -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Registros</ion-card-title>
+      <ion-card-subtitle>
+        Mostrando {{gananciasFiltradas.length}} registros
+      </ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Patente</th>
+              <th>Fecha</th>
+              <th>Ganancia</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let reg of gananciasFiltradas">
+              <td>{{reg.patente}}</td>
+              <td>{{reg.fecha | date:'dd/MM/yyyy'}}</td>
+              <td>${{reg.ganancia | number}}</td>
+              <td class="actions-cell">
+                <ion-button fill="clear" color="warning" (click)="editarRegistro(reg)">
+                  <ion-icon name="pencil" slot="icon-only"></ion-icon>
+                </ion-button>
+                <ion-button fill="clear" color="primary" (click)="verDetalle(reg)">
+                  <ion-icon name="eye" slot="icon-only"></ion-icon>
+                </ion-button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <ion-note *ngIf="gananciasFiltradas.length === 0" class="empty-message">
+          No se encontraron registros con los filtros aplicados
+        </ion-note>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
