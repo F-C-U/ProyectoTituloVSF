@@ -1,0 +1,257 @@
+/* lista-ganancias-duenio.page.scss */
+/* Variables para modo claro */
+:host {
+    --color-fondo: #ffffff;
+    --color-texto: #333333;
+    --color-borde: #e0e0e0;
+    --color-primario: #1a73e8;
+    --color-fondo-header: #f8f9fa;
+    --color-fondo-fila: #ffffff;
+    --color-fondo-fila-hover: #f1f3f4;
+    --color-error: #d32f2f;
+    --color-encabezado: #1a73e8;
+}
+
+/* Variables para modo oscuro */
+@media (prefers-color-scheme: dark) {
+    :host {
+        --color-fondo: #121212;
+        --color-texto: #e0e0e0;
+        --color-borde: #444444;
+        --color-primario: #64b5f6;
+        --color-fondo-header: #1e1e1e;
+        --color-fondo-fila: #1e1e1e;
+        --color-fondo-fila-hover: #2d2d2d;
+        --color-encabezado: #64b5f6;
+    }
+}
+
+.contenedor-pagina {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+ion-header {
+    ion-toolbar {
+        --background: var(--color-encabezado);
+        --color: white;
+    }
+}
+
+ion-item {
+    --background: transparent;
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    margin-bottom: 16px;
+}
+
+.tabla-contenedor {
+    overflow-x: auto;
+    border-radius: 8px;
+    border: 1px solid var(--color-borde);
+    background-color: var(--color-fondo);
+}
+
+.tabla-ganancias {
+    width: 100%;
+
+    .header-tabla {
+        background-color: var(--color-fondo-header);
+        font-weight: bold;
+        color: var(--color-texto);
+        border-bottom: 1px solid var(--color-borde);
+        padding: 12px 8px;
+    }
+
+    ion-row {
+        border-bottom: 1px solid var(--color-borde);
+        padding: 12px 8px;
+
+        ion-col {
+            display: flex;
+            align-items: center;
+            color: var(--color-texto);
+        }
+    }
+
+    .fila-tabla {
+        background-color: var(--color-fondo-fila);
+
+        &:hover {
+            background-color: var(--color-fondo-fila-hover);
+        }
+    }
+
+    .sin-resultados {
+        text-align: center;
+        padding: 30px;
+        font-style: italic;
+        color: var(--color-texto);
+    }
+}
+
+.estado {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+    color: var(--color-texto);
+
+    ion-spinner {
+        margin-bottom: 12px;
+        color: var(--color-primario);
+    }
+
+    &.error {
+        background-color: rgba(211, 47, 47, 0.1);
+        color: var(--color-error);
+        border: 1px solid var(--color-error);
+
+        ion-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+            color: var(--color-error);
+        }
+    }
+}
+
+/* Optimización para móviles */
+@media (max-width: 768px) {
+    .tabla-ganancias {
+        min-width: 600px;
+    }
+}
+
+/* lista-ganancias-duenio.page.scss */
+/* Variables para modo claro */
+:host {
+    --color-fondo: #ffffff;
+    --color-texto: #333333;
+    --color-borde: #e0e0e0;
+    --color-primario: #1a73e8;
+    --color-fondo-header: #f8f9fa;
+    --color-fondo-fila: #ffffff;
+    --color-fondo-fila-hover: #f1f3f4;
+    --color-error: #d32f2f;
+    --color-encabezado: #1a73e8;
+}
+
+/* Variables para modo oscuro */
+@media (prefers-color-scheme: dark) {
+    :host {
+        --color-fondo: #121212;
+        --color-texto: #e0e0e0;
+        --color-borde: #444444;
+        --color-primario: #007bff;;
+        --color-fondo-header: #007bff;;
+        --color-fondo-fila: #1e1e1e;
+        --color-fondo-fila-hover: #2d2d2d;
+        --color-encabezado: #007bff;;
+    }
+}
+
+.contenedor-pagina {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+ion-header {
+    ion-toolbar {
+        --background: var(--color-encabezado);
+        --color: white;
+    }
+}
+
+ion-item {
+    --background: transparent;
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    margin-bottom: 16px;
+}
+
+.tabla-contenedor {
+    overflow-x: auto;
+    border-radius: 8px;
+    border: 1px solid var(--color-borde);
+    background-color: var(--color-fondo);
+}
+
+.tabla-ganancias {
+    width: 100%;
+
+    .header-tabla {
+        background-color: var(--color-fondo-header);
+        font-weight: bold;
+        color: var(--color-texto);
+        border-bottom: 1px solid var(--color-borde);
+        padding: 12px 8px;
+    }
+
+    ion-row {
+        border-bottom: 1px solid var(--color-borde);
+        padding: 12px 8px;
+
+        ion-col {
+            display: flex;
+            align-items: center;
+            color: var(--color-texto);
+        }
+    }
+
+    .fila-tabla {
+        background-color: var(--color-fondo-fila);
+
+        &:hover {
+            background-color: var(--color-fondo-fila-hover);
+        }
+    }
+
+    .sin-resultados {
+        text-align: center;
+        padding: 30px;
+        font-style: italic;
+        color: var(--color-texto);
+    }
+}
+
+.estado {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+    color: var(--color-texto);
+
+    ion-spinner {
+        margin-bottom: 12px;
+        color: var(--color-primario);
+    }
+
+    &.error {
+        background-color: rgba(211, 47, 47, 0.1);
+        color: var(--color-error);
+        border: 1px solid var(--color-error);
+
+        ion-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+            color: var(--color-error);
+        }
+    }
+}
+
+/* Optimización para móviles */
+@media (max-width: 768px) {
+    .tabla-ganancias {
+        min-width: 600px;
+    }
+}

@@ -122,5 +122,9 @@ export const routes: Routes = [
     path: 'historial-mantenimiento',
     loadComponent: () => import('./pages/historial-mantenimiento/historial-mantenimiento.page').then( m => m.HistorialMantenimientoPage)
   },
+  {
+    path: 'lista-ganancias-duenio',
+    loadComponent: () => import('./pages/lista-ganancias-duenio/lista-ganancias-duenio.page').then( m => m.ListaGananciasDuenioPage)
+  },
 
 ];
