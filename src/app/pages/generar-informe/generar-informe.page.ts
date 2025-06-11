@@ -22,77 +22,97 @@ import { CommonModule } from '@angular/common';
 export class GenerarInformePage {
   constructor(private alertController: AlertController) {}
 
-  // ===== VARIABLES DEL FORMULARIO =====
+  // Variables del formulario
   patente: string = '';
   mesConsulta: string = '';
-  combustibleConsumido: number = 0;  // Nuevo campo (litros)
-  ganancias: number = 0;             // Nuevo campo (pesos)
-  kilometraje: number = 0;           // Nuevo campo (kilómetros)
   fechaMaxima: string = new Date().toISOString();
 
-  // ===== FLAGS DE ESTADO =====
+  // Flags de estado
   datosConsultados: boolean = false;
   datosDisponibles: boolean = false;
   informeGenerado: boolean = false;
   informeHTML: string = '';
 
-  // ===== DATOS DEL VEHÍCULO =====
-  vehiculo = {
-    marca: '',
-    modelo: '',
-    kilometrajeTotal: 0,
-    gastoCombustible: 0,
-    rendimiento: 0,
-    gananciasTotales: 0
-  };
-
-  // ===== VALIDACIONES =====
-  formatearPatente() {
-    if (this.patente.length >= 4) {
-      this.patente = this.patente.toUpperCase().replace(/([A-Za-z]{2})(\d{3})([A-Za-z]{2})/, '$1-$2-$3');
-    }
-  }
-
+  // === VALIDACIÓN PATENTE CHILENA NUEVA (4 letras + 2 números) ===
   validarPatente(event: KeyboardEvent) {
-    const teclasPermitidas = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End'];
-    if (!/[A-Za-z0-9-]/.test(event.key) && !teclasPermitidas.includes(event.key)) {
+    const inputChar = event.key;
+    const currentValue = this.patente;
+    
+    // Permitir teclas de control
+    if (['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight', 'Enter'].includes(inputChar)) {
+      return;
+    }
+
+    // Convertir a mayúsculas
+    if (/[a-z]/.test(inputChar)) {
+      event.preventDefault();
+      this.patente = currentValue + inputChar.toUpperCase();
+      return;
+    }
+
+    // Validar según posición
+    const position = currentValue.length;
+    
+    // Formato: BBBB99 (4 letras + 2 números)
+    if (position < 4) {
+      // Primeros 4 caracteres deben ser letras
+      if (!/[A-Z]/.test(inputChar)) {
+        event.preventDefault();
+      }
+    } 
+    else if (position >= 4 && position < 6) {
+      // Últimos 2 caracteres deben ser números
+      if (!/[0-9]/.test(inputChar)) {
+        event.preventDefault();
+      }
+    }
+    else {
+      // No permitir más de 6 caracteres
       event.preventDefault();
     }
   }
 
-  validarFecha() {
-    if (!this.mesConsulta) return;
-    
-    const fechaSeleccionada = new Date(this.mesConsulta);
-    const hoy = new Date();
-    
-    if (fechaSeleccionada > hoy) {
-      this.mostrarAlertaFechaInvalida();
-      this.mesConsulta = '';
+  // Autoformateo al perder foco (ej: BBRR85 → BBRR-85)
+  formatearPatente() {
+    if (this.patente.length === 6) {
+      this.patente = this.patente.slice(0, 4) + '-' + this.patente.slice(4);
     }
   }
 
-  private async mostrarAlertaFechaInvalida() {
-    const alert = await this.alertController.create({
-      header: 'Fecha no válida',
-      message: '⚠️ No puedes seleccionar una fecha futura para el informe',
-      buttons: ['Entendido']
-    });
-    await alert.present();
+  // Validación completa de patente chilena nueva
+  private validarFormatoPatente(patente: string): boolean {
+    // Patrón exacto: 4 letras + 2 números (con o sin guión)
+    const patronNuevo = /^[A-Z]{4}-?[0-9]{2}$/;
+    return patronNuevo.test(patente);
   }
 
-  // ===== LÓGICA PRINCIPAL =====
+  // === VALIDACIÓN FECHA ===
+  validarFecha() {
+    if (this.mesConsulta) {
+      const fechaSeleccionada = new Date(this.mesConsulta);
+      const hoy = new Date();
+      
+      if (fechaSeleccionada > hoy) {
+        this.mostrarAlertaFechaInvalida();
+        this.mesConsulta = '';
+      }
+    }
+  }
+
+  // === LÓGICA PRINCIPAL ===
   consultarDatosVehiculo() {
     // Validación de campos obligatorios
-    if (!this.patente || !this.mesConsulta || 
-        !this.combustibleConsumido || !this.ganancias || !this.kilometraje) {
-      this.mostrarAlerta('Datos incompletos', 'Debe completar todos los campos');
+    if (!this.patente || !this.mesConsulta) {
+      this.mostrarAlerta('Datos incompletos', 'Debe ingresar patente y mes de consulta');
       return;
     }
 
-    // Validación de valores numéricos positivos
-    if (this.combustibleConsumido <= 0 || this.ganancias <= 0 || this.kilometraje <= 0) {
-      this.mostrarAlerta('Valores inválidos', 'Los valores numéricos deben ser mayores a cero');
+    // Validación específica de patente
+    if (!this.validarFormatoPatente(this.patente)) {
+      this.mostrarAlerta(
+        'Patente inválida', 
+        'El formato debe ser 4 letras + 2 números (ej: BBRR85 o ABCD-12)'
+      );
       return;
     }
 
@@ -102,16 +122,7 @@ export class GenerarInformePage {
       return;
     }
 
-    // Simulación de datos (actualizada con nuevos campos)
-    this.vehiculo = {
-      marca: 'Toyota',
-      modelo: 'Hilux',
-      kilometrajeTotal: this.kilometraje,
-      gastoCombustible: this.combustibleConsumido * 1200, // Simula precio por litro
-      rendimiento: parseFloat((this.kilometraje / this.combustibleConsumido).toFixed(2)),
-      gananciasTotales: this.ganancias
-    };
-
+    // Consulta exitosa
     this.datosConsultados = true;
     this.datosDisponibles = true;
     this.informeGenerado = false;
@@ -120,50 +131,51 @@ export class GenerarInformePage {
   generarInforme() {
     if (!this.datosDisponibles) return;
 
-    // Cálculo de métricas adicionales
-    const costoPorKm = this.vehiculo.gastoCombustible / this.vehiculo.kilometrajeTotal;
-    const gananciaNeta = this.vehiculo.gananciasTotales - this.vehiculo.gastoCombustible;
+    const datos = this.generarDatosAleatorios();
+    const rendimiento = (datos.kilometraje / datos.combustible).toFixed(2);
+    const periodo = new Date(this.mesConsulta).toLocaleDateString('es-CL', { 
+      month: 'long', 
+      year: 'numeric' 
+    }).toUpperCase();
 
     this.informeHTML = `
-      <div class="report-section">
-        <h3>📊 Informe de Rendimiento Mensual</h3>
+      <div class="reporte-vehiculo">
+        <h2>📋 INFORME DE OPERACIÓN</h2>
         
-        <div class="vehicle-info">
-          <p><strong>🚗 Vehículo:</strong> ${this.vehiculo.marca} ${this.vehiculo.modelo}</p>
-          <p><strong>🔢 Patente:</strong> ${this.patente}</p>
-          <p><strong>📅 Período:</strong> ${new Date(this.mesConsulta).toLocaleDateString('es-CL', { month: 'long', year: 'numeric' })}</p>
+        <div class="encabezado">
+          <p><strong>Patente:</strong> ${this.patente}</p>
+          <p><strong>Período:</strong> ${periodo}</p>
         </div>
         
-        <div class="data-grid">
-          <div class="data-item highlight">
-            <span class="data-label">⛽ Combustible consumido:</span>
-            <span class="data-value">${this.combustibleConsumido} L</span>
-          </div>
-          
-          <div class="data-item highlight">
-            <span class="data-label">💰 Ganancias:</span>
-            <span class="data-value">$${this.ganancias.toLocaleString('es-CL')}</span>
-          </div>
-          
-          <div class="data-item highlight">
-            <span class="data-label">🛣️ Kilometraje:</span>
-            <span class="data-value">${this.kilometraje.toLocaleString('es-CL')} km</span>
-          </div>
-          
-          <div class="data-item">
-            <span class="data-label">⚡ Rendimiento:</span>
-            <span class="data-value">${this.vehiculo.rendimiento} km/L</span>
-          </div>
-          
-          <div class="data-item">
-            <span class="data-label">💵 Costo por km:</span>
-            <span class="data-value">$${costoPorKm.toFixed(2)}</span>
-          </div>
-          
-          <div class="data-item ${gananciaNeta >= 0 ? 'positive' : 'negative'}">
-            <span class="data-label">🏆 Ganancia neta:</span>
-            <span class="data-value">$${gananciaNeta.toLocaleString('es-CL')}</span>
-          </div>
+        <table class="tabla-datos">
+          <thead>
+            <tr>
+              <th>Indicador</th>
+              <th>Valor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>🛣️ Kilometraje recorrido</td>
+              <td>${datos.kilometraje.toLocaleString('es-CL')} km</td>
+            </tr>
+            <tr>
+              <td>⛽ Combustible consumido</td>
+              <td>${datos.combustible} litros</td>
+            </tr>
+            <tr>
+              <td>⚡ Rendimiento</td>
+              <td>${rendimiento} km/l</td>
+            </tr>
+            <tr>
+              <td>💰 Ganancias generadas</td>
+              <td>$${datos.ganancias.toLocaleString('es-CL')}</td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <div class="resumen">
+          <p>📅 Fecha de generación: ${new Date().toLocaleDateString('es-CL')}</p>
         </div>
       </div>
     `;
@@ -171,7 +183,16 @@ export class GenerarInformePage {
     this.informeGenerado = true;
   }
 
-  // ===== FUNCIONES AUXILIARES =====
+  // === FUNCIONES AUXILIARES ===
+  private async mostrarAlertaFechaInvalida() {
+    const alert = await this.alertController.create({
+      header: 'Fecha no válida',
+      message: 'No puedes seleccionar una fecha futura para el informe',
+      buttons: ['Entendido']
+    });
+    await alert.present();
+  }
+
   private async mostrarAlerta(titulo: string, mensaje: string) {
     const alert = await this.alertController.create({
       header: titulo,
@@ -179,5 +200,14 @@ export class GenerarInformePage {
       buttons: ['OK']
     });
     await alert.present();
+  }
+
+  // Datos simulados
+  private generarDatosAleatorios() {
+    return {
+      kilometraje: Math.floor(Math.random() * 5000) + 1000,
+      combustible: Math.floor(Math.random() * 400) + 100,
+      ganancias: Math.floor(Math.random() * 10000000) + 1000000
+    };
   }
 }

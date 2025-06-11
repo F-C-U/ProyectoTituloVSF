@@ -32,3 +32,57 @@
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+.reporte-vehiculo {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  
+  h2 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+}
+
+.encabezado {
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  
+  p {
+    margin: 5px 0;
+  }
+}
+
+.tabla-datos {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 15px 0;
+  
+  th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  th {
+    background-color: #3498db;
+    color: white;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  tr:hover {
+    background-color: #e6f7ff;
+  }
+}
+
+.resumen {
+  margin-top: 20px;
+  font-size: 0.9em;
+  color: #7f8c8d;
+  text-align: right;
+}
