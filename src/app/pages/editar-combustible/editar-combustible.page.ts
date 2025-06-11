@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { FirebaseService } from 'src/app/services/firebase.service';
+import { UtilsService } from 'src/app/services/utils.service';
 
 @Component({
   selector: 'app-editar-combustible',
@@ -19,18 +20,30 @@ import { FirebaseService } from 'src/app/services/firebase.service';
   styleUrls: ['./editar-combustible.page.scss'],
 })
 export class EditarCombustiblePage {
-  formularioCombustible: FormGroup;
+  formularioCombustible!: FormGroup;
   vehiculoAsignado: string = 'Toyota Corolla 2020 - ABCD12';
   archivoAdjunto: File | null = null;
+  combustibleId: any;
   montoFormateado: String = ''; // Monto mostrado con puntos
+  combustible:any;
+  constructor(
+    private fb: FormBuilder,
+    private firebase: FirebaseService,
+    private utils: UtilsService
+  ) {
+  }
 
-  constructor(private fb: FormBuilder, private firebase: FirebaseService) {
-    const hoy = new Date();
-    const fechaFormateada = hoy.toLocaleDateString('es-CL'); // DD-MM-YYYY
+  ngOnInit() {
+    this.cargarDatosCombustible();
+  }
 
-    // Inicialización del formulario con validaciones básicas
-    this.formularioCombustible = this.fb.group({
-      fecha: [{ value: fechaFormateada, disabled: false }, Validators.required],
+  async cargarDatosCombustible() {
+    let xtras = this.utils.routerLinkExtras();
+    this.combustibleId = xtras?.['id'];
+    console.log('ID del combustible:', this.combustibleId.id);
+    this.combustible = await this.firebase.getDocument('combustible/' + this.combustibleId.id);
+     this.formularioCombustible = this.fb.group({
+      fecha: [this.combustible.fecha, Validators.required],
       monto: ['', [Validators.required, Validators.min(0)]],
       archivo: [null, Validators.required],
     });
@@ -86,7 +99,7 @@ export class EditarCombustiblePage {
       console.log('Datos registrados:', this.formularioCombustible.value);
       // Aquí se puede conectar a una API o guardar localmente
       try {
-        await this.firebase.setDocument(
+        await this.firebase.updateDocument(
           'combustible/',
           this.formularioCombustible.value
         );
