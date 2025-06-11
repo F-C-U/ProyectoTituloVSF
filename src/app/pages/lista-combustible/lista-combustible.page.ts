@@ -15,7 +15,6 @@ export class ListaCombustiblePage {
   constructor(private firebase:FirebaseService){
     this.obtenerRegistros();
   }
-  // Datos falsos con monto y patente
   registrosCombustible: {id:string, fecha: string; monto: number; patente: string; urlBoleta: string; }[] = [];
 
   mesSeleccionado: string = '';

@@ -9,14 +9,14 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-list *ngIf="!cargando() && vehiculos().length > 0; else mensajeCarga">
-    <ion-item *ngFor="let vehiculo of vehiculos()">
+  <ion-list>
+    <ion-item *ngFor="let vehiculo of registroVehiculos">
       <ion-label>
         <h2>Patente: {{ vehiculo.patente }}</h2>
         <p>Modelo: {{ vehiculo.modelo }}</p>
         <p>Año: {{ vehiculo.anio }}</p>
       </ion-label>
-      <ion-button fill="clear" slot="end" (click)="editarVehiculo(vehiculo.id)">Editar</ion-button>
+      <ion-button fill="clear" slot="end" (click)="editarVehiculo(vehiculo.patente)">Editar</ion-button>
     </ion-item>
   </ion-list>
 
