@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { FirebaseService } from 'src/app/services/firebase.service';
+import { UtilsService } from 'src/app/services/utils.service';
 
 @Component({
   selector: 'app-registro-combustible',
@@ -24,7 +25,7 @@ export class RegistroCombustiblePage {
   archivoAdjunto: File | null = null;
   montoFormateado: String = ''; // Monto mostrado con puntos
 
-  constructor(private fb: FormBuilder, private firebase: FirebaseService) {
+  constructor(private fb: FormBuilder, private firebase: FirebaseService,private utils:UtilsService) {
     const hoy = new Date();
     const fechaFormateada = hoy.toLocaleDateString('es-CL'); // DD-MM-YYYY
 
@@ -37,7 +38,7 @@ export class RegistroCombustiblePage {
   }
 
   // Manejar la carga de archivos
-  manejarArchivo(event: Event) {
+  async manejarArchivo(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const archivo = input.files[0];
@@ -50,16 +51,30 @@ export class RegistroCombustiblePage {
       ];
 
       if (tiposPermitidos.includes(archivo.type)) {
-        this.archivoAdjunto = archivo;
-        this.formularioCombustible.patchValue({ archivo: this.archivoAdjunto });
-        this.archivo?.setErrors(null); // Limpia errores si los hubo
+        try {
+          // Optimizamos solo imágenes (no PDFs)
+          this.archivoAdjunto = archivo.type.startsWith('image/') 
+            ? await this.utils.optimizeImage(archivo)
+            : archivo;
+            
+          this.formularioCombustible.patchValue({ archivo: this.archivoAdjunto });
+          this.archivo?.setErrors(null);
+        } catch (error) {
+          console.error('Error al optimizar imagen:', error);
+          this.handleFileError();
+        }
       } else {
-        this.archivoAdjunto = null;
-        this.formularioCombustible.patchValue({ archivo: null });
-        this.archivo?.setErrors({ tipoInvalido: true });
+        this.handleFileError();
       }
     }
   }
+
+  private handleFileError() {
+    this.archivoAdjunto = null;
+    this.formularioCombustible.patchValue({ archivo: null });
+    this.archivo?.setErrors({ tipoInvalido: true });
+  }
+
 
   agregarPuntos(valor: string): string {
     return valor.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
@@ -81,16 +96,31 @@ export class RegistroCombustiblePage {
   }
 
   // Acción al enviar el formulario
-  async registrarCombustible() {
-    if (this.formularioCombustible.valid) {
-      console.log('Datos registrados:', this.formularioCombustible.value);
-      // Aquí se puede conectar a una API o guardar localmente
+   async registrarCombustible() {
+    if (this.formularioCombustible.valid && this.archivoAdjunto) {
       try {
+        // Convertir a Base64 si es imagen
+        const archivoParaGuardar = this.archivoAdjunto.type.startsWith('image/')
+          ? await this.utils.imageToBase64(this.archivoAdjunto)
+          : this.archivoAdjunto;
+
+        const datosCombustible = {
+          ...this.formularioCombustible.value,
+          vehiculo: this.vehiculoAsignado,
+          archivo: archivoParaGuardar,
+          tipoArchivo: this.archivoAdjunto.type,
+          nombreArchivo: this.archivoAdjunto.name
+        };
+
         await this.firebase.setDocument(
-          'combustible/'+this.formularioCombustible.value.fecha.replace(/-/g, ''),
-          this.formularioCombustible.value
+          `combustible/${this.formularioCombustible.value.fecha.replace(/-/g, '')}`,
+          datosCombustible
         );
-      } catch (error) {}
+
+        console.log('Registro completado con archivo optimizado');
+      } catch (error) {
+        console.error('Error al registrar:', error);
+      }
     } else {
       this.formularioCombustible.markAllAsTouched();
     }
