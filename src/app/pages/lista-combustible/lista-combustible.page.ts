@@ -3,6 +3,8 @@ import { IonicModule, ModalController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FirebaseService } from 'src/app/services/firebase.service';
+import { UtilsService } from 'src/app/services/utils.service';
+import { NavigationExtras } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -50,7 +52,8 @@ export class VerBoletaModalComponent {
 export class ListaCombustiblePage {
   constructor(
     private firebase: FirebaseService,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private utils:UtilsService
   ) {
     this.obtenerRegistros();
   }
@@ -81,8 +84,12 @@ export class ListaCombustiblePage {
   }
 
   editarCombustible(registro: { fecha: string; monto: number; patente: string; urlBoleta: string }) {
-    console.log('Editar registro:', registro);
-    // Aquí podrías abrir un modal de edición
+    const extras: NavigationExtras = {
+      state: {
+        registroCombustible: registro
+      }
+    };
+    this.utils.routerLinkWithExtras('editar-combustible', extras);
   }
 
   eliminarCombustible(fecha: any) {
