@@ -10,23 +10,14 @@
     </ion-card-header>
   </ion-card>
 
-  <!-- Tarjeta de formulario -->
-  <ion-card class="form-card">
-    <ion-card-header>
-      <ion-card-title>Registrar kilometraje</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <form [formGroup]="formularioKilometraje" (ngSubmit)="registrarKilometraje()">
-
-        <!-- Fecha automática -->
-        <ion-item>
-          <ion-label position="stacked">Fecha</ion-label>
-          <ion-input
-            [value]="fechaActual | date: 'mediumDate'"
-            readonly
-            aria-label="Fecha de registro">
-          </ion-input>
-        </ion-item>
+  <form [formGroup]="formularioKilometraje" (ngSubmit)="registrarKilometraje()">
+    <ion-item>
+      <ion-label position="floating"></ion-label>
+      <ion-datetime presentation="date" formControlName="fecha"></ion-datetime>
+    </ion-item>
+    <ion-text color="danger" *ngIf="fecha?.invalid && fecha?.touched">
+      <p>La fecha es obligatoria.</p>
+    </ion-text>
 
         <!-- Campo de kilómetros -->
         <ion-item>
