@@ -17,6 +17,7 @@
         <p>Año: {{ vehiculo.anio }}</p>
       </ion-label>
       <ion-button fill="clear" slot="end" (click)="editarVehiculo(vehiculo.patente)">Editar</ion-button>
+      <ion-button fill="clear" slot="end" (click)="eliminarVehiculo(vehiculo.patente)">Eliminar</ion-button>
     </ion-item>
   </ion-list>
 
