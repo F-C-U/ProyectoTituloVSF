@@ -18,17 +18,21 @@ export class ListaKilometrajePage {
   constructor(private utils:UtilsService,private firebase: FirebaseService){
 
   }
+  ngOnInit(){
+    this.obtenerKilometrajes();
+  }
   // Lista de registros de kilometraje
   kilometrajes: {id:string, fecha: string; kilometraje: number; patenteVehiculo: String }[] = [];
   async obtenerKilometrajes() {
-    this.firebase.getCollection('kilometrajes').subscribe((data: any[]) => {
+   this.firebase.getCollection('kilometraje').subscribe((data: any[]) => {
       this.kilometrajes = data.map((kilometraje) => ({
         id: kilometraje.id,
         fecha: kilometraje.fecha,
-        kilometraje: kilometraje.kilometraje,
+        kilometraje: kilometraje.kilometros,
         patenteVehiculo: kilometraje.patenteVehiculo
       }));
     })
+    console.log(this.kilometrajes);
   }
   // Valores seleccionados en el filtro
   mesSeleccionado: string = '';
