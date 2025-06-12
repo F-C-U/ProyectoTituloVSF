@@ -20,7 +20,6 @@ import {
   ]
 })
 export class AppComponent {
-  // Estado de la UI
   showBackButton: boolean = false;
   currentPageTitle: string = 'Menú Flota';
   excludedPages: string[] = ['/login', '/crear-usuario'];
@@ -35,12 +34,14 @@ export class AppComponent {
     this.setupBackButton();
   }
 
-  // ====================== MANEJO DE RUTAS ======================
   private setupRouterEvents(): void {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationStart) {
         const url = event.url;
-        this.showBackButton = !this.isExcludedPage(url) && !url.includes('/home');
+
+        // Mostrar botón atrás en todas menos en páginas excluidas y home
+        this.showBackButton = !this.isExcludedPage(url) && url !== '/home';
+
         this.updatePageTitle(url);
       }
     });
@@ -65,35 +66,34 @@ export class AppComponent {
     this.currentPageTitle = titleMap[url.split('?')[0]] || 'Menú Flota';
   }
 
-  // ====================== BOTÓN ATRÁS ======================
-  private async setupBackButton(): Promise<void> {
+  private setupBackButton(): void {
     this.platform.backButton.subscribeWithPriority(10, async () => {
       try {
-        const isMenuOpen = await this.menuCtrl.isOpen('start');
-        
+        const isMenuOpen = await this.menuCtrl.isOpen('main-menu');
         if (isMenuOpen) {
-          await this.menuCtrl.close('start');
+          await this.menuCtrl.close('main-menu');
           return;
         }
 
-        if (!this.isExcludedPage(this.router.url) && !this.router.url.includes('/home')) {
+        if (!this.isExcludedPage(this.router.url) && this.router.url !== '/home') {
           this.navCtrl.navigateBack('/home');
+        } else {
+          // Si estamos en home o en página excluida, puedes añadir comportamiento aquí, o salir de la app
         }
       } catch (error) {
         console.error('Error al manejar el botón atrás:', error);
-        if (!this.router.url.includes('/home')) {
+        if (this.router.url !== '/home') {
           this.navCtrl.navigateBack('/home');
         }
       }
     });
   }
 
-  // ====================== CONTROL DEL MENÚ ======================
   async closeMenu(): Promise<void> {
     try {
-      const isOpen = await this.menuCtrl.isOpen('start');
+      const isOpen = await this.menuCtrl.isOpen('main-menu');
       if (isOpen) {
-        await this.menuCtrl.close('start');
+        await this.menuCtrl.close('main-menu');
       }
     } catch (error) {
       console.error('Error al cerrar el menú:', error);
@@ -101,33 +101,16 @@ export class AppComponent {
   }
 
   async openMenu(): Promise<void> {
+    console.log('openMenu() llamado');  // <--- Este log
     try {
-      await this.menuCtrl.open('start');
+      await this.menuCtrl.open('main-menu');
+      console.log('Menú abierto');
     } catch (error) {
       console.error('Error al abrir el menú:', error);
     }
   }
 
-  async toggleMenu(): Promise<void> {
-    const isOpen = await this.menuCtrl.isOpen('start');
-    isOpen ? await this.closeMenu() : await this.openMenu();
-  }
-
-  // ====================== CONDICIONALES DE UI ======================
-  shouldShowMenu(): boolean {
-    const allowedRoutes = [
-      '/home',
-      '/lista-vehiculos',
-      '/registro-vehiculo',
-      '/informes',
-      '/mantenimiento',
-      '/lista-combustible',
-      '/crud-esquema-pago'
-    ];
-    return allowedRoutes.includes(this.router.url.split('?')[0]) && !this.showBackButton;
-  }
-
   isExcludedRoute(): boolean {
-    return this.excludedPages.some(page => this.router.url.startsWith(page));
+    return this.isExcludedPage(this.router.url);
   }
 }

@@ -1,19 +1,23 @@
 <ion-app>
   <!-- Header condicional (oculto en login/registro) -->
   <ion-header *ngIf="!isExcludedRoute()">
-    <ion-toolbar>
-      <!-- Botón Atrás (solo en rutas secundarias) -->
-      <ion-buttons slot="start" *ngIf="showBackButton">
-        <ion-back-button defaultHref="/home"></ion-back-button>
-      </ion-buttons>
+    <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+        <!-- Botón Atrás (solo si NO estamos en /home) -->
+        <ion-back-button *ngIf="showBackButton" defaultHref="/home"></ion-back-button>
 
-      <!-- Título dinámico -->
-      <ion-title>{{ currentPageTitle }}</ion-title>
+        <!-- Botón Navegar siempre visible -->
+        <ion-button (click)="openMenu()" class="btn-navegar">
+          Menú
+        </ion-button>
+      </ion-buttons>
+      
+      <ion-title>Menú Flota</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <!-- Menú Lateral CORREGIDO (se agregó menuId="main-menu") -->
-  <ion-menu contentId="main-content" menuId="main-menu" side="start" type="overlay" [disabled]="isExcludedRoute()">
+  <!-- Menú Lateral -->
+  <ion-menu contentId="main-content" menuId="main-menu" side="start" type="overlay">
     <ion-header>
       <ion-toolbar color="primary">
         <ion-title>Menú Flota</ion-title>
@@ -21,7 +25,6 @@
     </ion-header>
     <ion-content>
       <ion-list lines="none">
-        <!-- Inicio -->
         <ion-menu-toggle>
           <ion-item button routerLink="/home" routerDirection="root" (click)="closeMenu()">
             <ion-icon name="home" slot="start"></ion-icon>
@@ -29,7 +32,6 @@
           </ion-item>
         </ion-menu-toggle>
 
-        <!-- ===== VEHÍCULOS ===== -->
         <ion-item-divider class="menu-divider">
           <ion-label>Vehículos</ion-label>
         </ion-item-divider>
@@ -48,7 +50,6 @@
           </ion-item>
         </ion-menu-toggle>
 
-        <!-- ===== MANTENIMIENTO ===== -->
         <ion-item-divider class="menu-divider">
           <ion-label>Mantenimiento</ion-label>
         </ion-item-divider>
@@ -71,7 +72,6 @@
           </ion-item>
         </ion-menu-toggle>
 
-        <!-- ===== COMBUSTIBLE ===== -->
         <ion-item-divider class="menu-divider">
           <ion-label>Combustible</ion-label>
         </ion-item-divider>
@@ -90,7 +90,6 @@
           </ion-item>
         </ion-menu-toggle>
 
-        <!-- ===== PAGOS ===== -->
         <ion-item-divider class="menu-divider">
           <ion-label>Esquemas de Pago</ion-label>
         </ion-item-divider>
@@ -109,7 +108,6 @@
           </ion-item>
         </ion-menu-toggle>
 
-        <!-- ===== INFORMES ===== -->
         <ion-item-divider class="menu-divider">
           <ion-label>Reportes</ion-label>
         </ion-item-divider>
@@ -124,7 +122,6 @@
           </ion-item>
         </ion-menu-toggle>
 
-        <!-- ===== OTROS ===== -->
         <ion-item-divider class="menu-divider">
           <ion-label>Otros</ion-label>
         </ion-item-divider>

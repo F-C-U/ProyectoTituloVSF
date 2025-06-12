@@ -14,7 +14,7 @@
 
   <form [formGroup]="formularioKilometraje" (ngSubmit)="registrarKilometraje()">
     <ion-item>
-      <ion-label position="floating">Fecha</ion-label>
+      <ion-label position="floating"></ion-label>
       <ion-datetime presentation="date" formControlName="fecha"></ion-datetime>
     </ion-item>
     <ion-text color="danger" *ngIf="fecha?.invalid && fecha?.touched">

@@ -23,3 +23,16 @@ ion-menu {
     }
   }
 }
+
+.btn-navegar {
+  --background: #00aeff; /* celeste */
+  --color: white;
+  --border-radius: 6px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  height: 32px;
+  min-width: 80px;
+  margin-left: 8px;
+}
