@@ -26,11 +26,7 @@ export class EditarCombustiblePage {
   combustibleId: any;
   montoFormateado: String = ''; // Monto mostrado con puntos
   combustible:any;
-  constructor(
-    private fb: FormBuilder,
-    private firebase: FirebaseService,
-    private utils: UtilsService
-  ) {
+  constructor(private fb: FormBuilder,private firebase: FirebaseService,private utils: UtilsService) {
   }
 
   ngOnInit() {
@@ -40,13 +36,12 @@ export class EditarCombustiblePage {
   async cargarDatosCombustible() {
     let xtras = this.utils.routerLinkExtras();
     this.combustibleId = xtras?.['id'];
-    this.combustible = await this.firebase.getDocument('combustible/' + this.combustibleId.id);
-    let fecha = new Date(this.combustible.fecha);
-    let fechaFormateada = fecha.toLocaleDateString('es-CL');
-    console.log('Datos del combustible:', fechaFormateada);
+    console.log('ID del combustible:', xtras?.['id']);
+    this.combustible = await this.firebase.getDocument('combustible/' + this.combustibleId);
+    console.log('Datos del combustible:', this.combustible);
      this.formularioCombustible = this.fb.group({
-      fecha: [fechaFormateada, Validators.required],
-      monto: ['', [Validators.required, Validators.min(0)]],
+      fecha: [this.combustible.fecha || ''],
+      monto: [this.combustible.monto || '', [Validators.required, Validators.min(0)]],
       archivo: [null, Validators.required],
     });
   }

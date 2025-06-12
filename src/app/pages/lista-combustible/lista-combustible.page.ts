@@ -83,13 +83,13 @@ export class ListaCombustiblePage {
     });
   }
 
-  editarCombustible(registro: { fecha: string; monto: number; patente: string; urlBoleta: string }) {
-    const extras: NavigationExtras = {
+  editarCombustible(id:string) {
+    const xtras: NavigationExtras = {
       state: {
-        registroCombustible: registro
+        id:id
       }
     };
-    this.utils.routerLinkWithExtras('editar-combustible', extras);
+    this.utils.routerLinkWithExtras('editar-combustible', xtras);
   }
 
   eliminarCombustible(fecha: any) {
