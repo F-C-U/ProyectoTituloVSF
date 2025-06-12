@@ -77,7 +77,7 @@ export class EditarCombustiblePage {
       }
     }
   }
-
+  // Manejar errores de archivo
   private handleFileError() {
     this.archivoAdjunto = null;
     this.formularioCombustible.patchValue({ archivo: null });
