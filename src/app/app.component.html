@@ -1,3 +1,56 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <!-- Menú lateral (solo visible en rutas permitidas) -->
+  @if (mostrarMenu()) {
+  <!-- Añadir ID al menú para poder controlarlo -->
+  <ion-menu 
+    #mainMenu
+    contentId="main-content" 
+    type="overlay" 
+    menuId="main-menu"
+    (ionWillOpen)="onMenuChange($event)"
+    (ionWillClose)="onMenuChange($event)"
+    (ionDidOpen)="onMenuChange($event)"
+    (ionDidClose)="onMenuChange($event)">
+    
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>Menú Principal</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    
+    <ion-content class="ion-padding fondo-menu">
+      <ion-list lines="none">
+        @for (pagina of paginas(); track pagina.url) {
+        <ion-item 
+          (click)="navegar(pagina.url)"
+          detail="false" 
+          class="item-menu">
+          <ion-icon [name]="pagina.icono" slot="start"></ion-icon>
+          <ion-label>{{ pagina.titulo }}</ion-label>
+        </ion-item>
+        }
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+  }
+
+  <!-- Contenido principal -->
+  <div class="ion-page" id="main-content">
+    <!-- Barra de herramientas condicional -->
+    @if (mostrarMenu()) {
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+          <!-- Botón que controla manualmente el menú -->
+          <ion-menu-button (click)="toggleMenu()"></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Colectivos Tomé</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    }
+    
+    <ion-content>
+      <ion-router-outlet></ion-router-outlet>
+    </ion-content>
+  </div>
 </ion-app>

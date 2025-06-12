@@ -1,0 +1,51 @@
+/* app.component.scss */
+/* Variables reutilizables */
+:root {
+    --color-azul-primario: #3880ff;
+    --color-blanco: #ffffff;
+    --color-texto-oscuro: #2c2c2c;
+    --color-fondo-oscuro: #121212;
+    --color-gris-oscuro: #1f1f1f;
+    --color-texto-gris: #b0b0b0;
+}
+
+/* Estilos para el modo claro */
+.fondo-menu {
+    --background: var(--color-blanco);
+    --ion-text-color: var(--color-texto-oscuro);
+
+    .item-menu {
+        --background: var(--color-blanco);
+        --color: var(--color-azul-primario);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+}
+
+/* Estilos para el modo oscuro */
+@media (prefers-color-scheme: dark) {
+    .fondo-menu {
+        --background: var(--color-fondo-oscuro);
+        --ion-text-color: var(--color-blanco);
+
+        .item-menu {
+            --background: var(--color-gris-oscuro);
+            --color: var(--color-texto-gris);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    }
+}
+
+/* Optimizaciones de rendimiento */
+ion-menu {
+    z-index: 1000;
+}
+
+/* Transiciones suaves */
+ion-item {
+    transition: background-color 0.3s ease;
+}
+
+/* Mejoras de accesibilidad */
+ion-menu-button {
+    --color: currentColor;
+}
