@@ -1,18 +1,28 @@
 <ion-content>
-  <!-- Barra de título -->
+  <!-- Barra de título con botón de menú funcional -->
   <ion-header>
     <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+        <!-- Botón que activa el menú lateral -->
+        <ion-button (click)="openMenu()" aria-label="Abrir menú">
+          <ion-icon 
+            slot="icon-only" 
+            name="menu-outline"
+            aria-hidden="true">
+          </ion-icon>
+        </ion-button>
+      </ion-buttons>
       <ion-title>Menú Principal</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <!-- Grid centrado para los botones -->
+  <!-- Contenedor de botones (estilo conservado) -->
   <div class="contenedor-botones">
-    <!-- Botones con nuevas clases -->
+    <!-- Botones con navegación híbrida (routerLink + programática) -->
     <ion-button 
       class="boton-menu boton-blanco"
       routerLink="/registro-vehiculo" 
-      routerDirection="forward">
+      routerDirection="root">
       <ion-icon name="car-sport" slot="start"></ion-icon>
       Registro Vehículo
     </ion-button>

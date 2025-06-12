@@ -1,13 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, MenuController } from '@ionic/angular';
 
-/**
- * Componente standalone para la página de inicio.
- * - Implementa temas claro/oscuro con variables CSS personalizadas.
- * - Usa routerLink para navegación entre páginas.
- */
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -16,14 +11,18 @@ import { IonicModule } from '@ionic/angular';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage {
-  // Servicio Router inyectado para navegación programática (opcional)
   private router = inject(Router);
+  private menuCtrl = inject(MenuController);
 
-  /**
-   * Navegación programática alternativa a routerLink.
-   * @param ruta Nombre de la ruta (ej: 'registro-vehiculo')
-   */
   navegarA(ruta: string): void {
     this.router.navigate([`/${ruta}`]);
+  }
+
+  async openMenu(): Promise<void> {
+    await this.menuCtrl.open('main-menu'); // Cambiado de 'start' a 'main-menu'
+  }
+
+  async closeMenu(): Promise<void> {
+    await this.menuCtrl.close('main-menu'); // Asegurar consistencia
   }
 }

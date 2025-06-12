@@ -1,0 +1,25 @@
+/* Estilo del ícono de menú hamburguesa */
+ion-button[slot="end"] ion-icon {
+  font-size: 1.8rem;
+  color: var(--ion-color-primary);
+}
+
+/* Mejoras visuales para el menú lateral */
+.menu-divider {
+  background: var(--ion-color-light);
+  ion-label {
+    font-weight: bold;
+    color: var(--ion-color-dark);
+  }
+}
+
+ion-menu {
+  --ion-background-color: #f8f9fa;
+  ion-item {
+    --padding-start: 16px;
+    --min-height: 56px;
+    &:hover {
+      --background: rgba(var(--ion-color-primary-rgb), 0.1);
+    }
+  }
+}
