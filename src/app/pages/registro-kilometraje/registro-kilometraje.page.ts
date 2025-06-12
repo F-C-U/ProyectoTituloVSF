@@ -38,7 +38,7 @@ export class RegistroKilometrajePage {
       // Aquí podrías enviar los datos a una API o servicio
       try {
         this.firebase.setDocument(
-          'kilometraje/',
+          'kilometraje/' + this.formularioKilometraje.value.fecha,
           this.formularioKilometraje.value
         );
       } catch (error) {}
