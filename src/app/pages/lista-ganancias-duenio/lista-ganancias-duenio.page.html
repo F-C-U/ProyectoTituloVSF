@@ -1,0 +1,66 @@
+<!-- lista-ganancias-duenio.page.html -->
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Reporte de ganancias</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="contenedor-pagina">
+    <!-- Filtro por patente con componente Ionic -->
+    <ion-item>
+      <ion-label position="stacked">Filtrar por patente:</ion-label>
+      <ion-select 
+        [(ngModel)]="patenteSeleccionada" 
+        (ionChange)="aplicarFiltro()"
+        interface="action-sheet"
+      >
+        <ion-select-option *ngFor="let patente of patentes()" [value]="patente">
+          {{ patente === 'todas' ? 'Todas las patentes' : patente }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- Mensajes de estado -->
+    <div *ngIf="cargando()" class="ion-padding estado">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Cargando datos...</p>
+    </div>
+    
+    <div *ngIf="error()" class="ion-padding estado error">
+      <ion-icon name="warning-outline"></ion-icon>
+      <p>{{ error() }}</p>
+    </div>
+
+    <!-- Tabla de resultados -->
+    <div *ngIf="!cargando() && !error()" class="tabla-contenedor">
+      <ion-grid class="tabla-ganancias" fixed>
+        <ion-row class="header-tabla">
+          <ion-col size="2.5">Fecha</ion-col>
+          <ion-col>Patente</ion-col>
+          <ion-col>Bruta</ion-col>
+          <ion-col>Neta</ion-col>
+          <ion-col>Combustible</ion-col>
+        </ion-row>
+
+        <ion-row 
+          *ngFor="let item of gananciasFiltradas(); trackBy: trackByPatente"
+          class="fila-tabla"
+        >
+          <ion-col size="2.5">{{ item.fecha | date:'dd/MM/yy' }}</ion-col>
+          <ion-col>{{ item.patente }}</ion-col>
+          <ion-col>{{ item.gananciaBruta | currency:'$':'symbol':'1.0-0' }}</ion-col>
+          <ion-col>{{ item.gananciaNeta | currency:'$':'symbol':'1.0-0' }}</ion-col>
+          <ion-col>{{ item.gastosCombustible | currency:'$':'symbol':'1.0-0' }}</ion-col>
+        </ion-row>
+        
+        <!-- Caso sin resultados -->
+        <ion-row *ngIf="gananciasFiltradas().length === 0">
+          <ion-col class="sin-resultados">
+            No se encontraron registros para esta patente
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  </div>
+</ion-content>

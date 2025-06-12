@@ -110,7 +110,8 @@ export const routes: Routes = [
   {
     path: 'generar-informe',
     loadComponent: () => import('./pages/generar-informe/generar-informe.page').then( m => m.GenerarInformePage)
-  },  {
+  },
+  {
     path: 'editar-esquema-pago',
     loadComponent: () => import('./pages/editar-esquema-pago/editar-esquema-pago.page').then( m => m.EditarEsquemaPagoPage)
   },
@@ -122,9 +123,12 @@ export const routes: Routes = [
     path: 'historial-mantenimiento',
     loadComponent: () => import('./pages/historial-mantenimiento/historial-mantenimiento.page').then( m => m.HistorialMantenimientoPage)
   },
-  {
+    {
     path: 'lista-ganancia',
     loadComponent: () => import('./pages/lista-ganancia/lista-ganancia.page').then( m => m.ListaGananciaPage)
   },
-
+    {
+    path: 'lista-ganancias-duenio',
+    loadComponent: () => import('./pages/lista-ganancias-duenio/lista-ganancias-duenio.page').then( m => m.ListaGananciasDuenioPage)
+  },
 ];
