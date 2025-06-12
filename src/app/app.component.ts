@@ -1,9 +1,12 @@
-import { Component, effect, inject, signal, DestroyRef, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink, NavigationEnd } from '@angular/router';
-import { IonicModule, MenuController, IonMenu } from '@ionic/angular';
-import { filter } from 'rxjs/operators';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Router, RouterModule, Event, NavigationStart } from '@angular/router';
+import { 
+  IonicModule,
+  MenuController, 
+  Platform,
+  NavController 
+} from '@ionic/angular';
 
 @Component({
   selector: 'app-root',
@@ -12,123 +15,119 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   standalone: true,
   imports: [
     CommonModule,
-    IonicModule,
+    RouterModule,
+    IonicModule
   ]
 })
 export class AppComponent {
-  public router = inject(Router);
-  private menuCtrl = inject(MenuController);
-  private destroyRef = inject(DestroyRef);
-  private cdRef = inject(ChangeDetectorRef);
+  // Estado de la UI
+  showBackButton: boolean = false;
+  currentPageTitle: string = 'Menú Flota';
+  excludedPages: string[] = ['/login', '/crear-usuario'];
 
-  @ViewChild('mainMenu') menuRef!: IonMenu;
+  constructor(
+    private router: Router,
+    private menuCtrl: MenuController,
+    private platform: Platform,
+    private navCtrl: NavController
+  ) {
+    this.setupRouterEvents();
+    this.setupBackButton();
+  }
 
-  // Señal para controlar la visibilidad del menú
-  mostrarMenu = signal<boolean>(true);
-  
-  // Estado para controlar si el menú está abierto
-  menuAbierto = signal<boolean>(false);
-
-  // Lista de páginas para el menú (datos falsos)
-  paginas = signal<Array<{ titulo: string, url: string, icono: string }>>([
-    { titulo: 'Inicio', url: '/home', icono: '' },
-    { titulo: 'Vehiculos', url: '/lista-vehiculos', icono: '' },
-    { titulo: 'Configurar intervalos', url: '/mantenimiento', icono: '' },
-    { titulo: 'Esquemas de pago', url: '/lista-esquemas', icono: '' },
-    { titulo: 'Alertas', url: '/listar-alertas', icono: '' },
-    { titulo: 'Combustible', url: '/lista-combustible', icono: '' },
-    { titulo: 'Kilometraje', url: '/lista-kilometraje', icono: '' },
-    { titulo: 'Ganancias', url: '/lista-ganancias-duenio', icono: '' },
-    { titulo: 'Informes', url: '/generar-informe', icono: '' },
-  ]);
-
-  constructor() {
-    // Efecto reactivo para mostrar/ocultar menú según la ruta
-    effect(() => {
-      const rutaActual = this.router.url;
-      this.actualizarVisibilidadMenu(rutaActual);
+  // ====================== MANEJO DE RUTAS ======================
+  private setupRouterEvents(): void {
+    this.router.events.subscribe((event: Event) => {
+      if (event instanceof NavigationStart) {
+        const url = event.url;
+        this.showBackButton = !this.isExcludedPage(url) && !url.includes('/home');
+        this.updatePageTitle(url);
+      }
     });
-
-    // Suscripción a eventos de navegación
-    this.router.events
-      .pipe(
-        filter(event => event instanceof NavigationEnd),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe((event: any) => {
-        this.actualizarVisibilidadMenu(event.url);
-        this.cerrarMenu(); // Cerrar menú al cambiar de ruta
-      });
   }
 
-  // Actualiza la visibilidad del menú basado en la ruta actual - CORREGIDO
-  private actualizarVisibilidadMenu(url: string): void {
-    const rutasOcultarMenu = ['/login', '/crear-usuario'];
-    const debeOcultar = rutasOcultarMenu.some(ruta => url.startsWith(ruta));
-    this.mostrarMenu.set(!debeOcultar);
-    
-    // Resetear estado cuando se oculta el menú
-    if (debeOcultar) {
-      this.menuAbierto.set(false);
-    }
-    
-    this.cdRef.detectChanges(); // Forzar detección de cambios
+  private isExcludedPage(url: string): boolean {
+    return this.excludedPages.some(page => url.startsWith(page));
   }
 
-  // Método para cerrar el menú - CORREGIDO
-  async cerrarMenu() {
-    // Solo cerrar si el menú está abierto Y existe en el DOM
-    if (this.menuAbierto() && this.mostrarMenu()) {
+  private updatePageTitle(url: string): void {
+    const titleMap: Record<string, string> = {
+      '/home': 'Inicio',
+      '/lista-vehiculos': 'Vehículos',
+      '/registro-vehiculo': 'Nuevo Vehículo',
+      '/editar-vehiculo': 'Editar Vehículo',
+      '/mantenimiento': 'Mantenimiento',
+      '/informes': 'Reportes',
+      '/configuracion': 'Ajustes',
+      '/lista-combustible': 'Registros Combustible',
+      '/crud-esquema-pago': 'Esquemas de Pago'
+    };
+    this.currentPageTitle = titleMap[url.split('?')[0]] || 'Menú Flota';
+  }
+
+  // ====================== BOTÓN ATRÁS ======================
+  private async setupBackButton(): Promise<void> {
+    this.platform.backButton.subscribeWithPriority(10, async () => {
       try {
-        if (this.menuRef) {
-          await this.menuRef.close();
-        } else {
-          await this.menuCtrl.close('main-menu');
+        const isMenuOpen = await this.menuCtrl.isOpen('start');
+        
+        if (isMenuOpen) {
+          await this.menuCtrl.close('start');
+          return;
         }
-        this.menuAbierto.set(false);
-      } catch (error) {
-        console.debug('Error al cerrar el menú:', error);
-      }
-    }
-  }
 
-  // Método para abrir el menú - CORREGIDO
-  async abrirMenu() {
-    // Solo abrir si el menú está cerrado Y existe en el DOM
-    if (!this.menuAbierto() && this.mostrarMenu()) {
-      try {
-        if (this.menuRef) {
-          await this.menuRef.open();
-        } else {
-          await this.menuCtrl.open('main-menu');
+        if (!this.isExcludedPage(this.router.url) && !this.router.url.includes('/home')) {
+          this.navCtrl.navigateBack('/home');
         }
-        this.menuAbierto.set(true);
       } catch (error) {
-        console.debug('Error al abrir el menú:', error);
+        console.error('Error al manejar el botón atrás:', error);
+        if (!this.router.url.includes('/home')) {
+          this.navCtrl.navigateBack('/home');
+        }
       }
+    });
+  }
+
+  // ====================== CONTROL DEL MENÚ ======================
+  async closeMenu(): Promise<void> {
+    try {
+      const isOpen = await this.menuCtrl.isOpen('start');
+      if (isOpen) {
+        await this.menuCtrl.close('start');
+      }
+    } catch (error) {
+      console.error('Error al cerrar el menú:', error);
     }
   }
 
-  // Manejar evento de apertura/cierre del menú - SIN CAMBIOS
-  async toggleMenu() {
-    if (this.menuAbierto()) {
-      await this.cerrarMenu();
-    } else {
-      await this.abrirMenu();
+  async openMenu(): Promise<void> {
+    try {
+      await this.menuCtrl.open('start');
+    } catch (error) {
+      console.error('Error al abrir el menú:', error);
     }
   }
 
-  // Método para navegar cerrando el menú primero - SIN CAMBIOS
-  async navegar(url: string) {
-    await this.cerrarMenu();
-    this.router.navigateByUrl(url);
+  async toggleMenu(): Promise<void> {
+    const isOpen = await this.menuCtrl.isOpen('start');
+    isOpen ? await this.closeMenu() : await this.openMenu();
   }
 
-  // Manejar evento de cambio de estado del menú - CORREGIDO
-  onMenuChange(event: CustomEvent) {
-    // Verificación segura para evitar errores con eventos nulos
-    if (event.detail) {
-      this.menuAbierto.set(event.detail.visible);
-    }
+  // ====================== CONDICIONALES DE UI ======================
+  shouldShowMenu(): boolean {
+    const allowedRoutes = [
+      '/home',
+      '/lista-vehiculos',
+      '/registro-vehiculo',
+      '/informes',
+      '/mantenimiento',
+      '/lista-combustible',
+      '/crud-esquema-pago'
+    ];
+    return allowedRoutes.includes(this.router.url.split('?')[0]) && !this.showBackButton;
+  }
+
+  isExcludedRoute(): boolean {
+    return this.excludedPages.some(page => this.router.url.startsWith(page));
   }
 }

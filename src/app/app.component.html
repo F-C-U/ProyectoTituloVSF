@@ -1,80 +1,194 @@
 <ion-app>
-  <!-- Menú lateral (solo visible en rutas permitidas) -->
-  @if (mostrarMenu()) {
-  <ion-menu 
-    #mainMenu
-    contentId="main-content" 
-    type="overlay" 
+  <!-- Header condicional (oculto en login/registro) -->
+  <ion-header *ngIf="!isExcludedRoute()">
+    <ion-toolbar>
+      <!-- Botón Atrás (solo en rutas secundarias) -->
+      <ion-buttons slot="start" *ngIf="showBackButton">
+        <ion-back-button defaultHref="/home"></ion-back-button>
+      </ion-buttons>
+
+      <!-- Título dinámico -->
+      <ion-title>{{ currentPageTitle }}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- Menú Lateral CORREGIDO (se agregó menuId="main-menu") -->
+  <ion-menu
+    contentId="main-content"
     menuId="main-menu"
-    (ionWillOpen)="onMenuChange($event)"
-    (ionWillClose)="onMenuChange($event)"
-    (ionDidOpen)="onMenuChange($event)"
-    (ionDidClose)="onMenuChange($event)"
-    class="custom-menu">
-    
-    <ion-header class="menu-header">
-      <ion-toolbar>
-        <ion-title class="menu-title">Menú Principal</ion-title>
+    side="start"
+    type="overlay"
+    [disabled]="isExcludedRoute()"
+  >
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>Menú Flota</ion-title>
       </ion-toolbar>
     </ion-header>
-    
-    <ion-content class="ion-padding fondo-menu">
-      <div class="user-info">
-        <div class="user-details">
-          <h3 class="user-name">Nombre de Usuario</h3>
-          <p class="user-role">Conductor</p>
-        </div>
-      </div>
-      
-      <ion-list lines="none" class="menu-list">
-        @for (pagina of paginas(); track pagina.url) {
-        <ion-item 
-          (click)="navegar(pagina.url)"
-          detail="false" 
-          class="item-menu"
-          [class.active]="router.url === pagina.url">
-          <ion-icon [name]="pagina.icono" slot="start" class="menu-icon"></ion-icon>
-          <ion-label>{{ pagina.titulo }}</ion-label>
-        </ion-item>
-        }
+    <ion-content>
+      <ion-list lines="none">
+        <!-- Inicio -->
+        <ion-menu-toggle>
+          <ion-item
+            button
+            routerLink="/home"
+            routerDirection="root"
+            (click)="closeMenu()"
+          >
+            <ion-icon name="home" slot="start"></ion-icon>
+            <ion-label>Inicio</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+
+        <!-- ===== VEHÍCULOS ===== -->
+        <ion-item-divider class="menu-divider">
+          <ion-label>Vehículos</ion-label>
+        </ion-item-divider>
+        <ion-menu-toggle>
+          <ion-item button routerLink="/lista-vehiculos" (click)="closeMenu()">
+            <ion-icon name="list" slot="start"></ion-icon>
+            <ion-label>Lista de Vehículos</ion-label>
+          </ion-item>
+          <ion-item
+            button
+            routerLink="/registro-vehiculo"
+            (click)="closeMenu()"
+          >
+            <ion-icon name="add-circle" slot="start"></ion-icon>
+            <ion-label>Registrar Vehículo</ion-label>
+          </ion-item>
+          <ion-item button routerLink="/editar-vehiculo" (click)="closeMenu()">
+            <ion-icon name="create" slot="start"></ion-icon>
+            <ion-label>Editar Vehículo</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+
+        <!-- ===== MANTENIMIENTO ===== -->
+        <ion-item-divider class="menu-divider">
+          <ion-label>Mantenimiento</ion-label>
+        </ion-item-divider>
+        <ion-menu-toggle>
+          <ion-item button routerLink="/mantenimiento" (click)="closeMenu()">
+            <ion-icon name="construct" slot="start"></ion-icon>
+            <ion-label>Panel</ion-label>
+          </ion-item>
+          <ion-item
+            button
+            routerLink="/historial-mantenimiento"
+            (click)="closeMenu()"
+          >
+            <ion-icon name="time" slot="start"></ion-icon>
+            <ion-label>Historial</ion-label>
+          </ion-item>
+          <ion-item
+            button
+            routerLink="/registro-mantenimiento"
+            (click)="closeMenu()"
+          >
+            <ion-icon name="document-text" slot="start"></ion-icon>
+            <ion-label>Registrar</ion-label>
+          </ion-item>
+          <ion-item
+            button
+            routerLink="/confirmar-mantencion"
+            (click)="closeMenu()"
+          >
+            <ion-icon name="checkmark-done" slot="start"></ion-icon>
+            <ion-label>Confirmar</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+
+        <!-- ===== COMBUSTIBLE ===== -->
+        <ion-item-divider class="menu-divider">
+          <ion-label>Combustible</ion-label>
+        </ion-item-divider>
+        <ion-menu-toggle>
+          <ion-item
+            button
+            routerLink="/lista-combustible"
+            (click)="closeMenu()"
+          >
+            <ion-icon name="list" slot="start"></ion-icon>
+            <ion-label>Registros</ion-label>
+          </ion-item>
+          <ion-item
+            button
+            routerLink="/registro-combustible"
+            (click)="closeMenu()"
+          >
+            <ion-icon name="add-circle" slot="start"></ion-icon>
+            <ion-label>Nuevo Registro</ion-label>
+          </ion-item>
+          <ion-item
+            button
+            routerLink="/editar-combustible"
+            (click)="closeMenu()"
+          >
+            <ion-icon name="create" slot="start"></ion-icon>
+            <ion-label>Editar</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+
+        <!-- ===== PAGOS ===== -->
+        <ion-item-divider class="menu-divider">
+          <ion-label>Esquemas de Pago</ion-label>
+        </ion-item-divider>
+        <ion-menu-toggle>
+          <ion-item button routerLink="/lista-esquemas" (click)="closeMenu()">
+            <ion-icon name="cash" slot="start"></ion-icon>
+            <ion-label>Lista General</ion-label>
+          </ion-item>
+          <ion-item
+            button
+            routerLink="/crud-esquema-pago"
+            (click)="closeMenu()"
+          >
+            <ion-icon name="business" slot="start"></ion-icon>
+            <ion-label>CRUD Esquemas</ion-label>
+          </ion-item>
+          <ion-item
+            button
+            routerLink="/editar-esquema-pago"
+            (click)="closeMenu()"
+          >
+            <ion-icon name="pencil" slot="start"></ion-icon>
+            <ion-label>Editar Esquema</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+
+        <!-- ===== INFORMES ===== -->
+        <ion-item-divider class="menu-divider">
+          <ion-label>Reportes</ion-label>
+        </ion-item-divider>
+        <ion-menu-toggle>
+          <ion-item button routerLink="/informes" (click)="closeMenu()">
+            <ion-icon name="document" slot="start"></ion-icon>
+            <ion-label>Informes</ion-label>
+          </ion-item>
+          <ion-item button routerLink="/generar-informe" (click)="closeMenu()">
+            <ion-icon name="analytics" slot="start"></ion-icon>
+            <ion-label>Generar Informe</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+
+        <!-- ===== OTROS ===== -->
+        <ion-item-divider class="menu-divider">
+          <ion-label>Otros</ion-label>
+        </ion-item-divider>
+        <ion-menu-toggle>
+          <ion-item button routerLink="/escaneo-boleta" (click)="closeMenu()">
+            <ion-icon name="scan" slot="start"></ion-icon>
+            <ion-label>Escaneo de Boletas</ion-label>
+          </ion-item>
+          <ion-item button routerLink="/listar-alertas" (click)="closeMenu()">
+            <ion-icon name="notifications" slot="start"></ion-icon>
+            <ion-label>Alertas</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
       </ion-list>
-      
-      <div class="menu-footer">
-        <ion-button expand="block" fill="clear" class="logout-button">
-          <ion-icon name="log-out" slot="start"></ion-icon>
-          Cerrar Sesión
-        </ion-button>
-      </div>
     </ion-content>
   </ion-menu>
-  }
 
   <!-- Contenido principal -->
-  <div class="ion-page" id="main-content">
-    <!-- Barra de herramientas condicional -->
-    @if (mostrarMenu()) {
-    <ion-header class="app-header">
-      <ion-toolbar>
-        <ion-buttons slot="start">
-          <!-- FLECHA DE RETORNO solo si no estamos en home -->
-          @if (router.url !== '/home') {
-            <ion-back-button defaultHref="/home" class="custom-back-button"></ion-back-button>
-          }
-          <!-- Botón que abre el menú -->
-          <ion-menu-button class="custom-menu-button"></ion-menu-button>
-        </ion-buttons>
-        <ion-title class="app-title">Colectivos Tomé</ion-title>
-        <ion-buttons slot="end">
-          <ion-button>
-            <ion-icon name="notifications" slot="icon-only"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-    }
-    
-    <ion-content class="main-content">
-      <ion-router-outlet></ion-router-outlet>
-    </ion-content>
-  </div>
+  <ion-router-outlet id="main-content"></ion-router-outlet>
 </ion-app>
