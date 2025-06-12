@@ -21,23 +21,13 @@ import { UtilsService } from 'src/app/services/utils.service';
 })
 export class EditarKilometrajePage {
   formularioKilometraje!: FormGroup;
-  fechaActual: string = new Date().toISOString().split('T')[0];
   kilometrajeId: any;
   kilometraje: any;
   constructor(
     private fb: FormBuilder,
     private firebase: FirebaseService,
     private utils: UtilsService
-  ) {
-    // Formateamos la fecha actual en formato DD-MM-YYYY
-    const fecha = new Date();
-    const dia = String(fecha.getDate()).padStart(2, '0');
-    const mes = String(fecha.getMonth() + 1).padStart(2, '0');
-    const anio = fecha.getFullYear();
-    this.fechaActual = `${dia}-${mes}-${anio}`;
-
-    // Inicializamos el formulario con validaciones
-  }
+  ) {}
 
   // Valor simulado por ahora
   vehiculoAsignado = 'Toyota Corolla 2020 - ABCD12';
@@ -68,18 +58,18 @@ export class EditarKilometrajePage {
   }
   ngOnInit() {
     this.cargarDatosKilometraje();
+    console.log('ID del kilometraje:', this.kilometrajeId);
   }
   async cargarDatosKilometraje() {
     let xtras = this.utils.routerLinkExtras();
+    console.log('Extras de navegación:', xtras);
     this.kilometrajeId = xtras?.['id'];
     this.kilometraje = await this.firebase.getDocument(
       'kilometraje/' + this.kilometrajeId
     );
     this.formularioKilometraje = this.fb.group({
-      kilometros: [
-        this.kilometraje.kilometros,
-        [Validators.required, Validators.min(0)],
-      ],
+      kilometros: ['', [Validators.required, Validators.min(0)]],
+      fecha: [this.kilometraje.fecha],
     });
   }
 }
