@@ -13,11 +13,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   imports: [
     CommonModule,
     IonicModule,
-    RouterLink,
   ]
 })
 export class AppComponent {
-  private router = inject(Router);
+  public router = inject(Router);
   private menuCtrl = inject(MenuController);
   private destroyRef = inject(DestroyRef);
   private cdRef = inject(ChangeDetectorRef);

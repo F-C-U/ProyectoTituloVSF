@@ -1,7 +1,6 @@
 <ion-app>
   <!-- Menú lateral (solo visible en rutas permitidas) -->
   @if (mostrarMenu()) {
-  <!-- Añadir ID al menú para poder controlarlo -->
   <ion-menu 
     #mainMenu
     contentId="main-content" 
@@ -41,7 +40,11 @@
     <ion-header>
       <ion-toolbar color="primary">
         <ion-buttons slot="start">
-          <!-- Botón que controla manualmente el menú -->
+          <!-- FLECHA DE RETORNO solo si no estamos en home -->
+          @if (router.url !== '/home') {
+            <ion-back-button defaultHref="/home"></ion-back-button>
+          }
+          <!-- Botón que abre el menú -->
           <ion-menu-button (click)="toggleMenu()"></ion-menu-button>
         </ion-buttons>
         <ion-title>Colectivos Tomé</ion-title>
