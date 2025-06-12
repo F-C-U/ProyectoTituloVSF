@@ -2,6 +2,9 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
+import { NavigationExtras } from '@angular/router';
+import { UtilsService } from 'src/app/services/utils.service';
+import { FirebaseService } from 'src/app/services/firebase.service';
 
 @Component({
   selector: 'app-kilometraje',
@@ -11,13 +14,22 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./lista-kilometraje.page.scss'],
 })
 export class ListaKilometrajePage {
-  // Lista de registros de kilometraje
-  kilometrajes: { fecha: string; kilometraje: number; patenteVehiculo: String }[] = [
-    { fecha: '2025-06-01', kilometraje: 12000, patenteVehiculo: 'ABC123' },
-    { fecha: '2025-07-15', kilometraje: 12500, patenteVehiculo: 'XYZ789' },
-    { fecha: '2025-07-28', kilometraje: 12800, patenteVehiculo: 'LMN456' },
-  ];
 
+  constructor(private utils:UtilsService,private firebase: FirebaseService){
+
+  }
+  // Lista de registros de kilometraje
+  kilometrajes: {id:string, fecha: string; kilometraje: number; patenteVehiculo: String }[] = [];
+  async obtenerKilometrajes() {
+    this.firebase.getCollection('kilometrajes').subscribe((data: any[]) => {
+      this.kilometrajes = data.map((kilometraje) => ({
+        id: kilometraje.id,
+        fecha: kilometraje.fecha,
+        kilometraje: kilometraje.kilometraje,
+        patenteVehiculo: kilometraje.patenteVehiculo
+      }));
+    })
+  }
   // Valores seleccionados en el filtro
   mesSeleccionado: string = '';
   anioSeleccionado: string = '';
@@ -45,8 +57,12 @@ export class ListaKilometrajePage {
   }
 
   // Método para editar un registro (futura funcionalidad)
-  editarRegistro(kilometraje: { fecha: string; kilometraje: number; patenteVehiculo: String }) {
-    console.log('Editar registro:', kilometraje);
-    // Aquí puedes abrir un modal o navegar a otra página
+  editarRegistro(id: String ) {
+    let xtras : NavigationExtras = {
+      state:{
+        id:id
+      }
+    }
+    this.utils.routerLinkWithExtras('editar-kilometraje', xtras);
   }
 }
