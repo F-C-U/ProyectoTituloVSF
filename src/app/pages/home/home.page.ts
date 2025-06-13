@@ -33,7 +33,7 @@ export class HomePage {
    */
   navegarA(ruta: string): void {
     const rutasValidas = [
-      'registro-vehiculo', 
+      'registro-vehiculo',
       'mantenimiento',
       'alertas',
       'perfil'
@@ -53,10 +53,12 @@ export class HomePage {
    * - Muestra feedback visual mediante Toast
    */
   async signOut(): Promise<void> {
+    const loading = this.utilsSvc.loading();
+    (await loading).present()
     try {
       this.utilsSvc.clearLocalStorage(); // Limpia el almacenamiento local
       await this.firebaseSvc.signOut();
-      
+
       await this.utilsSvc.presentToast({
         message: 'Sesión cerrada correctamente',
         duration: 1500,
@@ -64,7 +66,7 @@ export class HomePage {
       });
 
       // Redirección con limpieza de historial
-      this.router.navigate(['/login'], { 
+      this.router.navigate(['/login'], {
         replaceUrl: true,
         state: { sessionClosed: true } // Opcional: estado para el login
       });
@@ -76,6 +78,8 @@ export class HomePage {
         duration: 3000,
         color: 'danger'
       });
+    } finally {
+      (await loading).dismiss()
     }
   }
 
