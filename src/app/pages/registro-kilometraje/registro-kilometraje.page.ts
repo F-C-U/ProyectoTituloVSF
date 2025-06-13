@@ -19,40 +19,52 @@ import { FirebaseService } from 'src/app/services/firebase.service';
 })
 export class RegistroKilometrajePage {
   formularioKilometraje: FormGroup;
+  fechaActual: Date = new Date(); // Fecha automática
+  vehiculoAsignado = 'Toyota Corolla 2020 - ABCD12'; // Valor simulado
 
   constructor(private fb: FormBuilder, private firebase: FirebaseService) {
-    // Inicializamos el formulario con validaciones
+    // Formulario simplificado (sin campo fecha editable)
     this.formularioKilometraje = this.fb.group({
-      fecha: ['', Validators.required],
-      kilometros: ['', [Validators.required, Validators.min(0)]],
+      kilometros: ['', [Validators.required, Validators.min(0)]]
     });
   }
 
-  // Valor simulado por ahora
-  vehiculoAsignado = 'Toyota Corolla 2020 - ABCD12';
-
-  // Método que se ejecuta al enviar el formulario
   registrarKilometraje() {
     if (this.formularioKilometraje.valid) {
-      console.log('Kilometraje registrado:', this.formularioKilometraje.value);
-      // Aquí podrías enviar los datos a una API o servicio
+      // Paquete de datos con fecha automática
+      const registro = {
+        ...this.formularioKilometraje.value,
+        fecha: this.fechaActual.toISOString(), // Formato ISO para Firebase
+        vehiculo: this.vehiculoAsignado // Agrega referencia al vehículo
+      };
+
+      console.log('Registrando:', registro);
+      
+      // Firebase: Usamos timestamp como ID del documento
       try {
         this.firebase.setDocument(
-          'kilometraje/' + this.formularioKilometraje.value.fecha,
-          this.formularioKilometraje.value
+          `kilometraje/${this.fechaActual.getTime()}`, // ID único
+          registro
         );
-      } catch (error) {}
+        this.mostrarConfirmacion();
+      } catch (error) {
+        console.error('Error en Firebase:', error);
+      }
     } else {
       this.formularioKilometraje.markAllAsTouched();
     }
   }
 
-  // Getters para mostrar errores en la plantilla
-  get fecha() {
-    return this.formularioKilometraje.get('fecha');
+  // Método auxiliar para feedback visual (opcional)
+  private mostrarConfirmacion() {
+    // Aquí puedes implementar un toast o alerta
+    console.log('¡Registro exitoso!');
   }
 
+  // Getter simplificado (solo para kilómetros)
   get kilometros() {
     return this.formularioKilometraje.get('kilometros');
   }
+
+  // Eliminado el getter de fecha ya que no es necesario
 }
