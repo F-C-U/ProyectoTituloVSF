@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormsModule,
@@ -18,61 +18,83 @@ import { UtilsService } from 'src/app/services/utils.service';
   templateUrl: './registro-kilometraje.page.html',
   styleUrls: ['./registro-kilometraje.page.scss'],
 })
-export class RegistroKilometrajePage {
+export class RegistroKilometrajePage implements OnInit {
   formularioKilometraje: FormGroup;
-  fechaActual: Date = new Date(); // Fecha automática
-  vehiculoAsignado: any;
+  fechaActual: Date = new Date();
+  vehiculoAsignado: any = {
+    marca: '--',
+    modelo: '--',
+    patente: '--'
+  };
 
   constructor(
     private fb: FormBuilder,
     private firebase: FirebaseService,
     private utils: UtilsService
   ) {
-    // Formulario simplificado (sin campo fecha editable)
     this.formularioKilometraje = this.fb.group({
       kilometros: ['', [Validators.required, Validators.min(0)]],
     });
   }
 
-  ngOnInit() {
-    this.vehiculoAsignado = this.utils.getFromlocalStorage('vehiculo');
+  async ngOnInit() {
+    const vehiculoStorage = this.utils.getFromlocalStorage('vehiculo');
+    
+    if (vehiculoStorage && 
+        vehiculoStorage.marca && 
+        vehiculoStorage.modelo && 
+        vehiculoStorage.patente) {
+      this.vehiculoAsignado = vehiculoStorage;
+    } else {
+      console.warn('Vehículo no encontrado en localStorage:', vehiculoStorage);
+      await this.utils.presentToast({
+        message: 'No se encontró vehículo asignado válido',
+        duration: 2500,
+        color: 'warning'
+      });
+    }
   }
+
   async registrarKilometraje() {
     if (this.formularioKilometraje.valid) {
       const loading = await this.utils.loading();
       await loading.present();
-      // Paquete de datos con fecha automática
-      console.log('Vehículo asignado:', this.vehiculoAsignado);
+
       const registro = {
         ...this.formularioKilometraje.value,
-        fecha: this.fechaActual.toISOString(), // Formato ISO para Firebase
-        vehiculo: this.vehiculoAsignado.patente, // Agrega referencia al vehículo
+        fecha: this.fechaActual.toISOString(),
+        vehiculo: this.vehiculoAsignado.patente || 'N/A'
       };
-      // Firebase: Usamos timestamp como ID del documento
+
       try {
-        this.firebase.setDocument(
-          `kilometraje/${this.fechaActual.getTime()}`, // ID único
+        await this.firebase.setDocument(
+          `kilometraje/${this.fechaActual.getTime()}`,
           registro
         );
-      } catch (error) {
-        this.utils.presentToast({
-          message: 'Error al registrar el kilometraje',
-          duration: 2000,
-          color: 'danger',
-        });
-      } finally {
-        loading.dismiss();
-        this.formularioKilometraje.reset();
         this.utils.presentToast({
           message: 'Kilometraje registrado correctamente',
           duration: 2000,
           color: 'success',
         });
+      } catch (error) {
+        let errorMessage = 'Error desconocido';
+        if (error && typeof error === 'object' && 'message' in error) {
+          errorMessage = 'Error al registrar: ' + (error as any).message;
+        } else if (typeof error === 'string') {
+          errorMessage = 'Error al registrar: ' + error;
+        }
+        this.utils.presentToast({
+          message: errorMessage,
+          duration: 3000,
+          color: 'danger',
+        });
+      } finally {
+        loading.dismiss();
+        this.formularioKilometraje.reset();
       }
     }
   }
 
-  // Getter simplificado (solo para kilómetros)
   get kilometros() {
     return this.formularioKilometraje.get('kilometros');
   }
