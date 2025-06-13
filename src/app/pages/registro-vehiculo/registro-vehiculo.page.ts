@@ -88,8 +88,11 @@ export class RegistroVehiculoPage {
   // Método para enviar el formulario
   async onSubmit() {
     if (this.vehiculoForm.valid) {
+      const loading = await this.utils.loading();
+      await loading.present();
       try {
-        const currentUser = this.firebase.getCurrentUser();
+        const currentUser = this.utils.getFromlocalStorage('usuario');
+        console.log('Usuario actual:', currentUser);
         if (currentUser) {
           this.vehiculoForm.patchValue({ dueno: currentUser.uid });
           await this.firebase.setDocument(
@@ -100,10 +103,17 @@ export class RegistroVehiculoPage {
           this.vehiculoForm.reset();
         }
       } catch (error) {
-        console.error('Error al registrar vehículo:', error);
+        this.utils.presentToast({
+          message: 'Error al registrar el vehículo',
+          color: 'danger',
+        });
+      } finally {
+        loading.dismiss();
+        this.utils.presentToast({
+          message: 'Vehículo registrado correctamente',
+          color: 'success',
+        });
       }
-    } else {
-      this.vehiculoForm.markAllAsTouched();
     }
   }
 
