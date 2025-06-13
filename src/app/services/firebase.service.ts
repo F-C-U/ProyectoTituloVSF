@@ -5,8 +5,9 @@ import {
   collectionData
 } from '@angular/fire/firestore';
 import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, 
-        sendPasswordResetEmail, updateProfile, signOut } from '@angular/fire/auth';
+        sendPasswordResetEmail, updateProfile, signOut, User as FirebaseUser } from '@angular/fire/auth';
 import { User } from '../models/user.model';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ import { User } from '../models/user.model';
 export class FirebaseService {
   private auth = inject(Auth);
   private firestore = inject(Firestore);
+  private router = inject(Router);
 
   // === AUTENTICACIÓN ===
   signIn(user: User) {
@@ -25,23 +27,46 @@ export class FirebaseService {
   }
 
   /**
-   * Cierra sesión con manejo de errores tipado y limpieza profunda
+   * Cierre de sesión mejorado con gestión de estados y navegación
+   * @version 2.0
+   * @remarks Incluye:
+   * - Limpieza de caché
+   * - Redirección controlada
+   * - Manejo de errores detallado
    */
   async signOut() {
     try {
+      // 1. Cerrar sesión en Firebase
       await signOut(this.auth);
-      window.location.reload(); // Limpia estados de la app
-    } catch (error: unknown) {
-      let errorMessage = 'Error desconocido al cerrar sesión';
-      
-      if (error instanceof Error) {
-        errorMessage = error.message;
-      } else if (typeof error === 'string') {
-        errorMessage = error;
+
+      // 2. Limpiar estados locales (opcional)
+      if (typeof window !== 'undefined') {
+        window.sessionStorage.clear();
       }
 
-      throw new Error(errorMessage);
+      // 3. Redirección con limpieza de historial
+      await this.router.navigate(['/login'], {
+        replaceUrl: true,
+        state: { sessionClosed: true }
+      });
+
+      // 4. Recarga opcional para reset completo
+      setTimeout(() => window.location.reload(), 500);
+
+    } catch (error: unknown) {
+      console.error('Error en signOut:', error);
+      throw this.handleAuthError(error);
     }
+  }
+
+  // Manejador centralizado de errores de autenticación
+  private handleAuthError(error: unknown): Error {
+    if (error instanceof Error) {
+      return error;
+    }
+    return new Error(
+      typeof error === 'string' ? error : 'Error desconocido en autenticación'
+    );
   }
 
   updateUser(displayName: string) {
@@ -78,7 +103,7 @@ export class FirebaseService {
   }
 
   // === USUARIO ===
-  getCurrentUser() {
+  getCurrentUser(): FirebaseUser | null {
     return this.auth.currentUser;
   }
 

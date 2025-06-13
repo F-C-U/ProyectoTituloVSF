@@ -10,6 +10,7 @@ import { UtilsService } from '../../services/utils.service';
  * @remarks
  * - Implementa navegación mediante routerLink y programática
  * - Maneja autenticación y temas de Ionic
+ * - Incluye cierre de sesión con redirección al login
  */
 @Component({
   selector: 'app-home',
@@ -32,10 +33,10 @@ export class HomePage {
    */
   navegarA(ruta: string): void {
     const rutasValidas = [
-      'registro-vehiculo',
+      'registro-vehiculo', 
       'mantenimiento',
       'alertas',
-      'perfil',
+      'perfil'
     ];
 
     if (!rutasValidas.includes(ruta)) {
@@ -45,31 +46,35 @@ export class HomePage {
   }
 
   /**
-   * Cierra sesión con manejo de errores
+   * Cierra sesión con manejo de errores y redirección al login
    * @async
+   * @remarks
+   * - Limpia el historial de navegación con replaceUrl
+   * - Muestra feedback visual mediante Toast
    */
-  ngOnInit(){
-    if(!this.utilsSvc.getFromlocalStorage('usuario')){
-      this.utilsSvc.routerLink('login');
-    }
-  }
   async signOut(): Promise<void> {
     try {
+      this.utilsSvc.clearLocalStorage(); // Limpia el almacenamiento local
       await this.firebaseSvc.signOut();
-      this.utilsSvc.presentToast({
+      
+      await this.utilsSvc.presentToast({
         message: 'Sesión cerrada correctamente',
         duration: 1500,
-        color: 'success',
+        color: 'success'
       });
-      this.utilsSvc.clearLocalStorage();
-      this.router.navigate(['/login']);
+
+      // Redirección con limpieza de historial
+      this.router.navigate(['/login'], { 
+        replaceUrl: true,
+        state: { sessionClosed: true } // Opcional: estado para el login
+      });
+
     } catch (error: unknown) {
-      const errorMessage =
-        error instanceof Error ? error.message : 'Error desconocido';
-      this.utilsSvc.presentToast({
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
+      await this.utilsSvc.presentToast({
         message: `Error al cerrar sesión: ${errorMessage}`,
         duration: 3000,
-        color: 'danger',
+        color: 'danger'
       });
     }
   }
