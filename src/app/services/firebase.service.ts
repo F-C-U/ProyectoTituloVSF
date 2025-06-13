@@ -1,15 +1,29 @@
 import { Injectable, inject } from '@angular/core';
-import { 
-  Firestore, doc, setDoc, getDoc, updateDoc, 
-  deleteDoc, collection, addDoc, serverTimestamp, 
-  collectionData
+import {
+  Firestore,
+  doc,
+  setDoc,
+  getDoc,
+  updateDoc,
+  deleteDoc,
+  collection,
+  addDoc,
+  serverTimestamp,
+  collectionData,
 } from '@angular/fire/firestore';
-import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, 
-        sendPasswordResetEmail, updateProfile } from '@angular/fire/auth';
+import {
+  Auth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
+  updateProfile,
+} from '@angular/fire/auth';
 import { User } from '../models/user.model';
+import { Observable } from 'rxjs';
+import { query, where } from 'firebase/firestore';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FirebaseService {
   private auth = inject(Auth);
@@ -21,7 +35,11 @@ export class FirebaseService {
   }
 
   signUp(user: User) {
-    return createUserWithEmailAndPassword(this.auth, user.correo, user.contrasena);
+    return createUserWithEmailAndPassword(
+      this.auth,
+      user.correo,
+      user.contrasena
+    );
   }
 
   signOut() {
@@ -59,11 +77,20 @@ export class FirebaseService {
     return deleteDoc(doc(this.firestore, path));
   }
 
-  getCollection(path:string){
-    const colRef = collection(this.firestore,path)
-    return collectionData(colRef,{idField:'id'});
+  getCollection(path: string) {
+    const colRef = collection(this.firestore, path);
+    return collectionData(colRef, { idField: 'id' });
   }
-
+  getCollectionWhere(
+    collectionName: string,
+    field: string,
+    operator: any,
+    value: any
+  ): Observable<any[]> {
+    const ref = collection(this.firestore, collectionName);
+    const q = query(ref, where(field, operator, value));
+    return collectionData(q, { idField: 'id' }); // incluye el id del documento si lo necesitas
+  }
   getCurrentUser() {
     return this.auth.currentUser;
   }
@@ -91,7 +118,7 @@ export class FirebaseService {
     batchUpdates.push(
       updateDoc(doc(this.firestore, alertaId), {
         estado: 'resuelto',
-        fechaResolucion: serverTimestamp()
+        fechaResolucion: serverTimestamp(),
       })
     );
 
@@ -101,7 +128,7 @@ export class FirebaseService {
         ...datosMantencion,
         alertaId,
         vehiculoId,
-        createdAt: serverTimestamp()
+        createdAt: serverTimestamp(),
       })
     );
 
@@ -110,10 +137,10 @@ export class FirebaseService {
     if (vehiculoDoc.exists()) {
       const data = vehiculoDoc.data();
       const tareaId = alertaId.split('/')[1]; // Extrae ID de la alerta
-      
+
       batchUpdates.push(
         updateDoc(doc(this.firestore, vehiculoId), {
-          [`contadores.${tareaId}`]: 0 // Reinicia el contador específico
+          [`contadores.${tareaId}`]: 0, // Reinicia el contador específico
         })
       );
     }
@@ -127,7 +154,9 @@ export class FirebaseService {
    * @param path Ruta personalizable (ej: 'facturas/vehiculo_DEF456')
    */
   async subirFactura(file: File, path: string): Promise<string> {
-    const { getStorage, ref, uploadBytes, getDownloadURL } = await import('@angular/fire/storage');
+    const { getStorage, ref, uploadBytes, getDownloadURL } = await import(
+      '@angular/fire/storage'
+    );
     const storage = getStorage();
     const fileRef = ref(storage, `${path}/${Date.now()}_${file.name}`);
     await uploadBytes(fileRef, file);
