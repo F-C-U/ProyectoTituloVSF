@@ -62,19 +62,27 @@ export class LoginPage {
 
   async getUserInfo(uid: string) {
     if (this.formularioLogin.valid) {
-      let path = `usuarios/${uid}`;
-      await this.firebase.getDocument(path).then((user: any | null) => {
-        if (user) {
-          this.utils.saveInLocalStorage('usuario', user);
-          this.utils.routerLink('home');
-          this.formularioLogin.reset();
-        } else {
-          this.mostrarMensaje(
-            'No se encontró información del usuario.',
-            'danger'
-          );
-        }
-      });
+      const loading = await this.utils.loading();
+      await loading.present();
+      try {
+        let path = `usuarios/${uid}`;
+        await this.firebase.getDocument(path).then((user: any | null) => {
+          if (user) {
+            this.utils.saveInLocalStorage('usuario', user);
+            this.utils.routerLink('home');
+            this.formularioLogin.reset();
+          }
+        });
+      } catch (error) {
+        console.error('Error al obtener la información del usuario:', error);
+        this.utils.presentToast({
+          message: 'Error al iniciar sesión. Inténtalo de nuevo.',
+          duration: 3000,
+          color: 'danger',
+        });
+      } finally {
+        loading.dismiss();
+      }
     }
   }
 }
