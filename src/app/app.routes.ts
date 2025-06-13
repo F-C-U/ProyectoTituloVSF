@@ -131,4 +131,8 @@ export const routes: Routes = [
     path: 'lista-ganancias-duenio',
     loadComponent: () => import('./pages/lista-ganancias-duenio/lista-ganancias-duenio.page').then( m => m.ListaGananciasDuenioPage)
   },
+  {
+    path: 'registrar-ganancia',
+    loadComponent: () => import('./pages/registrar-ganancia/registrar-ganancia.page').then( m => m.RegistrarGananciaPage)
+  },
 ];

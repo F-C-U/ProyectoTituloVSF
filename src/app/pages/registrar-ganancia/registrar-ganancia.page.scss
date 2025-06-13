@@ -1,0 +1,41 @@
+/* Centrado general */
+.card-centrada {
+  max-width: 100%;
+  margin: 0 auto;
+  
+  @media (min-width: 768px) {
+    max-width: 600px; /* Ancho máximo en tablets/desktop */
+  }
+}
+
+/* Contenedor responsivo */
+.contenedor-inputs {
+  width: 100%;
+  
+  ion-item {
+    --padding-start: 0;
+    --inner-padding-end: 0;
+  }
+}
+
+/* Ajuste para botones de incremento */
+.botones-monto {
+  display: flex;
+  flex-direction: column; /* Apila verticalmente en móviles */
+  gap: 4px;
+  
+  @media (min-width: 480px) {
+    flex-direction: row; /* Horizontal en pantallas más grandes */
+  }
+  
+  .boton-incremento {
+    --padding-start: 8px;
+    --padding-end: 8px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Mejora para el botón principal */
+.boton-registrar {
+  margin-top: 16px;
+}
