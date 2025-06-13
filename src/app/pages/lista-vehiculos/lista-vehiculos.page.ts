@@ -27,7 +27,8 @@ export class ListaVehiculosPage {
   }[] = [];
 
   obtenerVehiculos() {
-    this.firebase.getCollection('vehiculos').subscribe((data: any[]) => {
+    let dueno = this.utils.getFromlocalStorage('usuario')
+    this.firebase.getCollectionWhere('vehiculos','uid','==',dueno.uid).subscribe((data: any[]) => {
       this.registroVehiculos = data.map((vehiculo) => ({
         patente: vehiculo.patente,
         modelo: vehiculo.modelo,
