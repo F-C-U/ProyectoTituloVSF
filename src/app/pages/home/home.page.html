@@ -10,76 +10,54 @@
     </div>
   </div>
 
-  <!-- Grid de tarjetas mejorado -->
-  <div class="card-grid-container">
-    <div class="card-grid">
+  <!-- Grid centrado para los botones -->
+  <div class="contenedor-botones">
+    <!-- Botones originales -->
+    <ion-button 
+      class="boton-menu boton-blanco"
+      routerLink="/registro-vehiculo" 
+      routerDirection="forward">
+      <ion-icon name="car-sport" slot="start"></ion-icon>
+      Registro Vehículo
+    </ion-button>
 
-      <ion-card button routerLink="/registro-vehiculo" class="menu-card">
-        <div class="card-icon-container">
-          <ion-icon name="car-sport-outline" class="menu-icon"></ion-icon>
-        </div>
-        <ion-card-content>
-          <h2>Registrar vehículo</h2>
-          <p>Agregar nuevo colectivo a la flota</p>
-        </ion-card-content>
-      </ion-card>
+    <ion-button 
+      class="boton-menu boton-blanco"
+      routerLink="/registro-kilometraje" 
+      routerDirection="forward">
+      <ion-icon name="car-sport" slot="start"></ion-icon>
+      Registro Kilometraje
+    </ion-button>
 
-      <ion-card button routerLink="/registro-kilometraje" class="menu-card">
-        <div class="card-icon-container">
-          <ion-icon name="speedometer-outline" class="menu-icon"></ion-icon>
-        </div>
-        <ion-card-content>
-          <h2>Registrar kilometraje</h2>
-          <p>Control recorrido de los vehículos</p>
-        </ion-card-content>
-      </ion-card>
+    <ion-button 
+      class="boton-menu boton-blanco"
+      routerLink="/registro-combustible">
+      <ion-icon name="flash" slot="start"></ion-icon>
+      Registro Combustible
+    </ion-button>
 
-      <ion-card button routerLink="/registro-combustible" class="menu-card">
-        <div class="card-icon-container">
-          <ion-icon name="flash-outline" class="menu-icon"></ion-icon>
-        </div>
-        <ion-card-content>
-          <h2>Registrar combustible</h2>
-          <p>Control de consumo de gasolina</p>
-        </ion-card-content>
-      </ion-card>
+    <ion-button 
+      class="boton-menu boton-blanco"
+      routerLink="/mantenimiento">
+      <ion-icon name="construct" slot="start"></ion-icon>
+      Mantenimiento
+    </ion-button>
 
-      <ion-card button routerLink="/registro-mantenimiento" class="menu-card">
-        <div class="card-icon-container">
-          <ion-icon name="construct-outline" class="menu-icon"></ion-icon>
-        </div>
-        <ion-card-content>
-          <h2>Registrar mantenimiento</h2>
-          <p>Registrar reparaciones</p>
-        </ion-card-content>
-      </ion-card>
+    <!-- NUEVO BOTÓN DE GANANCIAS (mismo estilo que los demás) -->
+    <ion-button 
+      class="boton-menu boton-blanco"
+      routerLink="/registrar-ganancia">
+      <ion-icon name="cash" slot="start"></ion-icon>
+      Registrar Ganancias
+    </ion-button>
 
-      <ion-card button routerLink="/registrar-ganancia" class="menu-card">
-        <div class="card-icon-container">
-          <ion-icon name="cash-outline" class="menu-icon"></ion-icon>
-        </div>
-        <ion-card-content>
-          <h2>Registrar ganancias</h2>
-          <p>Seguimiento de ingresos diarios</p>
-        </ion-card-content>
-      </ion-card>
-
-      <ion-card button (click)="signOut()" class="menu-card cerrar-sesion">
-        <div class="card-icon-container">
-          <ion-icon name="log-out-outline" class="menu-icon"></ion-icon>
-        </div>
-        <ion-card-content>
-          <h2>Cerrar Sesión</h2>
-          <p>Salir de la aplicación</p>
-        </ion-card-content>
-      </ion-card>
-
-    </div>
-  </div>
-  
-  <!-- Footer con información -->
-  <div class="app-footer">
-    <p>Colectivos Tomé-Dichato 2025</p>
-    <p>Versión 1.0</p>
+    <!-- Botón de cierre de sesión (conserva su estilo diferenciado) -->
+    <ion-button 
+      class="boton-menu"
+      color="dark"
+      (click)="signOut()">
+      <ion-icon name="log-out" slot="start"></ion-icon>
+      Cerrar Sesión
+    </ion-button>
   </div>
 </ion-content>
