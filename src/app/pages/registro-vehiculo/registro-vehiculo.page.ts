@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { FirebaseService } from 'src/app/services/firebase.service';
+import { UtilsService } from 'src/app/services/utils.service';
 
 @Component({
   selector: 'app-registro-vehiculo',
@@ -21,13 +22,19 @@ import { FirebaseService } from 'src/app/services/firebase.service';
 export class RegistroVehiculoPage {
   vehiculoForm: FormGroup;
 
-  constructor(private fb: FormBuilder,private firebase: FirebaseService) {
-    // Inicializamos el formulario con validaciones básicas
+  constructor(
+    private fb: FormBuilder,
+    private firebase: FirebaseService,
+    private utils: UtilsService
+  ) {
+    // Inicializamos el formulario con validaciones
     this.vehiculoForm = this.fb.group({
+      dueno: [''],
       patente: [
         '',
         [Validators.required, Validators.pattern(/^[A-Z]{4}[0-9]{2}$/)],
       ],
+      marca: ['', [Validators.required, Validators.maxLength(30)]], // Nuevo campo
       modelo: ['', [Validators.required, Validators.maxLength(50)]],
       anio: [
         '',
@@ -38,10 +45,11 @@ export class RegistroVehiculoPage {
         ],
       ],
       tipoCombustible: ['', Validators.required],
-      activo: [false], // valor por defecto
+      activo: [false],
     });
   }
 
+  // Métodos para el campo patente (existente)
   procesarPatente(event: any) {
     let valor = event.target.value
       .toUpperCase()
@@ -77,22 +85,35 @@ export class RegistroVehiculoPage {
     return valor;
   }
 
-  // Método para manejar el envío del formulario
+  // Método para enviar el formulario
   async onSubmit() {
     if (this.vehiculoForm.valid) {
       try {
-        await this.firebase.setDocument('vehiculos/' + this.vehiculoForm.value.patente, this.vehiculoForm.value);
-      } catch (error) {}
-      console.log('Formulario enviado:', this.vehiculoForm.value);
-      // Aquí podrías enviar los datos a una API, por ejemplo
+        const currentUser = this.firebase.getCurrentUser();
+        if (currentUser) {
+          this.vehiculoForm.patchValue({ dueno: currentUser.uid });
+          await this.firebase.setDocument(
+            'vehiculos/' + this.vehiculoForm.value.patente,
+            this.vehiculoForm.value
+          );
+          this.utils.saveInLocalStorage('vehiculo', this.vehiculoForm.value);
+          this.vehiculoForm.reset();
+        }
+      } catch (error) {
+        console.error('Error al registrar vehículo:', error);
+      }
     } else {
       this.vehiculoForm.markAllAsTouched();
     }
   }
 
-  // Métodos de ayuda para mostrar errores en la plantilla
+  // Métodos de acceso para el template (actualizados con marca)
   get patente() {
     return this.vehiculoForm.get('patente');
+  }
+
+  get marca() {
+    return this.vehiculoForm.get('marca'); // Nuevo getter
   }
 
   get modelo() {
