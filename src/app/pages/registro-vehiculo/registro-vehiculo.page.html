@@ -6,6 +6,7 @@
 
 <ion-content [fullscreen]="true" class="ion-padding">
   <form [formGroup]="vehiculoForm" (ngSubmit)="onSubmit()">
+    <!-- Campo Patente (existente) -->
     <ion-item>
       <ion-label position="floating">Patente</ion-label>
       <ion-input
@@ -21,6 +22,17 @@
       <p *ngIf="patente?.errors?.['pattern']">Formato inválido. Ejemplo: AABB12.</p>
     </ion-text>
 
+    <!-- Nuevo Campo: Marca del vehículo -->
+    <ion-item>
+      <ion-label position="floating">Marca</ion-label>
+      <ion-input formControlName="marca" type="text" maxlength="30"></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="marca?.invalid && marca?.touched">
+      <p *ngIf="marca?.errors?.['required']">La marca es obligatoria.</p>
+      <p *ngIf="marca?.errors?.['maxlength']">Máximo 30 caracteres.</p>
+    </ion-text>
+
+    <!-- Campo Modelo (existente) -->
     <ion-item>
       <ion-label position="floating">Modelo</ion-label>
       <ion-input formControlName="modelo" type="text"></ion-input>
@@ -30,6 +42,7 @@
       <p *ngIf="modelo?.errors?.['maxLength']">Máximo 50 caracteres.</p>
     </ion-text>
 
+    <!-- Campo Año (existente) -->
     <ion-item>
       <ion-label position="floating">Año</ion-label>
       <ion-input formControlName="anio" type="number"></ion-input>
@@ -39,6 +52,7 @@
       <p *ngIf="anio?.errors?.['min'] || anio?.errors?.['max']">Año inválido.</p>
     </ion-text>
 
+    <!-- Campo Combustible (existente) -->
     <ion-item>
       <ion-label>Tipo de Combustible</ion-label>
       <ion-select formControlName="tipoCombustible">
@@ -52,11 +66,13 @@
       <p>Selecciona un tipo de combustible.</p>
     </ion-text>
 
+    <!-- Campo Activo (existente) -->
     <ion-item lines="none">
       <ion-label>Activo</ion-label>
       <ion-toggle formControlName="activo" color="primary"></ion-toggle>
     </ion-item>
 
+    <!-- Botón de envío -->
     <ion-button expand="block" type="submit" [disabled]="vehiculoForm.invalid">
       Registrar Vehículo
     </ion-button>
