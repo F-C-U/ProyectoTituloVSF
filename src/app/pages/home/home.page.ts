@@ -32,10 +32,10 @@ export class HomePage {
    */
   navegarA(ruta: string): void {
     const rutasValidas = [
-      'registro-vehiculo', 
+      'registro-vehiculo',
       'mantenimiento',
       'alertas',
-      'perfil'
+      'perfil',
     ];
 
     if (!rutasValidas.includes(ruta)) {
@@ -48,20 +48,28 @@ export class HomePage {
    * Cierra sesión con manejo de errores
    * @async
    */
+  ngOnInit(){
+    if(!this.utilsSvc.getFromlocalStorage('usuario')){
+      this.utilsSvc.routerLink('login');
+    }
+  }
   async signOut(): Promise<void> {
     try {
       await this.firebaseSvc.signOut();
       this.utilsSvc.presentToast({
         message: 'Sesión cerrada correctamente',
         duration: 1500,
-        color: 'success'
+        color: 'success',
       });
+      this.utilsSvc.clearLocalStorage();
+      this.router.navigate(['/login']);
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
+      const errorMessage =
+        error instanceof Error ? error.message : 'Error desconocido';
       this.utilsSvc.presentToast({
         message: `Error al cerrar sesión: ${errorMessage}`,
         duration: 3000,
-        color: 'danger'
+        color: 'danger',
       });
     }
   }
