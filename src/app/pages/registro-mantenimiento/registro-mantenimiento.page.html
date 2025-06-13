@@ -5,8 +5,10 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
-  <form [formGroup]="formularioMantenimiento" (ngSubmit)="registrarMantenimiento()">
-    
+  <form
+    [formGroup]="formularioMantenimiento"
+    (ngSubmit)="registrarMantenimiento()"
+  >
     <!-- Tipo de mantenimiento -->
     <ion-item>
       <ion-label position="floating">Tipo de mantenimiento</ion-label>
@@ -31,10 +33,16 @@
     ></ion-datetime>
 
     <!-- Errores de fecha -->
-    <ion-text color="danger" *ngIf="formularioMantenimiento.get('fecha')?.hasError('fechaMayorAHoy')">
+    <ion-text
+      color="danger"
+      *ngIf="formularioMantenimiento.get('fecha')?.hasError('fechaMayorAHoy')"
+    >
       La fecha no puede ser mayor a hoy.
     </ion-text>
-    <ion-text color="danger" *ngIf="formularioMantenimiento.get('fecha')?.hasError('fechaMuyAntigua')">
+    <ion-text
+      color="danger"
+      *ngIf="formularioMantenimiento.get('fecha')?.hasError('fechaMuyAntigua')"
+    >
       La fecha no puede ser anterior a hace 10 años.
     </ion-text>
 
@@ -50,14 +58,22 @@
     </ion-item>
 
     <!-- Subida de archivo -->
-    <ion-item>
-      <ion-label>Imagen boleta</ion-label>
+    <ion-item lines="none">
+      <ion-label>Archivo</ion-label>
+      <ion-button (click)="fileInput.click()" expand="block" fill="outline">
+        Seleccionar archivo
+      </ion-button>
       <input
+        #fileInput
         type="file"
         accept=".pdf,.jpg,.jpeg,.png,.heic"
+        hidden
         (change)="manejarArchivo($event)"
       />
     </ion-item>
+    <ion-text *ngIf="archivoAdjunto" color="medium">
+      Archivo seleccionado: {{ archivoAdjunto.name }}
+    </ion-text>
 
     <!-- Mensaje general de error -->
     <ion-text color="danger" *ngIf="mensajeError">
@@ -65,7 +81,11 @@
     </ion-text>
 
     <!-- Botón de envío -->
-    <ion-button type="submit" expand="block" [disabled]="formularioMantenimiento.invalid">
+    <ion-button
+      type="submit"
+      expand="block"
+      [disabled]="formularioMantenimiento.invalid"
+    >
       Registrar Mantenimiento
     </ion-button>
   </form>
