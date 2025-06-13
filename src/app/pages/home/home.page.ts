@@ -2,11 +2,14 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
+import { FirebaseService } from '../../services/firebase.service';
+import { UtilsService } from '../../services/utils.service';
 
 /**
- * Componente standalone para la página de inicio.
- * - Implementa temas claro/oscuro con variables CSS personalizadas.
- * - Usa routerLink para navegación entre páginas.
+ * Página principal de la aplicación
+ * @remarks
+ * - Implementa navegación mediante routerLink y programática
+ * - Maneja autenticación y temas de Ionic
  */
 @Component({
   selector: 'app-home',
@@ -16,14 +19,56 @@ import { IonicModule } from '@ionic/angular';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage {
-  // Servicio Router inyectado para navegación programática (opcional)
+  // ================ SERVICIOS ================
   private router = inject(Router);
+  private firebaseSvc = inject(FirebaseService);
+  private utilsSvc = inject(UtilsService);
 
+  // ================ MÉTODOS ================
   /**
-   * Navegación programática alternativa a routerLink.
-   * @param ruta Nombre de la ruta (ej: 'registro-vehiculo')
+   * Navegación programática con validación de ruta
+   * @param ruta - Ruta destino (ej: 'registro-vehiculo')
+   * @throws Error si la ruta no existe
    */
   navegarA(ruta: string): void {
+    const rutasValidas = [
+      'registro-vehiculo', 
+      'mantenimiento',
+      'alertas',
+      'perfil'
+    ];
+
+    if (!rutasValidas.includes(ruta)) {
+      throw new Error(`Ruta no válida: ${ruta}`);
+    }
     this.router.navigate([`/${ruta}`]);
+  }
+
+  /**
+   * Cierra sesión con manejo de errores
+   * @async
+   */
+  async signOut(): Promise<void> {
+    try {
+      await this.firebaseSvc.signOut();
+      this.utilsSvc.presentToast({
+        message: 'Sesión cerrada correctamente',
+        duration: 1500,
+        color: 'success'
+      });
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
+      this.utilsSvc.presentToast({
+        message: `Error al cerrar sesión: ${errorMessage}`,
+        duration: 3000,
+        color: 'danger'
+      });
+    }
+  }
+
+  // ================ GETTERS ================
+  /** Obtiene el usuario actual de Firebase */
+  get user() {
+    return this.firebaseSvc.getCurrentUser();
   }
 }

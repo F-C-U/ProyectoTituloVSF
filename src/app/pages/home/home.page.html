@@ -1,5 +1,5 @@
 <ion-content>
-  <!-- Barra de título -->
+  <!-- Barra de título SIN botón de cerrar sesión -->
   <ion-header>
     <ion-toolbar color="primary">
       <ion-title>Menú Principal</ion-title>
@@ -8,7 +8,7 @@
 
   <!-- Grid centrado para los botones -->
   <div class="contenedor-botones">
-    <!-- Botones con nuevas clases -->
+    <!-- Botones originales -->
     <ion-button 
       class="boton-menu boton-blanco"
       routerLink="/registro-vehiculo" 
@@ -36,6 +36,15 @@
       routerLink="/mantenimiento">
       <ion-icon name="construct" slot="start"></ion-icon>
       Mantenimiento
+    </ion-button>
+
+    <!-- Nuevo botón añadido aquí -->
+    <ion-button 
+      class="boton-menu"
+      color="dark"
+      (click)="signOut()">
+      <ion-icon name="log-out" slot="start"></ion-icon>
+      Cerrar Sesión
     </ion-button>
   </div>
 </ion-content>
