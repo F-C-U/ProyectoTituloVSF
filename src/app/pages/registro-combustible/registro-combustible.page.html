@@ -18,7 +18,10 @@
     <!-- Fecha -->
     <ion-item>
       <ion-label position="stacked">Fecha</ion-label>
-      <ion-input [value]="formularioCombustible.get('fecha')?.value" readonly></ion-input>
+      <ion-input
+        [value]="formularioCombustible.get('fecha')?.value"
+        readonly
+      ></ion-input>
     </ion-item>
 
     <!-- Monto -->
@@ -37,16 +40,31 @@
     </ion-text>
 
     <!-- Carga de archivo o imagen -->
-    <ion-item class="adjuntar-archivo-item">
-      <ion-label class="adjuntar-archivo-label">Adjuntar boleta</ion-label>
-      <input type="file" accept="image/*,.pdf" (change)="manejarArchivo($event)" />
+    <ion-item lines="none">
+      <ion-label>Archivo</ion-label>
+      <ion-button (click)="fileInput.click()" expand="block" fill="outline">
+        Seleccionar archivo
+      </ion-button>
+      <input
+        #fileInput
+        type="file"
+        accept=".pdf,.jpg,.jpeg,.png,.heic"
+        hidden
+        (change)="manejarArchivo($event)"
+      />
     </ion-item>
     <ion-text color="danger" *ngIf="archivo?.invalid && archivo?.touched">
       <p *ngIf="archivo?.errors?.['required']">Debes adjuntar la boleta.</p>
-      <p *ngIf="archivo?.errors?.['tipoInvalido']">Solo se permiten imágenes o PDF.</p>
+      <p *ngIf="archivo?.errors?.['tipoInvalido']">
+        Solo se permiten imágenes o PDF.
+      </p>
     </ion-text>
 
-    <ion-button expand="block" type="submit" [disabled]="formularioCombustible.invalid">
+    <ion-button
+      expand="block"
+      type="submit"
+      [disabled]="formularioCombustible.invalid"
+    >
       Registrar
     </ion-button>
   </form>
