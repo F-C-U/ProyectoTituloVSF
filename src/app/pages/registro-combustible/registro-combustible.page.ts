@@ -25,7 +25,11 @@ export class RegistroCombustiblePage {
   archivoAdjunto: File | null = null;
   montoFormateado: String = ''; // Monto mostrado con puntos
 
-  constructor(private fb: FormBuilder, private firebase: FirebaseService,private utils:UtilsService) {
+  constructor(
+    private fb: FormBuilder,
+    private firebase: FirebaseService,
+    private utils: UtilsService
+  ) {
     const hoy = new Date();
     const fechaFormateada = hoy.toLocaleDateString('es-CL'); // DD-MM-YYYY
 
@@ -53,11 +57,13 @@ export class RegistroCombustiblePage {
       if (tiposPermitidos.includes(archivo.type)) {
         try {
           // Optimizamos solo imágenes (no PDFs)
-          this.archivoAdjunto = archivo.type.startsWith('image/') 
+          this.archivoAdjunto = archivo.type.startsWith('image/')
             ? await this.utils.optimizeImage(archivo)
             : archivo;
-            
-          this.formularioCombustible.patchValue({ archivo: this.archivoAdjunto });
+
+          this.formularioCombustible.patchValue({
+            archivo: this.archivoAdjunto,
+          });
           this.archivo?.setErrors(null);
         } catch (error) {
           console.error('Error al optimizar imagen:', error);
@@ -74,7 +80,6 @@ export class RegistroCombustiblePage {
     this.formularioCombustible.patchValue({ archivo: null });
     this.archivo?.setErrors({ tipoInvalido: true });
   }
-
 
   agregarPuntos(valor: string): string {
     return valor.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
@@ -96,8 +101,10 @@ export class RegistroCombustiblePage {
   }
 
   // Acción al enviar el formulario
-   async registrarCombustible() {
+  async registrarCombustible() {
     if (this.formularioCombustible.valid && this.archivoAdjunto) {
+      const loading = await this.utils.loading();
+      await loading.present();
       try {
         // Convertir a Base64 si es imagen
         const archivoParaGuardar = this.archivoAdjunto.type.startsWith('image/')
@@ -109,17 +116,33 @@ export class RegistroCombustiblePage {
           vehiculo: this.vehiculoAsignado,
           archivo: archivoParaGuardar,
           tipoArchivo: this.archivoAdjunto.type,
-          nombreArchivo: this.archivoAdjunto.name
+          nombreArchivo: this.archivoAdjunto.name,
         };
 
         await this.firebase.setDocument(
-          `combustible/${this.formularioCombustible.value.fecha.replace(/-/g, '')}`,
+          `combustible/${this.formularioCombustible.value.fecha.replace(
+            /-/g,
+            ''
+          )}`,
           datosCombustible
         );
-
-        console.log('Registro completado con archivo optimizado');
       } catch (error) {
         console.error('Error al registrar:', error);
+        this.utils.presentToast({
+          message: 'Error al guardar el registro de combustible.',
+          duration: 2000,
+          color: 'danger',
+        });
+      } finally {
+        loading.dismiss();
+        this.utils.presentToast({
+          message: 'Registro de combustible guardado exitosamente.',
+          duration: 2000,
+          color: 'success',
+        });
+        this.formularioCombustible.reset();
+        this.archivoAdjunto = null;
+        this.montoFormateado = '';
       }
     } else {
       this.formularioCombustible.markAllAsTouched();
