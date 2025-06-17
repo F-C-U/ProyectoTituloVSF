@@ -92,8 +92,37 @@ export class ListaCombustiblePage {
     this.utils.routerLinkWithExtras('editar-combustible', xtras);
   }
 
-  eliminarCombustible(fecha: any) {
-    return this.firebase.deleteDocument('combustible/' + fecha);
+  async eliminarCombustible(fecha: any) {
+   this.utils.presentAlert({
+      header: 'Confirmar Eliminación',
+      message: `¿Estás seguro de eliminar el registro de combustible del ${fecha}?`,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Eliminar',
+          handler: () => {
+            this.firebase.deleteDocument(`combustible/${fecha}`).then(() => {
+              this.utils.presentToast({
+                message: 'Registro eliminado correctamente.',
+                duration: 2000,
+                color: 'success'
+              });
+              this.obtenerRegistros();
+            }).catch(error => {
+              console.error('Error al eliminar el registro:', error);
+              this.utils.presentToast({
+                message: 'Error al eliminar el registro.',
+                duration: 2000,
+                color: 'danger'
+              });
+            });
+          }
+        }
+      ]
+   })
   }
 
   obtenerRegistros() {

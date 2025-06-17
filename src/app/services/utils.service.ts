@@ -4,6 +4,8 @@ import {
   LoadingController,
   ToastController,
   ToastOptions,
+  AlertController,
+  AlertOptions,
 } from '@ionic/angular';
 
 @Injectable({
@@ -13,6 +15,7 @@ export class UtilsService {
   router = inject(Router);
   loadingCtrl = inject(LoadingController);
   toastCtrl = inject(ToastController);
+  alertCtrl = inject(AlertController);
 
   //Loading
   private loadingElement: HTMLIonLoadingElement | null = null;
@@ -35,10 +38,15 @@ export class UtilsService {
       this.loadingElement = null;
     }
   }
-
+  //Mostrar toast
   async presentToast(options: ToastOptions) {
     const toast = await this.toastCtrl.create(options);
     toast.present();
+  }
+
+  //Alerta de confirmacion
+  async presentAlert(options: AlertOptions) {
+    const alert = await this.alertCtrl.create(options);
   }
 
   //Local Storage
