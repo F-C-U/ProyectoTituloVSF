@@ -134,14 +134,15 @@ export class RegistroCombustiblePage {
           color: 'danger',
         });
       } finally {
-        loading.dismiss();
-        this.utils.presentToast({
-          message: 'Registro de combustible guardado exitosamente.',
-          duration: 2000,
-          color: 'success',
+        await loading.dismiss();
+        this.utils.presentAlert({
+          header: 'Registro exitoso',
+          message: 'El registro de combustible se ha guardado correctamente.',
+          buttons: [{ text: 'Aceptar', role: 'cancel' }],
         });
-        this.formularioCombustible.reset();
         this.archivoAdjunto = null;
+        this.formularioCombustible.value.archivo = null;
+        this.formularioCombustible.value.monto = null;
         this.montoFormateado = '';
       }
     } else {
