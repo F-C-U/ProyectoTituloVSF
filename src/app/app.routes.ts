@@ -134,5 +134,9 @@ export const routes: Routes = [
   {
     path: 'registrar-ganancia',
     loadComponent: () => import('./pages/registrar-ganancia/registrar-ganancia.page').then( m => m.RegistrarGananciaPage)
+  },  {
+    path: 'seleccionar-vehiculo',
+    loadComponent: () => import('./pages/seleccionar-vehiculo/seleccionar-vehiculo.page').then( m => m.SeleccionarVehiculoPage)
   },
+
 ];

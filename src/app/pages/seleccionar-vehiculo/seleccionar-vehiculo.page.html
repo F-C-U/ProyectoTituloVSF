@@ -1,0 +1,23 @@
+
+
+<ion-content class="ion-padding">
+  <div class="mensaje-inicial">
+    <p>Por favor, selecciona un vehículo para comenzar:</p>
+  </div>
+
+  <ion-list lines="inset">
+    <ion-radio-group [(ngModel)]="vehiculoSeleccionado">
+      <ion-item *ngFor="let vehiculo of vehiculos">
+        <ion-label>
+          <h2>{{ vehiculo.patente }}</h2>
+          <p>{{ vehiculo.marca }} - {{ vehiculo.modelo }}</p>
+        </ion-label>
+        <ion-radio slot="end" [value]="vehiculo"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+
+  <ion-button expand="block" [disabled]="!vehiculoSeleccionado" (click)="confirmarSeleccion()">
+    Continuar
+  </ion-button>
+</ion-content>

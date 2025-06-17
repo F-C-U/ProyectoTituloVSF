@@ -1,0 +1,25 @@
+:host {
+    display: block;
+    height: 100%;
+
+    .mensaje-inicial {
+        text-align: center;
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+        color: var(--ion-text-color);
+    }
+
+    ion-list {
+        border-radius: 8px;
+        background: var(--ion-item-background);
+    }
+
+    ion-item {
+        border-radius: 8px;
+        margin-bottom: 0.5rem;
+    }
+
+    ion-button {
+        margin-top: 1.5rem;
+    }
+}
