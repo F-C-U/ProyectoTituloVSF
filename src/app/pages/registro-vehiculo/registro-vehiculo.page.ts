@@ -32,7 +32,7 @@ export class RegistroVehiculoPage {
       dueno: [''],
       patente: [
         '',
-        [Validators.required, Validators.pattern(/^[A-Z]{4}[0-9]{2}$/)],
+        [Validators.required, Validators.pattern(/^[B-DF-HJ-NP-TV-Z]{4}[0-9]{2}$/)]
       ],
       marca: ['', [Validators.required, Validators.maxLength(30)]], // Nuevo campo
       modelo: ['', [Validators.required, Validators.maxLength(50)]],

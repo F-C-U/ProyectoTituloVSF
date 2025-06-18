@@ -8,23 +8,66 @@ ion-content {
     color: var(--ion-text-color);
 }
 
+.form-card {
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    margin-top: 16px;
+
+    ion-card-header {
+        text-align: center;
+        padding-bottom: 0;
+    }
+
+    ion-card-title {
+        font-size: 1.3rem;
+        color: #64b5f6; // azul pastel (Material Blue 300)
+        margin-bottom: 12px; // 👈 Se agrega espacio bajo el título
+    }
+
+    ion-card-content {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+}
+
+ion-item {
+    border-radius: 12px;
+    --padding-start: 12px;
+    --inner-padding-end: 12px;
+}
+
+ion-label,
+ion-input,
+ion-select,
+ion-toggle {
+    font-size: 1rem;
+}
+
+ion-text {
+    margin-left: 12px;
+    font-size: 0.85rem;
+
+    small {
+        display: block;
+    }
+}
+
+.toggle-item {
+    margin-top: 12px;
+}
+
+ion-button {
+    margin-top: 24px;
+    font-weight: 600;
+    --background: #64b5f6;
+}
+
 // Estilo claro
 @media (prefers-color-scheme: light) {
     :host {
         --ion-background-color: #ffffff;
         --ion-text-color: #000000;
-    }
-
-    ion-item {
-        --background: #ffffff;
-        --color: #000000;
-    }
-
-    ion-input,
-    ion-select,
-    ion-label,
-    ion-toggle {
-        --color: #000000;
     }
 }
 
@@ -35,19 +78,22 @@ ion-content {
         --ion-text-color: #ffffff;
     }
 
+    .form-card {
+        background: #1e1e1e;
+        color: #fff;
+    }
+
     ion-item {
-        --background: #1e1e1e;
-        --color: #ffffff;
+        --background: #2a2a2a;
     }
 
-    ion-input,
-    ion-select,
     ion-label,
-    ion-toggle {
+    ion-input,
+    ion-select {
         --color: #ffffff;
     }
-}
 
-ion-button {
-    margin-top: 1rem;
+    ion-card-title {
+        color: #90caf9; // azul pastel claro en modo oscuro
+    }
 }
