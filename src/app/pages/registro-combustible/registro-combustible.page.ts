@@ -138,7 +138,7 @@ export class RegistroCombustiblePage {
         this.utils.presentAlert({
           header: 'Registro exitoso',
           message: 'El registro de combustible se ha guardado correctamente.',
-          buttons: [{ text: 'Aceptar', role: 'cancel' }],
+          buttons: ['OK'],
         });
         this.archivoAdjunto = null;
         this.formularioCombustible.value.archivo = null;
