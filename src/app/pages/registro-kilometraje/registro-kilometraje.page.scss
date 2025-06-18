@@ -18,7 +18,7 @@ ion-content {
 
     ion-card-title {
         font-size: 1.2rem;
-        color: black;
+        color: #64b5f6;
         font-weight: bold;
     }
 }
@@ -90,7 +90,8 @@ ion-button {
     .form-card,
     .vehiculo-card {
         background: #1e1e1e;
-        color: #ffffff;
+        --color: #ffffff;
+        --font-weight: bold;
     }
 
     ion-item {
