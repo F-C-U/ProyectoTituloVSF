@@ -3,19 +3,71 @@
     height: 100%;
 }
 
-ion-card {
-    --background: var(--ion-item-background, var(--ion-background-color));
-    color: var(--ion-text-color);
-    margin-bottom: 1rem;
-}
-
-
 ion-content {
     --background: var(--ion-background-color);
     color: var(--ion-text-color);
 }
 
-// Estilo claro
+.vehiculo-card {
+    margin-bottom: 1rem;
+
+    ion-card-subtitle {
+        font-size: 0.9rem;
+        color: var(--ion-text-color);
+    }
+
+    ion-card-title {
+        font-size: 1.2rem;
+        color: black;
+        font-weight: bold;
+    }
+}
+
+.form-card {
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+
+    ion-card-header {
+        text-align: center;
+        padding-bottom: 0;
+    }
+
+    ion-card-title {
+        font-size: 1.3rem;
+        color: #64b5f6;
+        margin-bottom: 12px;
+    }
+
+    ion-card-content {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+}
+
+ion-item {
+    border-radius: 12px;
+    --padding-start: 12px;
+    --inner-padding-end: 12px;
+}
+
+ion-label,
+ion-input {
+    font-size: 1rem;
+}
+
+ion-text {
+    margin-left: 12px;
+    font-size: 0.85rem;
+}
+
+ion-button {
+    margin-top: 24px;
+    font-weight: 600;
+    --background: #64b5f6;
+}
+
+// Modo claro
 @media (prefers-color-scheme: light) {
     :host {
         --ion-background-color: #ffffff;
@@ -25,34 +77,32 @@ ion-content {
     ion-item {
         --background: #ffffff;
         --color: #000000;
-    }   
-
-    ion-label,
-    ion-input,
-    ion-datetime {
-        --color: #000000;
     }
 }
 
-// Estilo oscuro
+// Modo oscuro
 @media (prefers-color-scheme: dark) {
     :host {
         --ion-background-color: #121212;
         --ion-text-color: #ffffff;
     }
 
+    .form-card,
+    .vehiculo-card {
+        background: #1e1e1e;
+        color: #ffffff;
+    }
+
     ion-item {
-        --background: #1e1e1e;
-        --color: #ffffff;
+        --background: #2a2a2a;
     }
 
     ion-label,
-    ion-input,
-    ion-datetime {
+    ion-input {
         --color: #ffffff;
     }
-}
 
-ion-button {
-    margin-top: 1rem;
+    ion-card-title {
+        color: #90caf9; // Azul pastel claro para modo oscuro
+    }
 }
