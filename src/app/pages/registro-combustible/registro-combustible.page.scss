@@ -8,6 +8,16 @@ ion-content {
     color: var(--ion-text-color);
 }
 
+.vehiculo-card {
+    ion-card-title {
+        font-weight: bold;
+    }
+}
+
+.boton-registrar {
+    --background: #64b5f6;;
+}
+
 ion-card {
     --background: var(--ion-item-background, var(--ion-background-color));
     color: var(--ion-text-color);
@@ -18,32 +28,42 @@ ion-item {
     --background: transparent;
 }
 
+ion-button {
+    margin-top: 1rem;
+}
+
 .adjuntar-archivo-label {
     flex-grow: 1;
     margin-right: 1rem;
 }
 
-.adjuntar-archivo-item{
+.adjuntar-archivo-item {
     display: flex;
     align-items: center;
 }
 
-// Estilos claros
+// Estilo claro
 @media (prefers-color-scheme: light) {
     :host {
         --ion-background-color: #ffffff;
         --ion-text-color: #000000;
     }
+
+    ion-toolbar {
+        --background: #d0e8ff; // azul pastel claro
+        --color: #000;
+    }
 }
 
-// Estilos oscuros
+// Estilo oscuro
 @media (prefers-color-scheme: dark) {
     :host {
         --ion-background-color: #121212;
         --ion-text-color: #ffffff;
     }
-}
 
-ion-button {
-    margin-top: 1rem;
+    ion-toolbar {
+        --background: #1f2b3a; // azul pastel oscuro
+        --color: #fff;
+    }
 }

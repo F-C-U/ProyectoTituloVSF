@@ -20,7 +20,6 @@ ion-content {
 
     ion-card-title {
         font-size: 1.3rem;
-        color: #64b5f6; // azul pastel (Material Blue 300)
         margin-bottom: 12px; // 👈 Se agrega espacio bajo el título
     }
 
@@ -91,9 +90,5 @@ ion-button {
     ion-input,
     ion-select {
         --color: #ffffff;
-    }
-
-    ion-card-title {
-        color: #90caf9; // azul pastel claro en modo oscuro
     }
 }

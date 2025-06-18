@@ -1,71 +1,74 @@
-<ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>Registro de Combustible</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true" class="ion-padding">
-  <!-- Vehículo asignado (no editable) -->
-  <ion-card>
+  <!-- Vehículo asignado -->
+  <ion-card class="vehiculo-card">
     <ion-card-header>
-      <ion-card-subtitle>Vehículo asignado</ion-card-subtitle>
+      <ion-card-subtitle>COLECTIVO</ion-card-subtitle>
       <ion-card-title>{{ vehiculoAsignado }}</ion-card-title>
     </ion-card-header>
   </ion-card>
 
-  <!-- Formulario -->
-  <form [formGroup]="formularioCombustible" (ngSubmit)="registrarCombustible()">
-    <!-- Fecha -->
-    <ion-item>
-      <ion-label position="stacked">Fecha</ion-label>
-      <ion-input
-        [value]="formularioCombustible.get('fecha')?.value"
-        readonly
-      ></ion-input>
-    </ion-item>
+  <!-- Tarjeta de formulario -->
+  <ion-card class="form-card">
+    <ion-card-header>
+      <ion-card-title>Datos de carga de combustible</ion-card-title>
+    </ion-card-header>
 
-    <!-- Monto -->
-    <ion-item>
-      <ion-label position="floating">Monto</ion-label>
-      <ion-input
-        type="text"
-        [value]="montoFormateado"
-        (ionInput)="formatearMonto($event)"
-        inputmode="numeric"
-      ></ion-input>
-    </ion-item>
-    <ion-text color="danger" *ngIf="monto?.invalid && monto?.touched">
-      <p *ngIf="monto?.errors?.['required']">El monto es obligatorio.</p>
-      <p *ngIf="monto?.errors?.['min']">El monto no puede ser negativo.</p>
-    </ion-text>
+    <ion-card-content>
+      <form [formGroup]="formularioCombustible" (ngSubmit)="registrarCombustible()">
 
-    <!-- Carga de archivo o imagen -->
-    <ion-item lines="none">
-      <ion-label>Archivo</ion-label>
-      <ion-button (click)="fileInput.click()" expand="block" fill="outline">
-        Seleccionar archivo
-      </ion-button>
-      <input
-        #fileInput
-        type="file"
-        accept=".pdf,.jpg,.jpeg,.png,.heic"
-        hidden
-        (change)="manejarArchivo($event)"
-      />
-    </ion-item>
-    <ion-text color="danger" *ngIf="archivo?.invalid && archivo?.touched">
-      <p *ngIf="archivo?.errors?.['required']">Debes adjuntar la boleta.</p>
-      <p *ngIf="archivo?.errors?.['tipoInvalido']">
-        Solo se permiten imágenes o PDF.
-      </p>
-    </ion-text>
+        <!-- Fecha -->
+        <ion-item>
+          <ion-label position="stacked">Fecha</ion-label>
+          <ion-input
+            readonly
+            [value]="formularioCombustible.get('fecha')?.value">
+          </ion-input>
+        </ion-item>
 
-    <ion-button
-      expand="block"
-      type="submit"
-      [disabled]="formularioCombustible.invalid"
-    >
-      Registrar
-    </ion-button>
-  </form>
+        <!-- Monto -->
+        <ion-item>
+          <ion-label position="floating">Monto</ion-label>
+          <ion-input
+            type="text"
+            inputmode="numeric"
+            [value]="montoFormateado"
+            (ionInput)="formatearMonto($event)">
+          </ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="monto?.invalid && monto?.touched">
+          <p *ngIf="monto?.errors?.['required']">El monto es obligatorio.</p>
+          <p *ngIf="monto?.errors?.['min']">El monto no puede ser negativo.</p>
+        </ion-text>
+
+        <!-- Adjuntar archivo -->
+        <ion-item lines="none" class="adjuntar-archivo-item">
+          <ion-label class="adjuntar-archivo-label">Boleta</ion-label>
+          <ion-button (click)="fileInput.click()" fill="outline" size="small">
+            Seleccionar archivo
+          </ion-button>
+          <input
+            #fileInput
+            type="file"
+            accept=".pdf,.jpg,.jpeg,.png,.heic"
+            hidden
+            (change)="manejarArchivo($event)">
+        </ion-item>
+        <ion-text color="danger" *ngIf="archivo?.invalid && archivo?.touched">
+          <p *ngIf="archivo?.errors?.['required']">Debes adjuntar la boleta.</p>
+          <p *ngIf="archivo?.errors?.['tipoInvalido']">
+            Solo se permiten imágenes o PDF.
+          </p>
+        </ion-text>
+
+        <!-- Botón de enviar -->
+        <ion-button
+          class="boton-registrar"
+          expand="block"
+          type="submit"
+          [disabled]="formularioCombustible.invalid">
+          Registrar
+        </ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

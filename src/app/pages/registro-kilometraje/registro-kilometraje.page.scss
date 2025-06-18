@@ -13,12 +13,10 @@ ion-content {
 
     ion-card-subtitle {
         font-size: 0.9rem;
-        color: var(--ion-text-color);
     }
 
     ion-card-title {
         font-size: 1.2rem;
-        color: #64b5f6;
         font-weight: bold;
     }
 }
@@ -34,7 +32,6 @@ ion-content {
 
     ion-card-title {
         font-size: 1.3rem;
-        color: #64b5f6;
         margin-bottom: 12px;
     }
 
@@ -101,9 +98,5 @@ ion-button {
     ion-label,
     ion-input {
         --color: #ffffff;
-    }
-
-    ion-card-title {
-        color: #90caf9; // Azul pastel claro para modo oscuro
     }
 }
