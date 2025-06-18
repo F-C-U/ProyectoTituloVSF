@@ -1,31 +1,297 @@
+/* Paleta de azules pastel basada en #64b5f6 */
 :host {
-    --ion-background-color: #ffffff;
-    --ion-text-color: #000000;
+    /* Modo claro */
+    --ion-color-primary: #64b5f6;
+    /* Azul pastel principal */
+    --ion-color-primary-rgb: 100, 181, 246;
+    --ion-color-primary-contrast: #000000;
+    /* Contraste con negro para mejor legibilidad */
+    --ion-color-primary-contrast-rgb: 0, 0, 0;
+    --ion-color-primary-shade: #58a0d8;
+    /* Tono más oscuro */
+    --ion-color-primary-tint: #74bcf7;
+    /* Tono más claro */
+
+    --ion-color-secondary: #90caf9;
+    /* Azul claro secundario */
+    --ion-color-secondary-rgb: 144, 202, 249;
+    --ion-color-secondary-contrast: #000000;
+    --ion-color-secondary-contrast-rgb: 0, 0, 0;
+    --ion-color-secondary-shade: #7fb2db;
+    --ion-color-secondary-tint: #9bcffa;
+
+    --ion-background-color: #e3f2fd;
+    /* Fondo azul muy claro */
+    --ion-background-color-rgb: 227, 242, 253;
+    --ion-text-color: #0d47a1;
+    /* Texto azul oscuro */
+    --ion-text-color-rgb: 13, 71, 161;
+    --ion-border-color: rgba(100, 181, 246, 0.2);
+
+    --card-background: #ffffff;
+    --input-background: #f5f9ff;
+    /* Fondo de inputs más claro */
+    --input-focus-background: #ffffff;
+    --shadow-color: rgba(100, 181, 246, 0.15);
+    --light-text: #64b5f6;
+    /* Texto secundario azul pastel */
 }
 
+/* Modo oscuro con azules pastel */
 @media (prefers-color-scheme: dark) {
     :host {
-        --ion-background-color: #000000;
-        --ion-text-color: #cccccc;
+        --ion-background-color: #0d1b2a;
+        /* Fondo azul muy oscuro */
+        --ion-background-color-rgb: 13, 27, 42;
+        --ion-text-color: #e3f2fd;
+        /* Texto azul claro */
+        --ion-text-color-rgb: 227, 242, 253;
+        --ion-border-color: rgba(100, 181, 246, 0.3);
+
+        --card-background: #1b263b;
+        /* Tarjeta azul oscuro */
+        --input-background: #2a3a5a;
+        /* Inputs azul medio oscuro */
+        --input-focus-background: #334b6e;
+        --shadow-color: rgba(0, 0, 0, 0.4);
+        --light-text: #90caf9;
+        /* Texto secundario azul claro */
     }
 }
 
-ion-content {
-    background-color: var(--ion-background-color);
+/* Estilos generales */
+.login-content {
+    --background: var(--ion-background-color);
     color: var(--ion-text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-ion-item, ion-label, ion-input, ion-note {
-    --color: var(--ion-text-color);
-    font-size: 14px;
+.login-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
 }
 
-ion-button {
-    margin-top: 20px;
+.login-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-secondary) 100%);
+    opacity: 0.08;
+    z-index: 0;
 }
 
-form {
+.login-card {
+    background-color: var(--card-background);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px var(--shadow-color);
+    width: 100%;
+    max-width: 420px;
+    overflow: hidden;
+    z-index: 1;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px var(--shadow-color);
+}
+
+/* Encabezado de la tarjeta */
+.card-header {
+    padding: 32px 24px 16px;
+    text-align: center;
+    background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-secondary));
+    color: white;
+    position: relative;
+}
+
+.app-logo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.app-logo ion-icon {
+    font-size: 48px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    padding: 12px;
+    color: #fff;
+}
+
+.card-header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: #fff;
+}
+
+.card-header p {
+    font-size: 1rem;
+    opacity: 0.9;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Contenido de la tarjeta */
+.card-content {
+    padding: 24px;
+}
+
+/* Formulario */
+.login-form {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 20px;
+}
+
+.form-group {
+    position: relative;
+}
+
+.input-with-icon {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--light-text);
+    font-size: 20px;
+    z-index: 1;
+}
+
+ion-item {
+    --background: var(--input-background);
+    --border-radius: 8px;
+    --padding-start: 48px;
+    --inner-padding-end: 16px;
+    --min-height: 56px;
+    border-radius: 8px;
+    margin-top: 4px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+ion-item:focus-within {
+    --background: var(--input-focus-background);
+    box-shadow: 0 0 0 2px var(--ion-color-primary);
+}
+
+ion-label {
+    color: var(--light-text);
+    font-size: 0.9rem;
+    font-weight: 400;
+    transform-origin: left center;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+ion-input {
+    --color: var(--ion-text-color);
+    --padding-top: 16px;
+    --padding-bottom: 8px;
+    font-size: 1rem;
+}
+
+ion-note {
+    display: block;
+    margin-top: 6px;
+    margin-left: 8px;
+    font-size: 0.85rem;
+}
+
+/* Botón de inicio de sesión */
+.login-button {
+    --background: var(--ion-color-primary);
+    --background-activated: var(--ion-color-primary-shade);
+    --background-hover: var(--ion-color-primary-tint);
+    --border-radius: 8px;
+    --padding-top: 16px;
+    --padding-bottom: 16px;
+    --box-shadow: none;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-top: 8px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.login-button:disabled {
+    --background: #bbdefb;
+    /* Azul claro apagado */
+    opacity: 0.7;
+}
+
+.login-button:not(:disabled):active {
+    transform: scale(0.98);
+}
+
+/* Pie de página */
+.card-footer {
+    padding: 16px 24px 24px;
+    text-align: center;
+    border-top: 1px solid var(--ion-border-color);
+}
+
+.footer-text {
+    color: var(--light-text);
+    font-size: 0.9rem;
+}
+
+.footer-link {
+    color: var(--ion-color-primary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+    color: var(--ion-color-primary-tint);
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .login-container {
+        padding: 16px;
+    }
+
+    .card-header {
+        padding: 24px 16px 12px;
+    }
+
+    .card-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .card-content {
+        padding: 20px 16px;
+    }
+
+    ion-toolbar {
+        height: 56px;
+    }
+}
+
+@media (max-width: 350px) {
+    .card-header h1 {
+        font-size: 1.3rem;
+    }
+
+    .card-header p {
+        font-size: 0.9rem;
+    }
 }

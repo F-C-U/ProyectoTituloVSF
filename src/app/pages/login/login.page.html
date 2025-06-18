@@ -4,25 +4,59 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding">
-  <form [formGroup]="formularioLogin" (ngSubmit)="onSubmit()">
+<ion-content class="login-content">
+  <div class="login-container">
+    <div class="login-background"></div>
+    
+    <div class="login-card">
+      <div class="card-header">
+        <div class="app-logo">
+          <ion-icon name="bus"></ion-icon>
+        </div>
+        <h1>Gestión de Colectivos</h1>
+        <p>Accede a tu cuenta</p>
+      </div>
 
-    <ion-item>
-      <ion-label position="floating">Correo Electrónico</ion-label>
-      <ion-input formControlName="correo" type="email" required></ion-input>
-    </ion-item>
-    <ion-note color="danger" *ngIf="formularioLogin.get('correo')?.touched && formularioLogin.get('correo')?.invalid">
-      Ingresa un correo válido.
-    </ion-note>
+      <div class="card-content">
+        <form [formGroup]="formularioLogin" (ngSubmit)="onSubmit()" class="login-form">
+          <!-- Correo -->
+          <div class="form-group">
+            <div class="input-with-icon">
+              <ion-icon name="mail" class="input-icon"></ion-icon>
+              <ion-item lines="none">
+                <ion-label position="floating">Correo Electrónico</ion-label>
+                <ion-input formControlName="correo" type="email" required></ion-input>
+              </ion-item>
+            </div>
+            <ion-note color="danger" *ngIf="formularioLogin.get('correo')?.touched && formularioLogin.get('correo')?.invalid">
+              Ingresa un correo válido.
+            </ion-note>
+          </div>
 
-    <ion-item>
-      <ion-label position="floating">Contraseña</ion-label>
-      <ion-input formControlName="contrasena" type="password" required></ion-input>
-    </ion-item>
+          <!-- Contraseña -->
+          <div class="form-group">
+            <div class="input-with-icon">
+              <ion-icon name="lock-closed" class="input-icon"></ion-icon>
+              <ion-item lines="none">
+                <ion-label position="floating">Contraseña</ion-label>
+                <ion-input formControlName="contrasena" type="password" required></ion-input>
+              </ion-item>
+            </div>
+          </div>
 
-    <ion-button expand="block" type="submit" [disabled]="formularioLogin.invalid">
-      Iniciar Sesión
-    </ion-button>
+          <!-- Botón -->
+          <ion-button expand="block" type="submit" [disabled]="formularioLogin.invalid" class="login-button">
+            Iniciar Sesión
+            <ion-icon slot="end" name="arrow-forward"></ion-icon>
+          </ion-button>
+        </form>
+      </div>
 
-  </form>
+      <div class="card-footer">
+        <p class="footer-text">¿Olvidaste tu contraseña?
+          <br>
+        <a href="#" class="footer-link">Restablecer mi contraseña</a></p>
+      </div>
+    </div>
+  </div>
 </ion-content>
