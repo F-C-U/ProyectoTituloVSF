@@ -32,7 +32,10 @@ export class RegistroVehiculoPage {
       dueno: [''],
       patente: [
         '',
-        [Validators.required, Validators.pattern(/^[B-DF-HJ-NP-TV-Z]{4}[0-9]{2}$/)]
+        [
+          Validators.required,
+          Validators.pattern(/^[B-DF-HJ-NP-TV-Z]{4}[0-9]{2}$/),
+        ],
       ],
       marca: ['', [Validators.required, Validators.maxLength(30)]], // Nuevo campo
       modelo: ['', [Validators.required, Validators.maxLength(50)]],
@@ -53,7 +56,7 @@ export class RegistroVehiculoPage {
   procesarPatente(event: any) {
     let valor = event.target.value
       .toUpperCase()
-      .replace(/[^A-Z0-9]/g, '')
+      .replace(/[^B-DF-HJ-NP-TV-Z0-9]/g, '')
       .slice(0, 6);
 
     this.vehiculoForm.get('patente')?.setValue(valor);
@@ -100,7 +103,6 @@ export class RegistroVehiculoPage {
             this.vehiculoForm.value
           );
           this.utils.saveInLocalStorage('vehiculo', this.vehiculoForm.value);
-          this.vehiculoForm.reset();
         }
       } catch (error) {
         this.utils.presentToast({
@@ -108,11 +110,18 @@ export class RegistroVehiculoPage {
           color: 'danger',
         });
       } finally {
-        loading.dismiss();
-        this.utils.presentToast({
-          message: 'Vehículo registrado correctamente',
-          color: 'success',
+        await loading.dismiss();
+        this.utils.presentAlert({
+          header: 'Vehículo registrado correctamente',
+          message:
+            this.vehiculoForm.value.marca +
+            ' ' +
+            this.vehiculoForm.value.modelo +
+            ' ' +
+            this.vehiculoForm.value.patente,
+          buttons: ['OK'],
         });
+        this.vehiculoForm.reset();
       }
     }
   }

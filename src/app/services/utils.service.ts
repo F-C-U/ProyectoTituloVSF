@@ -47,6 +47,7 @@ export class UtilsService {
   //Alerta de confirmacion
   async presentAlert(options: AlertOptions) {
     const alert = await this.alertCtrl.create(options);
+    await alert.present();
   }
 
   //Local Storage
