@@ -23,6 +23,7 @@ import { UtilsService } from 'src/app/services/utils.service';
 })
 export class RegistroMantenimientoPage {
   formularioMantenimiento: FormGroup;
+  vehiculoAsignado: string = 'Toyota Corolla 2020 - ABCD12'; 
   mensajeError: string | null = null;
   archivoAdjunto: File | null = null;
   fechaMin: string;

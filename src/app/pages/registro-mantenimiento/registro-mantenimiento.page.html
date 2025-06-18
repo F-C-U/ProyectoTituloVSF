@@ -1,92 +1,105 @@
-<ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>Registro de mantenimiento</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true" class="ion-padding">
-  <form
-    [formGroup]="formularioMantenimiento"
-    (ngSubmit)="registrarMantenimiento()"
-  >
-    <!-- Tipo de mantenimiento -->
-    <ion-item>
-      <ion-label position="floating">Tipo de mantenimiento</ion-label>
-      <ion-input formControlName="tipo" [readonly]="true"></ion-input>
-    </ion-item>
+  <!-- Vehículo asignado -->
+  <ion-card class="vehiculo-card">
+    <ion-card-header>
+      <ion-card-subtitle>COLECTIVO</ion-card-subtitle>
+      <ion-card-title>{{ vehiculoAsignado }}</ion-card-title>
+    </ion-card-header>
+  </ion-card>
 
-    <!-- Fecha del servicio -->
-    <ion-item>
-      <ion-label>Fecha del servicio</ion-label>
-      <ion-datetime-button datetime="fechaServicio"></ion-datetime-button>
-    </ion-item>
+  <!-- Formulario -->
+  <ion-card class="form-card">
+    <ion-card-header>
+      <ion-card-title>Datos del mantenimiento</ion-card-title>
+    </ion-card-header>
 
-    <ion-datetime
-      id="fechaServicio"
-      presentation="date"
-      formControlName="fecha"
-      [min]="fechaMin"
-      [max]="fechaMax"
-      done-text="Aceptar"
-      cancel-text="Cancelar"
-      prefer-wheel="false"
-    ></ion-datetime>
+    <ion-card-content>
+      <form
+        [formGroup]="formularioMantenimiento"
+        (ngSubmit)="registrarMantenimiento()"
+      >
+        <!-- Tipo de mantenimiento -->
+        <ion-item>
+          <ion-label position="floating">Tipo de mantenimiento</ion-label>
+          <ion-input formControlName="tipo" readonly></ion-input>
+        </ion-item>
 
-    <!-- Errores de fecha -->
-    <ion-text
-      color="danger"
-      *ngIf="formularioMantenimiento.get('fecha')?.hasError('fechaMayorAHoy')"
-    >
-      La fecha no puede ser mayor a hoy.
-    </ion-text>
-    <ion-text
-      color="danger"
-      *ngIf="formularioMantenimiento.get('fecha')?.hasError('fechaMuyAntigua')"
-    >
-      La fecha no puede ser anterior a hace 10 años.
-    </ion-text>
+        <!-- Fecha del servicio -->
+        <ion-item>
+          <ion-label>Fecha del servicio</ion-label>
+          <ion-datetime-button datetime="fechaServicio"></ion-datetime-button>
+        </ion-item>
 
-    <!-- Costo -->
-    <ion-item>
-      <ion-label position="floating">Costo (CLP)</ion-label>
-      <ion-input
-        formControlName="costo"
-        inputmode="decimal"
-        (ionInput)="formatearCosto($event)"
-        placeholder="$0"
-      ></ion-input>
-    </ion-item>
+        <ion-datetime
+          id="fechaServicio"
+          presentation="date"
+          formControlName="fecha"
+          [min]="fechaMin"
+          [max]="fechaMax"
+          done-text="Aceptar"
+          cancel-text="Cancelar"
+          prefer-wheel="false"
+        ></ion-datetime>
 
-    <!-- Subida de archivo -->
-    <ion-item lines="none">
-      <ion-label>Archivo</ion-label>
-      <ion-button (click)="fileInput.click()" expand="block" fill="outline">
-        Seleccionar archivo
-      </ion-button>
-      <input
-        #fileInput
-        type="file"
-        accept=".pdf,.jpg,.jpeg,.png,.heic"
-        hidden
-        (change)="manejarArchivo($event)"
-      />
-    </ion-item>
-    <ion-text *ngIf="archivoAdjunto" color="medium">
-      Archivo seleccionado: {{ archivoAdjunto.name }}
-    </ion-text>
+        <!-- Errores de fecha -->
+        <ion-text
+          color="danger"
+          *ngIf="formularioMantenimiento.get('fecha')?.hasError('fechaMayorAHoy')"
+        >
+          La fecha no puede ser mayor a hoy.
+        </ion-text>
+        <ion-text
+          color="danger"
+          *ngIf="formularioMantenimiento.get('fecha')?.hasError('fechaMuyAntigua')"
+        >
+          La fecha no puede ser anterior a hace 10 años.
+        </ion-text>
 
-    <!-- Mensaje general de error -->
-    <ion-text color="danger" *ngIf="mensajeError">
-      {{ mensajeError }}
-    </ion-text>
+        <!-- Costo -->
+        <ion-item>
+          <ion-label position="floating">Costo (CLP)</ion-label>
+          <ion-input
+            formControlName="costo"
+            inputmode="decimal"
+            (ionInput)="formatearCosto($event)"
+            placeholder="$0"
+          ></ion-input>
+        </ion-item>
 
-    <!-- Botón de envío -->
-    <ion-button
-      type="submit"
-      expand="block"
-      [disabled]="formularioMantenimiento.invalid"
-    >
-      Registrar Mantenimiento
-    </ion-button>
-  </form>
+        <!-- Subida de archivo -->
+        <ion-item lines="none" class="adjuntar-archivo-item">
+          <ion-label class="adjuntar-archivo-label">Boleta</ion-label>
+          <ion-button (click)="fileInput.click()" fill="outline" size="small">
+            Seleccionar archivo
+          </ion-button>
+          <input
+            #fileInput
+            type="file"
+            accept=".pdf,.jpg,.jpeg,.png,.heic"
+            hidden
+            (change)="manejarArchivo($event)"
+          />
+        </ion-item>
+
+        <ion-text *ngIf="archivoAdjunto" color="medium">
+          Archivo seleccionado: {{ archivoAdjunto.name }}
+        </ion-text>
+
+        <!-- Mensaje general de error -->
+        <ion-text color="danger" *ngIf="mensajeError">
+          {{ mensajeError }}
+        </ion-text>
+
+        <!-- Botón de envío -->
+        <ion-button
+          class="boton-registrar"
+          type="submit"
+          expand="block"
+          [disabled]="formularioMantenimiento.invalid"
+        >
+          Registrar
+        </ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
