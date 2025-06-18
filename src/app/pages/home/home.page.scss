@@ -1,52 +1,77 @@
-/* Fondo blanco permanente para toda la página */
-ion-content {
-    --background: white !important;
-    --ion-background-color: white !important;
-    background: white !important;
+:host {
+  .main-menu-content {
+    padding: 24px 16px 16px 16px; // más espacio arriba
   }
-  
-  /* Contenedor de botones con fondo blanco */
-  .contenedor-botones {
-    display: grid;
-    gap: 24px;
-    padding: 24px;
-    max-width: 800px;
-    margin: 0 auto;
-    background: white; /* Fondo blanco adicional */
-  }
-  
-  /* Botones blancos con relieve */
-  .boton-blanco {
-    --background: white;
-    --color: black;
-    --border-radius: 12px;
-    --box-shadow: 
-      0 2px 4px rgba(0, 0, 0, 0.1),
-      inset 0 -3px 0 rgba(0, 0, 0, 0.1),
-      inset 0 2px 0 rgba(255, 255, 255, 0.5);
-    
-    --background-activated: #f0f0f0;
-    --box-shadow-activated: 
-      0 1px 2px rgba(0, 0, 0, 0.1),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-    
-    --border-width: 1px;
-    --border-color: rgba(0, 0, 0, 0.1);
-    
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  
-    &:hover:not(.ion-activated) {
-      transform: translateY(-2px);
-      --box-shadow: 
-        0 4px 8px rgba(0, 0, 0, 0.15),
-        inset 0 -3px 0 rgba(0, 0, 0, 0.1),
-        inset 0 2px 0 rgba(255, 255, 255, 0.5);
+
+  .bienvenida {
+    margin-top: 16px;
+    margin-bottom: 24px;
+    text-align: center;
+
+    h1 {
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--ion-color-medium);
+    }
+
+    :host-context([color-theme='dark']) & h1 {
+      color: #cccccc;
     }
   }
-  
-  /* Iconos negros */
-  ion-icon {
-    margin-right: 8px;
-    color: black;
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 16px;
   }
-  
+
+  .menu-card {
+    aspect-ratio: 1 / 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 16px;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+
+    ion-card-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .menu-icon {
+      font-size: 36px;
+      color: var(--ion-color-primary);
+    }
+
+    h2 {
+      font-size: 0.95rem;
+      margin: 0;
+      color: var(--ion-text-color, #000);
+    }
+
+    &:hover {
+      transform: scale(1.03);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  .cerrar-sesion {
+    .menu-icon {
+      color: var(--ion-color-danger);
+    }
+
+    h2 {
+      color: var(--ion-color-danger);
+    }
+  }
+
+  :host-context([color-theme='dark']) {
+    h2 {
+      color: #f0f0f0;
+    }
+  }
+}

@@ -1,58 +1,54 @@
-<ion-content>
-  <!-- Barra de título SIN botón de cerrar sesión -->
-  <ion-header>
-    <ion-toolbar color="primary">
-      <ion-title>Menú Principal</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="main-menu-content">
 
-  <!-- Grid centrado para los botones -->
-  <div class="contenedor-botones">
-    <!-- Botones originales -->
-    <ion-button 
-      class="boton-menu boton-blanco"
-      routerLink="/registro-vehiculo" 
-      routerDirection="forward">
-      <ion-icon name="car-sport" slot="start"></ion-icon>
-      Registro Vehículo
-    </ion-button>
+  <!-- Subtítulo de bienvenida -->
+  <div class="bienvenida">
+    <h1>Bienvenido a la App de Gestión de Colectivos Tomé-Dichato</h1>
+  </div>
 
-    <ion-button 
-      class="boton-menu boton-blanco"
-      routerLink="/registro-kilometraje">
-      <ion-icon name="speedometer" slot="start"></ion-icon>
-      Registro Kilometraje
-    </ion-button>
+  <!-- Grid de tarjetas -->
+  <div class="card-grid">
 
-    <ion-button 
-      class="boton-menu boton-blanco"
-      routerLink="/registro-combustible">
-      <ion-icon name="flash" slot="start"></ion-icon>
-      Registro Combustible
-    </ion-button>
+    <ion-card button routerLink="/registro-vehiculo" class="menu-card">
+      <ion-card-content>
+        <ion-icon name="car-sport-outline" class="menu-icon"></ion-icon>
+        <h2>Registrar Vehículo</h2>
+      </ion-card-content>
+    </ion-card>
 
-    <ion-button 
-      class="boton-menu boton-blanco"
-      routerLink="/mantenimiento">
-      <ion-icon name="construct" slot="start"></ion-icon>
-      Mantenimiento
-    </ion-button>
+    <ion-card button routerLink="/registro-kilometraje" class="menu-card">
+      <ion-card-content>
+        <ion-icon name="speedometer-outline" class="menu-icon"></ion-icon>
+        <h2>Registrar Kilometraje</h2>
+      </ion-card-content>
+    </ion-card>
 
-    <!-- NUEVO BOTÓN DE GANANCIAS (mismo estilo que los demás) -->
-    <ion-button 
-      class="boton-menu boton-blanco"
-      routerLink="/registrar-ganancia">
-      <ion-icon name="cash" slot="start"></ion-icon>
-      Registrar Ganancias
-    </ion-button>
+    <ion-card button routerLink="/registro-combustible" class="menu-card">
+      <ion-card-content>
+        <ion-icon name="flash-outline" class="menu-icon"></ion-icon>
+        <h2>Registrar Combustible</h2>
+      </ion-card-content>
+    </ion-card>
 
-    <!-- Botón de cierre de sesión (conserva su estilo diferenciado) -->
-    <ion-button 
-      class="boton-menu"
-      color="dark"
-      (click)="signOut()">
-      <ion-icon name="log-out" slot="start"></ion-icon>
-      Cerrar Sesión
-    </ion-button>
+    <ion-card button routerLink="/registro-mantenimiento" class="menu-card">
+      <ion-card-content>
+        <ion-icon name="construct-outline" class="menu-icon"></ion-icon>
+        <h2>Registrar Mantenimiento</h2>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card button routerLink="/registrar-ganancia" class="menu-card">
+      <ion-card-content>
+        <ion-icon name="cash-outline" class="menu-icon"></ion-icon>
+        <h2>Registrar Ganancias</h2>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card button (click)="signOut()" class="menu-card cerrar-sesion">
+      <ion-card-content>
+        <ion-icon name="log-out-outline" class="menu-icon"></ion-icon>
+        <h2>Cerrar Sesión</h2>
+      </ion-card-content>
+    </ion-card>
+
   </div>
 </ion-content>
