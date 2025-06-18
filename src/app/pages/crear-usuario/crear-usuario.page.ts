@@ -15,6 +15,7 @@ import { UtilsService } from 'src/app/services/utils.service';
 })
 export class CrearUsuarioPage {
   formularioUsuario: FormGroup;
+  showPassword: boolean = false; // Controla la visibilidad de la contraseña
 
   constructor(private fb: FormBuilder, private toastController: ToastController,private firebase:FirebaseService,private utils:UtilsService) {
     // Creamos el formulario con validaciones necesarias
@@ -27,6 +28,16 @@ export class CrearUsuarioPage {
       esDueno: [false],
       esConductor: [false]
     });
+  }
+
+  // Alterna la visibilidad de la contraseña
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleRole(roleName: 'esDueno' | 'esConductor') {
+    const currentValue = this.formularioUsuario.get(roleName)?.value;
+    this.formularioUsuario.get(roleName)?.setValue(!currentValue);
   }
 
   async mostrarMensaje(mensaje: string, color: string = 'primary') {

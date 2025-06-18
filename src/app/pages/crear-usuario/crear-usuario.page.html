@@ -1,57 +1,87 @@
-<ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>Crear Usuario</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true" class="form-container">
+  <!-- Contenedor adicional para centrar -->
+  <div class="centered-content">
+    <div class="form-card">
+      <div class="form-header">
+        <h2>Nuevo Usuario</h2>
+        <p>Complete todos los campos requeridos</p>
+      </div>
 
-<ion-content [fullscreen]="true" class="ion-padding">
-  <form [formGroup]="formularioUsuario" (ngSubmit)="onSubmit()">
+      <form [formGroup]="formularioUsuario" (ngSubmit)="onSubmit()" class="user-form">
+        <!-- Nombre -->
+        <div class="form-group">
+          <ion-item lines="none" class="form-input">
+            <ion-icon name="person-outline" slot="start"></ion-icon>
+            <ion-input formControlName="nombre" type="text" placeholder="Nombre" required></ion-input>
+          </ion-item>
+          <ion-note color="danger" *ngIf="formularioUsuario.get('nombre')?.touched && formularioUsuario.get('nombre')?.invalid">
+            Nombre es obligatorio (máx. 50 caracteres)
+          </ion-note>
+        </div>
 
-    <ion-item>
-      <ion-label position="floating">Nombre</ion-label>
-      <ion-input formControlName="nombre" type="text" required></ion-input>
-    </ion-item>
-    <ion-note color="danger" *ngIf="formularioUsuario.get('nombre')?.touched && formularioUsuario.get('nombre')?.invalid">
-      Nombre es obligatorio y debe tener máximo 50 caracteres.
-    </ion-note>
+        <!-- Apellido -->
+        <div class="form-group">
+          <ion-item lines="none" class="form-input">
+            <ion-icon name="people-outline" slot="start"></ion-icon>
+            <ion-input formControlName="apellido" type="text" placeholder="Apellido" required></ion-input>
+          </ion-item>
+          <ion-note color="danger" *ngIf="formularioUsuario.get('apellido')?.touched && formularioUsuario.get('apellido')?.invalid">
+            Apellido es obligatorio (máx. 50 caracteres)
+          </ion-note>
+        </div>
 
-    <ion-item>
-      <ion-label position="floating">Apellido</ion-label>
-      <ion-input formControlName="apellido" type="text" required></ion-input>
-    </ion-item>
-    <ion-note color="danger" *ngIf="formularioUsuario.get('apellido')?.touched && formularioUsuario.get('apellido')?.invalid">
-      Apellido es obligatorio y debe tener máximo 50 caracteres.
-    </ion-note>
+        <!-- Correo -->
+        <div class="form-group">
+          <ion-item lines="none" class="form-input">
+            <ion-icon name="mail-outline" slot="start"></ion-icon>
+            <ion-input formControlName="correo" type="email" placeholder="Correo Electrónico" required></ion-input>
+          </ion-item>
+          <ion-note color="danger" *ngIf="formularioUsuario.get('correo')?.touched && formularioUsuario.get('correo')?.invalid">
+            Ingresa un correo válido
+          </ion-note>
+        </div>
 
-    <ion-item>
-      <ion-label position="floating">Correo Electrónico</ion-label>
-      <ion-input formControlName="correo" type="email" required></ion-input>
-    </ion-item>
-    <ion-note color="danger" *ngIf="formularioUsuario.get('correo')?.touched && formularioUsuario.get('correo')?.invalid">
-      Ingresa un correo válido.
-    </ion-note>
+        <!-- Contraseña -->
+        <div class="form-group">
+          <ion-item lines="none" class="form-input">
+            <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+            <ion-input formControlName="contrasena" [type]="showPassword ? 'text' : 'password'" placeholder="Contraseña" required></ion-input>
+            <ion-button fill="clear" slot="end" (click)="togglePasswordVisibility()">
+              <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+            </ion-button>
+          </ion-item>
+          <ion-note color="danger" *ngIf="formularioUsuario.get('contrasena')?.touched && formularioUsuario.get('contrasena')?.invalid">
+            Mínimo 6 caracteres
+          </ion-note>
+        </div>
 
-    <ion-item>
-      <ion-label position="floating">Contraseña</ion-label>
-      <ion-input formControlName="contrasena" type="password" required></ion-input>
-    </ion-item>
-    <ion-note color="danger" *ngIf="formularioUsuario.get('contrasena')?.touched && formularioUsuario.get('contrasena')?.invalid">
-      Mínimo 6 caracteres de contraseña.
-    </ion-note>
+        <!-- Roles -->
+        <div class="roles-section">
+          <h3>Roles del Usuario</h3>
+          <p>Seleccione al menos un rol</p>
+          
+          <div class="roles-grid">
+            <ion-card [class.active]="formularioUsuario.get('esDueno')?.value" (click)="toggleRole('esDueno')">
+              <ion-icon name="business-outline"></ion-icon>
+              <h4>Dueño</h4>
+              <p>Acceso completo al sistema</p>
+              <ion-checkbox [checked]="formularioUsuario.get('esDueno')?.value" slot="end"></ion-checkbox>
+            </ion-card>
+            
+            <ion-card [class.active]="formularioUsuario.get('esConductor')?.value" (click)="toggleRole('esConductor')">
+              <ion-icon name="car-sport-outline"></ion-icon>
+              <h4>Conductor</h4>
+              <p>Gestión de vehículos asignados</p>
+              <ion-checkbox [checked]="formularioUsuario.get('esConductor')?.value" slot="end"></ion-checkbox>
+            </ion-card>
+          </div>
+        </div>
 
-    <ion-item lines="none">
-      <ion-checkbox formControlName="esDueno"></ion-checkbox>
-      <ion-label class="ion-margin-start">Dueño</ion-label>
-    </ion-item>
-
-    <ion-item lines="none">
-      <ion-checkbox formControlName="esConductor"></ion-checkbox>
-      <ion-label class="ion-margin-start">Conductor</ion-label>
-    </ion-item>
-
-    <ion-button expand="block" type="submit" [disabled]="formularioUsuario.invalid">
-      Crear Usuario
-    </ion-button>
-
-  </form>
+        <ion-button expand="block" type="submit" [disabled]="formularioUsuario.invalid" class="submit-button">
+          <ion-icon name="checkmark-circle" slot="start"></ion-icon>
+          Crear Usuario
+        </ion-button>
+      </form>
+    </div>
+  </div>
 </ion-content>
