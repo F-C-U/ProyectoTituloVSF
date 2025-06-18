@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { 
-  IonHeader, IonToolbar, IonTitle, IonContent,
+  IonContent,
   IonItem, IonInput, IonButton, IonLabel,
   IonCard, IonCardHeader, IonCardTitle, IonCardContent,
   AlertController
@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./registrar-ganancia.page.scss'],
   standalone: true,
   imports: [
-    IonHeader, IonToolbar, IonTitle, IonContent,
+    IonContent,
     IonItem, IonInput, IonButton, IonLabel,
     IonCard, IonCardHeader, IonCardTitle, IonCardContent,
     FormsModule, CommonModule

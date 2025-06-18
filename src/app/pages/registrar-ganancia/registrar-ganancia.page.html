@@ -1,14 +1,8 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Registrar Ganancia</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content class="ion-padding">
   <!-- Card con ancho máximo para móviles -->
   <ion-card class="card-centrada">
     <ion-card-header>
-      <ion-card-title>📊 Registrar Ganancia Diaria</ion-card-title>
+      <ion-card-title>Registrar ganancia</ion-card-title>
     </ion-card-header>
 
     <ion-card-content>
@@ -20,8 +14,7 @@
           <ion-input 
             [value]="patente" 
             readonly
-            label="Patente:"
-            placeholder="Ej: BCDE30">
+            label="Patente: XD-XD-12">
           </ion-input>
         </ion-item>
 
@@ -61,7 +54,7 @@
 
         <!-- Fecha (auto-generada) -->
         <ion-item lines="none">
-          <ion-label position="stacked">Fecha de Registro</ion-label>
+          <ion-label position="stacked">Fecha de registro</ion-label>
           <ion-input 
             [value]="fechaRegistro | date: 'mediumDate'"
             readonly
@@ -76,7 +69,7 @@
         (click)="registrarGanancia()"
         [disabled]="!ganancia || ganancia <= 0"
         class="boton-registrar">
-        💰 Registrar Ganancia
+        Registrar
       </ion-button>
     </ion-card-content>
   </ion-card>

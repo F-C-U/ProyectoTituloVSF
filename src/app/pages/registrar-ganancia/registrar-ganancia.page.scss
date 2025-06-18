@@ -1,41 +1,149 @@
-/* Centrado general */
-.card-centrada {
-  max-width: 100%;
-  margin: 0 auto;
-  
-  @media (min-width: 768px) {
-    max-width: 600px; /* Ancho máximo en tablets/desktop */
+:host {
+  .main-menu-content {
+    padding: 24px 16px 16px 16px; // más espacio arriba
+  }
+
+  .bienvenida {
+    margin-top: 16px;
+    margin-bottom: 24px;
+    text-align: center;
+
+    h1 {
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--ion-color-medium);
+    }
+
+    :host-context([color-theme='dark']) & h1 {
+      color: #cccccc;
+    }
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 16px;
+  }
+
+  .menu-card {
+    aspect-ratio: 1 / 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 16px;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+
+    ion-card-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .menu-icon {
+      font-size: 36px;
+      color: var(--ion-color-primary);
+    }
+
+    h2 {
+      font-size: 0.95rem;
+      margin: 0;
+      color: var(--ion-text-color, #000);
+    }
+
+    &:hover {
+      transform: scale(1.03);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  .cerrar-sesion {
+    .menu-icon {
+      color: var(--ion-color-danger);
+    }
+    h2 {
+      color: var(--ion-color-danger);
+    }
+  }
+
+  :host-context([color-theme='dark']) {
+    h2 {
+      color: #f0f0f0;
+    }
   }
 }
 
-/* Contenedor responsivo */
-.contenedor-inputs {
-  width: 100%;
-  
-  ion-item {
-    --padding-start: 0;
-    --inner-padding-end: 0;
-  }
+:host {
+  display: block;
+  height: 100%;
 }
 
-/* Ajuste para botones de incremento */
+ion-content {
+  --background: var(--ion-background-color);
+  color: var(--ion-text-color);
+}
+
+.boton-registrar{
+  --background: #64b5f6;
+}
+
+ion-card {
+  --background: var(--ion-item-background, var(--ion-background-color));
+  color: var(--ion-text-color);
+  margin-bottom: 1rem;
+}
+
+ion-item {
+  --background: transparent;
+}
+
+ion-button {
+  margin-top: 1rem;
+}
+
+.boton-registrar {
+  margin-top: 1rem;
+}
+
 .botones-monto {
   display: flex;
-  flex-direction: column; /* Apila verticalmente en móviles */
+  flex-direction: column;
   gap: 4px;
-  
+  padding-left: 8px;
+
   @media (min-width: 480px) {
-    flex-direction: row; /* Horizontal en pantallas más grandes */
+    flex-direction: row;
   }
-  
+
   .boton-incremento {
-    --padding-start: 8px;
-    --padding-end: 8px;
     font-size: 0.9rem;
   }
 }
 
-/* Mejora para el botón principal */
-.boton-registrar {
-  margin-top: 16px;
+// Modo claro
+@media (prefers-color-scheme: light) {
+  :host {
+    --ion-background-color: #ffffff;
+    --ion-text-color: #000000;
+  }
+
+  ion-toolbar {
+    --background: #d0e8ff; // Azul pastel claro
+    --color: #000;
+  }
+}
+
+// Modo oscuro
+@media (prefers-color-scheme: dark) {
+  :host {
+    --ion-background-color: #121212;
+    --ion-text-color: #ffffff;
+  }
+
+  ion-toolbar {
+    --background: #1f2b3a; // Azul pastel oscuro
+    --color: #fff;
+  }
 }
