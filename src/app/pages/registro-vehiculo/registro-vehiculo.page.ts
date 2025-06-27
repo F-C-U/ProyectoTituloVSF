@@ -40,7 +40,7 @@ export class RegistroVehiculoPage {
           Validators.pattern(/^[B-DF-HJ-NP-TV-Z]{4}[0-9]{2}$/),
         ],
       ],
-      marca: ['', [Validators.required, Validators.maxLength(30)]], // Nuevo campo
+      marca: ['', [Validators.required, Validators.maxLength(30)]],
       modelo: ['', [Validators.required, Validators.maxLength(50)]],
       anio: [
         '',
@@ -51,6 +51,7 @@ export class RegistroVehiculoPage {
         ],
       ],
       tipoCombustible: ['', Validators.required],
+      octanaje: [''], // <--- Agrega este control
       activo: [false],
     });
   }
@@ -186,5 +187,9 @@ export class RegistroVehiculoPage {
 
   get tipoCombustible() {
     return this.vehiculoForm.get('tipoCombustible');
+  }
+
+  get octanaje() {
+    return this.vehiculoForm.get('octanaje');
   }
 }

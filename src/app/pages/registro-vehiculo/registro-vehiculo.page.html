@@ -55,11 +55,23 @@
             <ion-select-option value="gasolina">Gasolina</ion-select-option>
             <ion-select-option value="diesel">Diésel</ion-select-option>
             <ion-select-option value="electrico">Eléctrico</ion-select-option>
-            <ion-select-option value="hibrido">Híbrido</ion-select-option>
           </ion-select>
         </ion-item>
         <ion-text color="danger" *ngIf="tipoCombustible?.invalid && tipoCombustible?.touched">
           <small>Selecciona un tipo de combustible.</small>
+        </ion-text>
+
+        <!-- Octanaje solo si es gasolina -->
+        <ion-item lines="full" *ngIf="tipoCombustible?.value === 'gasolina'">
+          <ion-label position="floating">Octanaje</ion-label>
+          <ion-select formControlName="octanaje" interface="popover">
+            <ion-select-option value="93">93 octanos</ion-select-option>
+            <ion-select-option value="95">95 octanos</ion-select-option>
+            <ion-select-option value="97">97 octanos</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-text color="danger" *ngIf="tipoCombustible?.value === 'gasolina' && octanaje?.invalid && octanaje?.touched">
+          <small>Selecciona el octanaje.</small>
         </ion-text>
 
         <!-- Toggle Activo -->
