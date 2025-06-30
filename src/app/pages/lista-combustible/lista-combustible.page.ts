@@ -22,8 +22,15 @@ import { NavigationExtras } from '@angular/router';
     </ion-header>
 
     <ion-content class="ion-padding">
-      <img *ngIf="esImagen(ruta)" [src]="ruta" alt="Boleta" style="max-width: 100%; height: auto;" />
-      <p *ngIf="!esImagen(ruta)">Formato no compatible para previsualización.</p>
+      <img
+        *ngIf="esImagen(ruta)"
+        [src]="ruta"
+        alt="Boleta"
+        style="max-width: 100%; height: auto;"
+      />
+      <p *ngIf="!esImagen(ruta)">
+        Formato no compatible para previsualización.
+      </p>
     </ion-content>
   `,
   imports: [IonicModule, CommonModule],
@@ -47,34 +54,44 @@ export class VerBoletaModalComponent {
   selector: 'app-lista-combustible',
   templateUrl: './lista-combustible.page.html',
   styleUrls: ['./lista-combustible.page.scss'],
-  imports: [IonicModule, CommonModule, FormsModule, VerBoletaModalComponent]
+  imports: [IonicModule, CommonModule, FormsModule],
 })
 export class ListaCombustiblePage {
   constructor(
     private firebase: FirebaseService,
     private modalCtrl: ModalController,
-    private utils:UtilsService
+    private utils: UtilsService
   ) {
     this.obtenerRegistros();
   }
 
-  registrosCombustible: { id: string, fecha: string; monto: number; patente: string; urlBoleta: string; }[] = [];
+  registrosCombustible: {
+    id: string;
+    fecha: string;
+    monto: number;
+    patente: string;
+    urlBoleta: string;
+  }[] = [];
 
   mesSeleccionado: string = '';
   anioSeleccionado: string = '';
 
   get mesesDisponibles(): string[] {
-    const meses = new Set(this.registrosCombustible.map(r => r.fecha.split('-')[1]));
+    const meses = new Set(
+      this.registrosCombustible.map((r) => r.fecha.split('-')[1])
+    );
     return Array.from(meses).sort();
   }
 
   get aniosDisponibles(): string[] {
-    const anios = new Set(this.registrosCombustible.map(r => r.fecha.split('-')[0]));
+    const anios = new Set(
+      this.registrosCombustible.map((r) => r.fecha.split('-')[0])
+    );
     return Array.from(anios).sort();
   }
 
   get registrosFiltrados() {
-    return this.registrosCombustible.filter(r => {
+    return this.registrosCombustible.filter((r) => {
       const [anio, mes] = r.fecha.split('-');
       return (
         (!this.mesSeleccionado || mes === this.mesSeleccionado) &&
@@ -83,66 +100,75 @@ export class ListaCombustiblePage {
     });
   }
 
-  editarCombustible(id:string) {
+  async editarCombustible(id: string) {
+    const loading = await this.utils.loading();
+    await loading.present();
     const xtras: NavigationExtras = {
       state: {
-        id:id
-      }
+        id: id,
+      },
     };
     this.utils.routerLinkWithExtras('editar-combustible', xtras);
+    await loading.dismiss();
   }
 
   async eliminarCombustible(fecha: any) {
-   this.utils.presentAlert({
+    this.utils.presentAlert({
       header: 'Confirmar Eliminación',
       message: `¿Estás seguro de eliminar el registro de combustible del ${fecha}?`,
       buttons: [
         {
           text: 'Cancelar',
-          role: 'cancel'
+          role: 'cancel',
         },
         {
           text: 'Eliminar',
           handler: () => {
-            this.firebase.deleteDocument(`combustible/${fecha}`).then(() => {
-              this.utils.presentToast({
-                message: 'Registro eliminado correctamente.',
-                duration: 2000,
-                color: 'success'
+            this.firebase
+              .deleteDocument(`combustible/${fecha}`)
+              .then(() => {
+                this.utils.presentToast({
+                  message: 'Registro eliminado correctamente.',
+                  duration: 2000,
+                  color: 'success',
+                });
+                this.obtenerRegistros();
+              })
+              .catch((error) => {
+                console.error('Error al eliminar el registro:', error);
+                this.utils.presentToast({
+                  message: 'Error al eliminar el registro.',
+                  duration: 2000,
+                  color: 'danger',
+                });
               });
-              this.obtenerRegistros();
-            }).catch(error => {
-              console.error('Error al eliminar el registro:', error);
-              this.utils.presentToast({
-                message: 'Error al eliminar el registro.',
-                duration: 2000,
-                color: 'danger'
-              });
-            });
-          }
-        }
-      ]
-   })
+          },
+        },
+      ],
+    });
   }
 
   obtenerRegistros() {
     this.firebase.getCollection('combustible').subscribe((data: any[]) => {
       console.log('Datos obtenidos:', data);
-      this.registrosCombustible = data.map(item => ({
+      this.registrosCombustible = data.map((item) => ({
         id: item.id,
         fecha: item.fecha,
         monto: item.monto,
         patente: item.patente,
-        urlBoleta: item.archivo
+        urlBoleta: item.archivo,
       }));
-      console.log('Registros de combustible obtenidos:', this.registrosCombustible);
+      console.log(
+        'Registros de combustible obtenidos:',
+        this.registrosCombustible
+      );
     });
   }
 
   async verBoleta(ruta: string): Promise<void> {
     const modal = await this.modalCtrl.create({
       component: VerBoletaModalComponent,
-      componentProps: { ruta }
+      componentProps: { ruta },
     });
     await modal.present();
   }
