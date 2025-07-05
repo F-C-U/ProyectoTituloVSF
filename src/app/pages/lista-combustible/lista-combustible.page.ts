@@ -53,12 +53,18 @@ export class ListaCombustiblePage {
   constructor(
     private firebase: FirebaseService,
     private modalCtrl: ModalController,
-    private utils:UtilsService
+    private utils: UtilsService
   ) {
     this.obtenerRegistros();
   }
 
-  registrosCombustible: { id: string, fecha: string; monto: number; patente: string; urlBoleta: string; }[] = [];
+  registrosCombustible: {
+    id: string,
+    fecha: string,
+    monto: number,
+    patente: string,
+    urlBoleta: string
+  }[] = [];
 
   mesSeleccionado: string = '';
   anioSeleccionado: string = '';
@@ -83,17 +89,38 @@ export class ListaCombustiblePage {
     });
   }
 
-  editarCombustible(id:string) {
+  editarCombustible(id: string) {
+    const registro = this.registrosCombustible.find(r => r.id === id);
+
+    if (!registro) {
+      this.utils.presentToast({
+        message: 'Registro no encontrado',
+        duration: 2000,
+        color: 'danger'
+      });
+      return;
+    }
+
+    const hoy = new Date().toISOString().split('T')[0]; // formato: yyyy-mm-dd
+    const fechaRegistro = registro.fecha.split('T')[0]; // por si viene con hora
+
+    if (fechaRegistro !== hoy) {
+      this.utils.presentToast({
+        message: 'Solo puedes editar registros creados hoy',
+        duration: 3000,
+        color: 'warning'
+      });
+      return;
+    }
+
     const xtras: NavigationExtras = {
-      state: {
-        id:id
-      }
+      state: { id }
     };
     this.utils.routerLinkWithExtras('editar-combustible', xtras);
   }
 
   async eliminarCombustible(fecha: any) {
-   this.utils.presentAlert({
+    this.utils.presentAlert({
       header: 'Confirmar Eliminación',
       message: `¿Estás seguro de eliminar el registro de combustible del ${fecha}?`,
       buttons: [
@@ -122,12 +149,11 @@ export class ListaCombustiblePage {
           }
         }
       ]
-   })
+    });
   }
 
   obtenerRegistros() {
     this.firebase.getCollection('combustible').subscribe((data: any[]) => {
-      console.log('Datos obtenidos:', data);
       this.registrosCombustible = data.map(item => ({
         id: item.id,
         fecha: item.fecha,
@@ -135,7 +161,6 @@ export class ListaCombustiblePage {
         patente: item.patente,
         urlBoleta: item.archivo
       }));
-      console.log('Registros de combustible obtenidos:', this.registrosCombustible);
     });
   }
 
