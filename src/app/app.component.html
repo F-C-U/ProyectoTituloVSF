@@ -1,23 +1,23 @@
 <ion-app>
   <!-- Menú lateral (solo visible en rutas permitidas) -->
   @if (mostrarMenu()) {
-  <ion-menu 
+  <ion-menu
     #mainMenu
-    contentId="main-content" 
-    type="overlay" 
+    contentId="main-content"
+    type="overlay"
     menuId="main-menu"
     (ionWillOpen)="onMenuChange($event)"
     (ionWillClose)="onMenuChange($event)"
     (ionDidOpen)="onMenuChange($event)"
     (ionDidClose)="onMenuChange($event)"
-    class="custom-menu">
-    
+    class="custom-menu"
+  >
     <ion-header class="menu-header">
       <ion-toolbar>
         <ion-title class="menu-title">Menú Principal</ion-title>
       </ion-toolbar>
     </ion-header>
-    
+
     <ion-content class="ion-padding fondo-menu">
       <div class="user-info">
         <div class="user-details">
@@ -25,20 +25,25 @@
           <p class="user-role">Conductor</p>
         </div>
       </div>
-      
+
       <ion-list lines="none" class="menu-list">
         @for (pagina of paginas(); track pagina.url) {
-        <ion-item 
+        <ion-item
           (click)="navegar(pagina.url)"
-          detail="false" 
+          detail="false"
           class="item-menu"
-          [class.active]="router.url === pagina.url">
-          <ion-icon [name]="pagina.icono" slot="start" class="menu-icon"></ion-icon>
+          [class.active]="router.url === pagina.url"
+        >
+          <ion-icon
+            [name]="pagina.icono"
+            slot="start"
+            class="menu-icon"
+          ></ion-icon>
           <ion-label>{{ pagina.titulo }}</ion-label>
         </ion-item>
         }
       </ion-list>
-      
+
       <div class="menu-footer">
         <ion-button expand="block" fill="clear" class="logout-button">
           <ion-icon name="log-out" slot="start"></ion-icon>
@@ -58,7 +63,10 @@
         <ion-buttons slot="start">
           <!-- FLECHA DE RETORNO solo si no estamos en home -->
           @if (router.url !== '/home') {
-            <ion-back-button defaultHref="/home" class="custom-back-button"></ion-back-button>
+          <ion-back-button
+            defaultHref="/home"
+            class="custom-back-button"
+          ></ion-back-button>
           }
           <!-- Botón que abre el menú -->
           <ion-menu-button class="custom-menu-button"></ion-menu-button>
@@ -72,7 +80,7 @@
       </ion-toolbar>
     </ion-header>
     }
-    
+
     <ion-content class="main-content">
       <ion-router-outlet></ion-router-outlet>
     </ion-content>

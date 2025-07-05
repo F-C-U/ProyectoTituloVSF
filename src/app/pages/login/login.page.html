@@ -1,7 +1,7 @@
 <ion-content class="login-content">
   <div class="login-container">
     <div class="login-background"></div>
-    
+
     <div class="login-card">
       <div class="card-header">
         <div class="app-logo">
@@ -12,17 +12,28 @@
       </div>
 
       <div class="card-content">
-        <form [formGroup]="formularioLogin" (ngSubmit)="onSubmit()" class="login-form">
+        <form
+          [formGroup]="formularioLogin"
+          (ngSubmit)="onSubmit()"
+          class="login-form"
+        >
           <!-- Correo -->
           <div class="form-group">
             <div class="input-with-icon">
               <ion-icon name="mail" class="input-icon"></ion-icon>
               <ion-item lines="none">
                 <ion-label position="floating">Correo Electrónico</ion-label>
-                <ion-input formControlName="correo" type="email" required></ion-input>
+                <ion-input
+                  formControlName="correo"
+                  type="email"
+                  required
+                ></ion-input>
               </ion-item>
             </div>
-            <ion-note color="danger" *ngIf="formularioLogin.get('correo')?.touched && formularioLogin.get('correo')?.invalid">
+            <ion-note
+              color="danger"
+              *ngIf="formularioLogin.get('correo')?.touched && formularioLogin.get('correo')?.invalid"
+            >
               Ingresa un correo válido.
             </ion-note>
           </div>
@@ -33,13 +44,21 @@
               <ion-icon name="lock-closed" class="input-icon"></ion-icon>
               <ion-item lines="none">
                 <ion-label position="floating">Contraseña</ion-label>
-                <ion-input formControlName="contrasena" type="password" required></ion-input>
+                <ion-input
+                  formControlName="contrasena"
+                  type="password"
+                  required
+                ></ion-input>
               </ion-item>
             </div>
           </div>
-
           <!-- Botón -->
-          <ion-button expand="block" type="submit" [disabled]="formularioLogin.invalid" class="login-button">
+          <ion-button
+            expand="block"
+            type="submit"
+            [disabled]="formularioLogin.invalid"
+            class="login-button"
+          >
             Iniciar Sesión
             <ion-icon slot="end" name="arrow-forward"></ion-icon>
           </ion-button>
@@ -47,9 +66,11 @@
       </div>
 
       <div class="card-footer">
-        <p class="footer-text">¿Olvidaste tu contraseña?
-          <br>
-        <a href="#" class="footer-link">Restablecer mi contraseña</a></p>
+        <p class="footer-text">
+          ¿Olvidaste tu contraseña?
+          <br />
+          <a href="#" class="footer-link">Restablecer mi contraseña</a>
+        </p>
       </div>
     </div>
   </div>
