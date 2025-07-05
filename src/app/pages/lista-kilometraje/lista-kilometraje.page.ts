@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
@@ -15,30 +15,31 @@ import { FirebaseService } from 'src/app/services/firebase.service';
 })
 export class ListaKilometrajePage {
 
-  constructor(private utils:UtilsService,private firebase: FirebaseService){
+  kilometrajes: { id: string; fecha: string; kilometraje: number; patenteVehiculo: string }[] = [];
+  mesSeleccionado: string = '';
+  anioSeleccionado: string = '';
 
-  }
-  ngOnInit(){
+  constructor(
+    private utils: UtilsService,
+    private firebase: FirebaseService
+  ) {}
+
+  ngOnInit() {
     this.obtenerKilometrajes();
   }
-  // Lista de registros de kilometraje
-  kilometrajes: {id:string, fecha: string; kilometraje: number; patenteVehiculo: String }[] = [];
+
   async obtenerKilometrajes() {
-   this.firebase.getCollection('kilometraje').subscribe((data: any[]) => {
+    this.firebase.getCollection('kilometraje').subscribe((data: any[]) => {
       this.kilometrajes = data.map((kilometraje) => ({
         id: kilometraje.id,
         fecha: kilometraje.fecha,
         kilometraje: kilometraje.kilometros,
         patenteVehiculo: kilometraje.patenteVehiculo
       }));
-    })
-    console.log(this.kilometrajes);
+    });
   }
-  // Valores seleccionados en el filtro
-  mesSeleccionado: string = '';
-  anioSeleccionado: string = '';
 
-  // Getters para filtros únicos de año y mes
+  // Getters para filtros
   get aniosDisponibles(): string[] {
     const anios = new Set(this.kilometrajes.map(k => k.fecha.split('-')[0]));
     return Array.from(anios).sort();
@@ -49,7 +50,6 @@ export class ListaKilometrajePage {
     return Array.from(meses).sort();
   }
 
-  // Filtra los datos según el mes y año seleccionados
   get kilometrajesFiltrados() {
     return this.kilometrajes.filter(k => {
       const [anio, mes] = k.fecha.split('-');
@@ -60,13 +60,36 @@ export class ListaKilometrajePage {
     });
   }
 
-  // Método para editar un registro (futura funcionalidad)
-  editarRegistro(id: String ) {
-    let xtras : NavigationExtras = {
-      state:{
-        id:id
-      }
+  // Solo permite editar si la fecha del registro es igual a la de hoy
+  editarRegistro(id: string) {
+    const registro = this.kilometrajes.find(k => k.id === id);
+
+    if (!registro) {
+      this.utils.presentToast({
+        message: 'Registro no encontrado',
+        duration: 2000,
+        color: 'danger'
+      });
+      return;
     }
+
+    const hoy = new Date();
+    const fechaHoy = hoy.toISOString().split('T')[0]; // e.g. '2025-07-05'
+    const fechaRegistro = registro.fecha.split('T')[0]; // por si incluye hora
+
+    if (fechaRegistro !== fechaHoy) {
+      this.utils.presentToast({
+        message: 'Solo puedes editar registros creados hoy',
+        duration: 3000,
+        color: 'warning'
+      });
+      return;
+    }
+
+    const xtras: NavigationExtras = {
+      state: { id }
+    };
+
     this.utils.routerLinkWithExtras('editar-kilometraje', xtras);
   }
 }
