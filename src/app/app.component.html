@@ -1,28 +1,23 @@
 <ion-app>
   <!-- Menú lateral (solo visible en rutas permitidas) -->
   @if (mostrarMenu()) {
-  <ion-menu 
+  <ion-menu
     #mainMenu
-    contentId="main-content" 
-    type="overlay" 
+    contentId="main-content"
+    type="overlay"
     menuId="main-menu"
     (ionWillOpen)="onMenuChange($event)"
     (ionWillClose)="onMenuChange($event)"
     (ionDidOpen)="onMenuChange($event)"
     (ionDidClose)="onMenuChange($event)"
-    class="custom-menu">
-    (ionDidClose)="onMenuChange($event)"
-    class="custom-menu">
-    
-    <ion-header class="menu-header">
-      <ion-toolbar>
-        <ion-title class="menu-title">Menú Principal</ion-title>
+    class="custom-menu"
+  >
     <ion-header class="menu-header">
       <ion-toolbar>
         <ion-title class="menu-title">Menú Principal</ion-title>
       </ion-toolbar>
     </ion-header>
-    
+
     <ion-content class="ion-padding fondo-menu">
       <div class="user-info">
         <div class="user-details">
@@ -30,30 +25,25 @@
           <p class="user-role">Conductor</p>
         </div>
       </div>
-      
+
       <ion-list lines="none" class="menu-list">
         @for (pagina of paginas(); track pagina.url) {
-        <ion-item 
+        <ion-item
           (click)="navegar(pagina.url)"
-          detail="false" 
+          detail="false"
           class="item-menu"
-          [class.active]="router.url === pagina.url">
-          <ion-icon [name]="pagina.icono" slot="start" class="menu-icon"></ion-icon>
-          class="item-menu"
-          [class.active]="router.url === pagina.url">
-          <ion-icon [name]="pagina.icono" slot="start" class="menu-icon"></ion-icon>
+          [class.active]="router.url === pagina.url"
+        >
+          <ion-icon
+            [name]="pagina.icono"
+            slot="start"
+            class="menu-icon"
+          ></ion-icon>
           <ion-label>{{ pagina.titulo }}</ion-label>
         </ion-item>
         }
       </ion-list>
-      
-      <div class="menu-footer">
-        <ion-button expand="block" fill="clear" class="logout-button">
-          <ion-icon name="log-out" slot="start"></ion-icon>
-          Cerrar Sesión
-        </ion-button>
-      </div>
-      
+
       <div class="menu-footer">
         <ion-button expand="block" fill="clear" class="logout-button">
           <ion-icon name="log-out" slot="start"></ion-icon>
@@ -70,22 +60,15 @@
     @if (mostrarMenu()) {
     <ion-header class="app-header">
       <ion-toolbar>
-    <ion-header class="app-header">
-      <ion-toolbar>
         <ion-buttons slot="start">
           <!-- FLECHA DE RETORNO solo si no estamos en home -->
           @if (router.url !== '/home') {
-            <ion-back-button defaultHref="/home" class="custom-back-button"></ion-back-button>
-            <ion-back-button defaultHref="/home" class="custom-back-button"></ion-back-button>
+          <ion-back-button
+            defaultHref="/home"
+            class="custom-back-button"
+          ></ion-back-button>
           }
           <!-- Botón que abre el menú -->
-          <ion-menu-button class="custom-menu-button"></ion-menu-button>
-        </ion-buttons>
-        <ion-title class="app-title">Colectivos Tomé</ion-title>
-        <ion-buttons slot="end">
-          <ion-button>
-            <ion-icon name="notifications" slot="icon-only"></ion-icon>
-          </ion-button>
           <ion-menu-button class="custom-menu-button"></ion-menu-button>
         </ion-buttons>
         <ion-title class="app-title">Colectivos Tomé</ion-title>
@@ -97,8 +80,7 @@
       </ion-toolbar>
     </ion-header>
     }
-    
-    <ion-content class="main-content">
+
     <ion-content class="main-content">
       <ion-router-outlet></ion-router-outlet>
     </ion-content>
