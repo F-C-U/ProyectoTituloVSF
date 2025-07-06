@@ -17,10 +17,12 @@ import {
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
   updateProfile,
+  signOut,
 } from '@angular/fire/auth';
 import { User } from '../models/user.model';
 import { Observable } from 'rxjs';
 import { query, where } from 'firebase/firestore';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -129,6 +131,7 @@ export class FirebaseService {
     const q = query(ref, where(field, operator, value));
     return collectionData(q, { idField: 'id' }); // incluye el id del documento si lo necesitas
   }
+
   getCurrentUser() {
     return this.auth.currentUser;
   }
@@ -144,15 +147,12 @@ export class FirebaseService {
     },
     vehiculoId: string
   ) {
-    const batchUpdates = [
+    const batchUpdates: Promise<any>[] = [
       updateDoc(doc(this.firestore, alertaId), {
         estado: 'resuelto',
         fechaResolucion: serverTimestamp(),
-      })
-    );
-
-    // 2. Crear registro de mantenimiento
-    batchUpdates.push(
+      }),
+      // 2. Crear registro de mantenimiento
       addDoc(collection(this.firestore, 'mantenimientos'), {
         ...datosMantencion,
         alertaId,
@@ -163,7 +163,6 @@ export class FirebaseService {
 
     const vehiculoDoc = await getDoc(doc(this.firestore, vehiculoId));
     if (vehiculoDoc.exists()) {
-      const data = vehiculoDoc.data();
       const tareaId = alertaId.split('/')[1]; // Extrae ID de la alerta
 
       batchUpdates.push(
