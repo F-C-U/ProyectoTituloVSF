@@ -21,9 +21,13 @@ import { UtilsService } from 'src/app/services/utils.service';
 })
 export class RegistroCombustiblePage {
   formularioCombustible: FormGroup;
-  vehiculoAsignado: string = 'Toyota Corolla 2020 - ABCD12';
   archivoAdjunto: File | null = null;
   montoFormateado: String = ''; // Monto mostrado con puntos
+  vehiculoAsignado: any = {
+    marca: '--',
+    modelo: '--',
+    patente: '--',
+  };
 
   constructor(
     private fb: FormBuilder,
@@ -40,7 +44,25 @@ export class RegistroCombustiblePage {
       archivo: [null, Validators.required],
     });
   }
+  async ngOnInit() {
+    const vehiculoStorage = this.utils.getFromlocalStorage('vehiculo');
 
+    if (
+      vehiculoStorage &&
+      vehiculoStorage.marca &&
+      vehiculoStorage.modelo &&
+      vehiculoStorage.patente
+    ) {
+      this.vehiculoAsignado = vehiculoStorage;
+    } else {
+      console.warn('Vehículo no encontrado en localStorage:', vehiculoStorage);
+      await this.utils.presentToast({
+        message: 'No se encontró vehículo asignado válido',
+        duration: 2500,
+        color: 'warning',
+      });
+    }
+  }
   // Manejar la carga de archivos
   async manejarArchivo(event: Event) {
     const input = event.target as HTMLInputElement;

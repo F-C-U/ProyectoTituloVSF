@@ -69,7 +69,7 @@ export class LoginPage {
         await this.firebase.getDocument(path).then((user: any | null) => {
           if (user) {
             this.utils.saveInLocalStorage('usuario', user);
-            this.utils.routerLink('home');
+            this.utils.routerLink('seleccionar-vehiculo');
             this.formularioLogin.reset();
           }
         });

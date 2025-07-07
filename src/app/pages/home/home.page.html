@@ -4,7 +4,7 @@
     <div class="welcome-container">
       <div class="welcome-text">
         <h1>Bienvenido</h1>
-        <p>Vito Bozzano</p>
+        <p>{{usuario.nombre + ' ' + usuario.apellido}}</p>
         <h3>Gestión de Colectivos Tomé-Dichato</h3>
       </div>
     </div>
@@ -13,7 +13,6 @@
   <!-- Grid de tarjetas mejorado -->
   <div class="card-grid-container">
     <div class="card-grid">
-
       <ion-card button routerLink="/registro-vehiculo" class="menu-card">
         <div class="card-icon-container">
           <ion-icon name="car-sport-outline" class="menu-icon"></ion-icon>
@@ -73,10 +72,9 @@
           <p>Salir de la aplicación</p>
         </ion-card-content>
       </ion-card>
-
     </div>
   </div>
-  
+
   <!-- Footer con información -->
   <div class="app-footer">
     <p>Colectivos Tomé-Dichato 2025</p>

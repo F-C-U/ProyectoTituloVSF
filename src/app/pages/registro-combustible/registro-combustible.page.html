@@ -3,7 +3,10 @@
   <ion-card class="vehiculo-card">
     <ion-card-header>
       <ion-card-subtitle>COLECTIVO</ion-card-subtitle>
-      <ion-card-title>{{ vehiculoAsignado }}</ion-card-title>
+      <ion-card-title
+        >{{ vehiculoAsignado.marca + ' ' + vehiculoAsignado.modelo + ' ' +
+        vehiculoAsignado.patente }}</ion-card-title
+      >
     </ion-card-header>
   </ion-card>
 
@@ -14,14 +17,17 @@
     </ion-card-header>
 
     <ion-card-content>
-      <form [formGroup]="formularioCombustible" (ngSubmit)="registrarCombustible()">
-
+      <form
+        [formGroup]="formularioCombustible"
+        (ngSubmit)="registrarCombustible()"
+      >
         <!-- Fecha -->
         <ion-item>
           <ion-label position="stacked">Fecha</ion-label>
           <ion-input
             readonly
-            [value]="formularioCombustible.get('fecha')?.value">
+            [value]="formularioCombustible.get('fecha')?.value"
+          >
           </ion-input>
         </ion-item>
 
@@ -32,7 +38,8 @@
             type="text"
             inputmode="numeric"
             [value]="montoFormateado"
-            (ionInput)="formatearMonto($event)">
+            (ionInput)="formatearMonto($event)"
+          >
           </ion-input>
         </ion-item>
         <ion-text color="danger" *ngIf="monto?.invalid && monto?.touched">
@@ -51,7 +58,8 @@
             type="file"
             accept=".pdf,.jpg,.jpeg,.png,.heic"
             hidden
-            (change)="manejarArchivo($event)">
+            (change)="manejarArchivo($event)"
+          />
         </ion-item>
         <ion-text color="danger" *ngIf="archivo?.invalid && archivo?.touched">
           <p *ngIf="archivo?.errors?.['required']">Debes adjuntar la boleta.</p>
@@ -65,7 +73,8 @@
           class="boton-registrar"
           expand="block"
           type="submit"
-          [disabled]="formularioCombustible.invalid">
+          [disabled]="formularioCombustible.invalid"
+        >
           Registrar
         </ion-button>
       </form>

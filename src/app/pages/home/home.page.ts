@@ -26,7 +26,7 @@ export class HomePage implements OnInit {
   private router = inject(Router);
   private firebaseSvc = inject(FirebaseService);
   private utilsSvc = inject(UtilsService);
-
+  usuario = this.utilsSvc.getFromlocalStorage('usuario')
   // ================== ESTADOS ==================
   private isNavigating = false;
   private navigationAttempts = new Map<string, number>();
