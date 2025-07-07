@@ -1,15 +1,21 @@
-<ion-content [fullscreen]="true" class="ion-padding">
-  <ion-card class="form-card">
-    <ion-card-header>
-      <ion-card-title>Datos del vehículo</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <form [formGroup]="vehiculoForm" (ngSubmit)="onSubmit()">
+<ion-content [fullscreen]="true" class="form-container">
+  <div class="form-card">
+    <div class="card-header">
+      <ion-icon name="car-sport-outline"></ion-icon>
+      <h2>Datos del vehículo</h2>
+      <p>Complete toda la información requerida</p>
+    </div>
 
-        <!-- Patente -->
-        <ion-item lines="full">
-          <ion-label position="floating">Patente</ion-label>
-          <ion-input type="text" maxlength="8" [value]="formatearPatente(patente?.value || '')"
+    <form [formGroup]="vehiculoForm" (ngSubmit)="onSubmit()" class="vehicle-form">
+      <!-- Patente -->
+      <div class="form-group">
+        <ion-item lines="none" class="form-input">
+          <ion-icon name="pricetag-outline" slot="start"></ion-icon>
+          <ion-input 
+            type="text" 
+            maxlength="8" 
+            placeholder="Patente"
+            [value]="formatearPatente(patente?.value || '')"
             (ionInput)="procesarPatente($event)">
           </ion-input>
         </ion-item>
@@ -17,41 +23,49 @@
           <small *ngIf="patente?.errors?.['required']">La patente es obligatoria.</small>
           <small *ngIf="patente?.errors?.['pattern']">Formato inválido. Ejemplo: XX-XX-12.</small>
         </ion-text>
+      </div>
 
-        <!-- Marca -->
-        <ion-item lines="full">
-          <ion-label position="floating">Marca</ion-label>
-          <ion-input formControlName="marca" type="text" maxlength="30"></ion-input>
+      <!-- Marca -->
+      <div class="form-group">
+        <ion-item lines="none" class="form-input">
+          <ion-icon name="logo-android" slot="start"></ion-icon>
+          <ion-input formControlName="marca" type="text" maxlength="30" placeholder="Marca"></ion-input>
         </ion-item>
         <ion-text color="danger" *ngIf="marca?.invalid && marca?.touched">
           <small *ngIf="marca?.errors?.['required']">La marca es obligatoria.</small>
           <small *ngIf="marca?.errors?.['maxlength']">Máximo 30 caracteres.</small>
         </ion-text>
+      </div>
 
-        <!-- Modelo -->
-        <ion-item lines="full">
-          <ion-label position="floating">Modelo</ion-label>
-          <ion-input formControlName="modelo" type="text"></ion-input>
+      <!-- Modelo -->
+      <div class="form-group">
+        <ion-item lines="none" class="form-input">
+          <ion-icon name="car-outline" slot="start"></ion-icon>
+          <ion-input formControlName="modelo" type="text" placeholder="Modelo"></ion-input>
         </ion-item>
         <ion-text color="danger" *ngIf="modelo?.invalid && modelo?.touched">
           <small *ngIf="modelo?.errors?.['required']">El modelo es obligatorio.</small>
           <small *ngIf="modelo?.errors?.['maxLength']">Máximo 50 caracteres.</small>
         </ion-text>
+      </div>
 
-        <!-- Año -->
-        <ion-item lines="full">
-          <ion-label position="floating">Año</ion-label>
-          <ion-input formControlName="anio" type="number"></ion-input>
+      <!-- Año -->
+      <div class="form-group">
+        <ion-item lines="none" class="form-input">
+          <ion-icon name="calendar-outline" slot="start"></ion-icon>
+          <ion-input formControlName="anio" type="number" placeholder="Año"></ion-input>
         </ion-item>
         <ion-text color="danger" *ngIf="anio?.invalid && anio?.touched">
           <small *ngIf="anio?.errors?.['required']">El año es obligatorio.</small>
           <small *ngIf="anio?.errors?.['min'] || anio?.errors?.['max']">Año inválido.</small>
         </ion-text>
+      </div>
 
-        <!-- Tipo de Combustible -->
-        <ion-item lines="full">
-          <ion-label position="floating">Tipo de combustible</ion-label>
-          <ion-select formControlName="tipoCombustible" interface="popover">
+      <!-- Tipo de Combustible -->
+      <div class="form-group">
+        <ion-item lines="none" class="form-input">
+          <ion-icon name="flash-outline" slot="start"></ion-icon>
+          <ion-select formControlName="tipoCombustible" interface="popover" placeholder="Tipo de combustible">
             <ion-select-option value="gasolina">Gasolina</ion-select-option>
             <ion-select-option value="diesel">Diésel</ion-select-option>
             <ion-select-option value="electrico">Eléctrico</ion-select-option>
@@ -60,11 +74,13 @@
         <ion-text color="danger" *ngIf="tipoCombustible?.invalid && tipoCombustible?.touched">
           <small>Selecciona un tipo de combustible.</small>
         </ion-text>
+      </div>
 
-        <!-- Octanaje solo si es gasolina -->
-        <ion-item lines="full" *ngIf="tipoCombustible?.value === 'gasolina'">
-          <ion-label position="floating">Octanaje</ion-label>
-          <ion-select formControlName="octanaje" interface="popover">
+      <!-- Octanaje solo si es gasolina -->
+      <div class="form-group" *ngIf="tipoCombustible?.value === 'gasolina'">
+        <ion-item lines="none" class="form-input">
+          <ion-icon name="speedometer-outline" slot="start"></ion-icon>
+          <ion-select formControlName="octanaje" interface="popover" placeholder="Octanaje">
             <ion-select-option value="93">93 octanos</ion-select-option>
             <ion-select-option value="95">95 octanos</ion-select-option>
             <ion-select-option value="97">97 octanos</ion-select-option>
@@ -73,18 +89,21 @@
         <ion-text color="danger" *ngIf="tipoCombustible?.value === 'gasolina' && octanaje?.invalid && octanaje?.touched">
           <small>Selecciona el octanaje.</small>
         </ion-text>
+      </div>
 
-        <!-- Toggle Activo -->
-        <ion-item lines="none" class="toggle-item">
+      <!-- Toggle Activo -->
+      <div class="toggle-container">
+        <ion-item lines="none">
+          <ion-icon name="power-outline" slot="start"></ion-icon>
           <ion-label>Vehículo activo</ion-label>
           <ion-toggle formControlName="activo" color="success"></ion-toggle>
         </ion-item>
+      </div>
 
-        <!-- Botón de envío -->
-        <ion-button expand="block" type="submit" [disabled]="vehiculoForm.invalid">
-          Registrar
-        </ion-button>
-      </form>
-    </ion-card-content>
-  </ion-card>
+      <!-- Botón de envío -->
+      <ion-button expand="block" type="submit" [disabled]="vehiculoForm.invalid" class="submit-button">
+        Registrar Vehículo
+      </ion-button>
+    </form>
+  </div>
 </ion-content>

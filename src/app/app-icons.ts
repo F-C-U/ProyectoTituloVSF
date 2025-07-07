@@ -18,9 +18,16 @@ import {
     logOut,
     notifications,
     arrowBack,
+    bus,
     mail,
     lockClosed,
-    arrowForward
+    arrowForward,
+    pricetagOutline,  // Nuevo
+    logoAndroid,      // Nuevo
+    carOutline,       // Nuevo
+    calendarOutline,  // Nuevo
+    powerOutline,     // Nuevo
+    save              // Nuevo
 } from 'ionicons/icons';
 
 export const initializeIcons = () => {
@@ -42,8 +49,15 @@ export const initializeIcons = () => {
         logOut,
         notifications,
         arrowBack,
+        bus,
         mail,
         lockClosed,
-        arrowForward
+        arrowForward,
+        pricetagOutline,
+        logoAndroid,
+        carOutline,
+        calendarOutline,
+        powerOutline,
+        save
     });
 };
