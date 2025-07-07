@@ -28,7 +28,10 @@ import {
     calendarOutline,
     powerOutline,
     save,
-    analyticsOutline // Nuevo icono
+    analyticsOutline,
+    busOutline,    
+    documentAttachOutline,
+    settingsOutline 
 } from 'ionicons/icons';
 
 export const initializeIcons = () => {
@@ -60,6 +63,9 @@ export const initializeIcons = () => {
         calendarOutline,
         powerOutline,
         save,
-        analyticsOutline // Añadido aquí
+        analyticsOutline,
+        busOutline,
+        documentAttachOutline,
+        settingsOutline 
     });
 };
