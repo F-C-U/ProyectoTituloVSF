@@ -23,11 +23,15 @@ import { UtilsService } from 'src/app/services/utils.service';
 })
 export class RegistroMantenimientoPage {
   formularioMantenimiento: FormGroup;
-  vehiculoAsignado: string = 'Toyota Corolla 2020 - ABCD12'; 
   mensajeError: string | null = null;
   archivoAdjunto: File | null = null;
   fechaMin: string;
   fechaMax: string;
+  vehiculoAsignado: any = {
+    marca: '--',
+    modelo: '--',
+    patente: '--',
+  };
 
   constructor(
     private fb: FormBuilder,
@@ -53,7 +57,25 @@ export class RegistroMantenimientoPage {
       archivo: [null, Validators.required],
     });
   }
+  async ngOnInit() {
+    const vehiculoStorage = this.utils.getFromlocalStorage('vehiculo');
 
+    if (
+      vehiculoStorage &&
+      vehiculoStorage.marca &&
+      vehiculoStorage.modelo &&
+      vehiculoStorage.patente
+    ) {
+      this.vehiculoAsignado = vehiculoStorage;
+    } else {
+      console.warn('Vehículo no encontrado en localStorage:', vehiculoStorage);
+      await this.utils.presentToast({
+        message: 'No se encontró vehículo asignado válido',
+        duration: 3000,
+        color: 'warning',
+      });
+    }
+  }
   // Validador personalizado para la fecha
   fechaValida(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
