@@ -1,112 +1,204 @@
+/* Variables basadas en la paleta de azul pastel */
 :host {
-  .main-menu-content {
-    padding: 24px 16px 16px 16px; // más espacio arriba
+  /* Modo claro */
+  --ion-color-primary: #64b5f6;
+  --ion-color-primary-rgb: 100, 181, 246;
+  --ion-color-primary-contrast: #000000;
+  --ion-color-primary-shade: #58a0d8;
+  --ion-color-primary-tint: #74bcf7;
+
+  --ion-color-secondary: #90caf9;
+  --ion-color-secondary-rgb: 144, 202, 249;
+  --ion-color-secondary-contrast: #000000;
+  --ion-color-secondary-shade: #7fb2db;
+  --ion-color-secondary-tint: #9bcffa;
+
+  --ion-background-color: #e3f2fd;
+  --ion-text-color: #0d47a1;
+  --ion-border-color: rgba(100, 181, 246, 0.2);
+
+  --card-bg: #ffffff;
+  --card-shadow: rgba(100, 181, 246, 0.15);
+  --input-bg: #f5f9ff;
+  --input-focus-bg: #ffffff;
+  --active-color: rgba(100, 181, 246, 0.15);
+}
+
+/* Modo oscuro */
+@media (prefers-color-scheme: dark) {
+  :host {
+    --ion-background-color: #0d1b2a;
+    --ion-text-color: #e3f2fd;
+    --ion-border-color: rgba(100, 181, 246, 0.3);
+
+    --card-bg: #1b263b;
+    --card-shadow: rgba(0, 0, 0, 0.3);
+    --input-bg: #2a3a5a;
+    --input-focus-bg: #334b6e;
+    --active-color: rgba(100, 181, 246, 0.25);
   }
+}
 
-  .bienvenida {
-    margin-top: 16px;
-    margin-bottom: 24px;
-    text-align: center;
+/* CENTRADO PERFECTO EN DESKTOP */
+.form-container {
+  --background: var(--ion-background-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background: var(--ion-background-color);
+}
 
-    h1 {
-      font-size: 1.2rem;
-      font-weight: 500;
-      color: var(--ion-color-medium);
-    }
+/* TARJETA PRINCIPAL CON ANCHO FIJO */
+.form-card {
+  background: var(--card-bg);
+  border-radius: 24px;
+  box-shadow: 0 8px 30px var(--card-shadow);
+  width: 100%;
+  max-width: 700px;
+  overflow: hidden;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
 
-    :host-context([color-theme='dark']) & h1 {
-      color: #cccccc;
-    }
-  }
+/* ENCABEZADO CON GRADIENTE */
+.card-header {
+  padding: 30px 24px 20px;
+  text-align: center;
+  background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-secondary));
+  color: white;
 
-  .card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 16px;
-  }
-
-  .menu-card {
-    aspect-ratio: 1 / 1;
+  .icon-container {
     display: flex;
     justify-content: center;
+    margin-bottom: 16px;
+  }
+
+  .icon-placeholder {
+    font-size: 48px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    padding: 12px;
+    width: 72px;
+    height: 72px;
+    display: flex;
     align-items: center;
-    border-radius: 16px;
-    text-align: center;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    cursor: pointer;
-
-    ion-card-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .menu-icon {
-      font-size: 36px;
-      color: var(--ion-color-primary);
-    }
-
-    h2 {
-      font-size: 0.95rem;
-      margin: 0;
-      color: var(--ion-text-color, #000);
-    }
-
-    &:hover {
-      transform: scale(1.03);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
+    justify-content: center;
   }
 
-  .cerrar-sesion {
-    .menu-icon {
-      color: var(--ion-color-danger);
-    }
-    h2 {
-      color: var(--ion-color-danger);
-    }
+  h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin: 0 0 8px;
   }
 
-  :host-context([color-theme='dark']) {
-    h2 {
-      color: #f0f0f0;
-    }
+  p {
+    margin: 0;
+    opacity: 0.9;
+    font-weight: 300;
   }
 }
 
-:host {
-  display: block;
-  height: 100%;
+/* INFORMACIÓN DEL VEHÍCULO - ESTILO COMPACTO */
+.vehicle-info {
+  padding: 0 24px;
+  margin-top: 16px;
+  margin-bottom: 10px;
 }
 
-ion-content {
-  --background: var(--ion-background-color);
-  color: var(--ion-text-color);
+/* GRUPOS DE INFORMACIÓN */
+.info-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: var(--input-bg);
+  border-radius: 12px;
+  margin-bottom: 12px;
+  border: 1px solid var(--ion-border-color);
+
+  .icon-placeholder {
+    font-size: 28px;
+    color: var(--ion-color-primary);
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .info-label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--ion-color-primary);
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  .info-value {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--ion-text-color);
+    margin: 4px 0;
+  }
 }
 
-.boton-registrar{
-  --background: #64b5f6;
+/* FORMULARIO */
+.vehicle-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  flex-grow: 1;
 }
 
-ion-card {
-  --background: var(--ion-item-background, var(--ion-background-color));
-  color: var(--ion-text-color);
-  margin-bottom: 1rem;
+/* GRUPOS DE FORMULARIO */
+.form-group {
+  position: relative;
 }
 
-ion-item {
-  --background: transparent;
+.form-input {
+  display: flex;
+  align-items: center;
+  background: var(--input-bg);
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid var(--ion-border-color);
+  transition: all 0.3s ease;
+
+  .icon-placeholder {
+    font-size: 22px;
+    color: var(--ion-color-primary);
+    margin-right: 12px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .custom-input {
+    flex-grow: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--ion-text-color);
+    font-size: 1rem;
+    padding: 8px 0;
+  }
+
+  &:focus-within {
+    background: var(--input-focus-bg);
+    box-shadow: 0 0 0 2px var(--ion-color-primary);
+  }
 }
 
-ion-button {
-  margin-top: 1rem;
-}
-
-.boton-registrar {
-  margin-top: 1rem;
-}
-
+/* BOTONES DE MONTO */
 .botones-monto {
   display: flex;
   flex-direction: column;
@@ -118,32 +210,143 @@ ion-button {
   }
 
   .boton-incremento {
+    background: transparent;
+    border: 1px solid #28a745;
+    /* Color success */
+    color: #28a745;
+    border-radius: 8px;
+    padding: 8px 12px;
     font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+      background: rgba(40, 167, 69, 0.1);
+    }
   }
 }
 
-// Modo claro
-@media (prefers-color-scheme: light) {
-  :host {
-    --ion-background-color: #ffffff;
-    --ion-text-color: #000000;
-  }
+/* CONTENEDOR DE BOTÓN PRINCIPAL */
+.button-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 16px;
+  margin-bottom: 24px;
 
-  ion-toolbar {
-    --background: #d0e8ff; // Azul pastel claro
-    --color: #000;
+  @media (min-width: 768px) {
+    max-width: 100%;
+    padding: 0;
   }
 }
 
-// Modo oscuro
-@media (prefers-color-scheme: dark) {
-  :host {
-    --ion-background-color: #121212;
-    --ion-text-color: #ffffff;
+/* BOTÓN DE REGISTRO */
+.submit-button {
+  background: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
+  border: none;
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 4px 12px rgba(100, 181, 246, 0.3);
+  font-weight: 500;
+  font-size: 1.1rem;
+  transition: transform 0.2s ease, background 0.2s;
+  width: 100%;
+  cursor: pointer;
+
+  @media (min-width: 768px) {
+    width: auto;
+    min-width: 300px;
+    max-width: 400px;
   }
 
-  ion-toolbar {
-    --background: #1f2b3a; // Azul pastel oscuro
-    --color: #fff;
+  &:disabled {
+    background: #bbdefb;
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  &:not(:disabled):hover {
+    background: var(--ion-color-primary-tint);
+  }
+
+  &:not(:disabled):active {
+    transform: scale(0.98);
+  }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .form-container {
+    padding: 16px;
+    padding-top: 80px;
+    justify-content: flex-start;
+    align-items: stretch;
+  }
+
+  .card-header {
+    padding: 24px 16px 16px;
+
+    .icon-placeholder {
+      font-size: 40px;
+      width: 60px;
+      height: 60px;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+    }
+  }
+
+  .vehicle-info {
+    padding: 0 16px;
+  }
+
+  .vehicle-form {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-container {
+    padding: 12px;
+    padding-top: 70px;
+  }
+
+  .card-header {
+    padding: 20px 12px 14px;
+
+    h2 {
+      font-size: 1.3rem;
+    }
+
+    p {
+      font-size: 0.9rem;
+    }
+
+    .icon-placeholder {
+      font-size: 36px;
+      width: 54px;
+      height: 54px;
+    }
+  }
+
+  .info-group {
+    padding: 12px;
+
+    .icon-placeholder {
+      font-size: 24px;
+      width: 36px;
+      height: 36px;
+    }
+  }
+
+  .vehicle-form {
+    padding: 16px;
+  }
+
+  .submit-button {
+    font-size: 1rem;
+    padding: 16px;
   }
 }
