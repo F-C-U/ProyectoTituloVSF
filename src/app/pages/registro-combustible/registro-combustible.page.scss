@@ -1,69 +1,364 @@
+/* Variables basadas en la paleta de azul pastel */
 :host {
-    display: block;
-    height: 100%;
+    /* Modo claro */
+    --ion-color-primary: #64b5f6;
+    --ion-color-primary-rgb: 100, 181, 246;
+    --ion-color-primary-contrast: #000000;
+    --ion-color-primary-shade: #58a0d8;
+    --ion-color-primary-tint: #74bcf7;
+
+    --ion-color-secondary: #90caf9;
+    --ion-color-secondary-rgb: 144, 202, 249;
+    --ion-color-secondary-contrast: #000000;
+    --ion-color-secondary-shade: #7fb2db;
+    --ion-color-secondary-tint: #9bcffa;
+
+    --ion-background-color: #e3f2fd;
+    --ion-text-color: #0d47a1;
+    --ion-border-color: rgba(100, 181, 246, 0.2);
+
+    --card-bg: #ffffff;
+    --card-shadow: rgba(100, 181, 246, 0.15);
+    --input-bg: #f5f9ff;
+    --input-focus-bg: #ffffff;
+    --active-color: rgba(100, 181, 246, 0.15);
 }
 
-ion-content {
-    --background: var(--ion-background-color);
-    color: var(--ion-text-color);
-}
-
-.vehiculo-card {
-    ion-card-title {
-        font-weight: bold;
-    }
-}
-
-.boton-registrar {
-    --background: #64b5f6;
-}
-
-ion-card {
-    --background: var(--ion-item-background, var(--ion-background-color));
-    color: var(--ion-text-color);
-    margin-bottom: 1rem;
-}
-
-ion-item {
-    --background: transparent;
-}
-
-ion-button {
-    margin-top: 1rem;
-}
-
-.adjuntar-archivo-label {
-    flex-grow: 1;
-    margin-right: 1rem;
-}
-
-.adjuntar-archivo-item {
-    display: flex;
-    align-items: center;
-}
-
-// Estilo claro
-@media (prefers-color-scheme: light) {
-    :host {
-        --ion-background-color: #ffffff;
-        --ion-text-color: #000000;
-    }
-
-    ion-toolbar {
-        --background: #d0e8ff; // azul pastel claro
-        --color: #000;
-    }
-}
-
-// Estilo oscuro
+/* Modo oscuro */
 @media (prefers-color-scheme: dark) {
     :host {
-        --ion-background-color: #121212;
-        --ion-text-color: #ffffff;
+        --ion-background-color: #0d1b2a;
+        --ion-text-color: #e3f2fd;
+        --ion-border-color: rgba(100, 181, 246, 0.3);
+
+        --card-bg: #1b263b;
+        --card-shadow: rgba(0, 0, 0, 0.3);
+        --input-bg: #2a3a5a;
+        --input-focus-bg: #334b6e;
+        --active-color: rgba(100, 181, 246, 0.25);
+    }
+}
+
+/* CENTRADO PERFECTO EN DESKTOP */
+.form-container {
+    --background: var(--ion-background-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+/* TARJETA PRINCIPAL CON ANCHO FIJO */
+.form-card {
+    background: var(--card-bg);
+    border-radius: 24px;
+    box-shadow: 0 8px 30px var(--card-shadow);
+    width: 100%;
+    max-width: 700px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+/* ENCABEZADO CON GRADIENTE */
+.card-header {
+    padding: 30px 24px 20px;
+    text-align: center;
+    background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-secondary));
+    color: white;
+
+    ion-icon {
+        font-size: 48px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        padding: 12px;
+        margin-bottom: 16px;
     }
 
-    ion-toolbar {
-        --background: #1f2b3a; // azul pastel oscuro
-        --color: #fff;
+    h2 {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin: 0 0 8px;
+    }
+
+    p {
+        margin: 0;
+        opacity: 0.9;
+        font-weight: 300;
+    }
+}
+
+/* INFORMACIÓN DEL VEHÍCULO - ESTILO COMPACTO */
+.vehicle-info {
+    padding: 0 24px;
+    margin-top: 16px;
+    margin-bottom: 10px;
+
+    .info-group {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 16px;
+        background: var(--input-bg);
+        border-radius: 12px;
+        margin-bottom: 12px;
+        border: 1px solid var(--ion-border-color);
+
+        ion-icon {
+            color: var(--ion-color-primary);
+            font-size: 28px;
+            flex-shrink: 0;
+        }
+
+        .info-label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--ion-color-primary);
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .info-value {
+            display: block;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--ion-text-color);
+            margin: 4px 0;
+        }
+
+        .info-detail {
+            display: block;
+            font-size: 0.95rem;
+            color: var(--ion-color-primary-shade);
+        }
+    }
+}
+
+/* FORMULARIO */
+.vehicle-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px;
+}
+
+/* GRUPOS DE FORMULARIO */
+.form-group {
+    position: relative;
+
+    .form-input {
+        --background: var(--input-bg);
+        --border-radius: 12px;
+        --padding-start: 16px;
+        --min-height: 56px;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+
+        ion-icon {
+            color: var(--ion-color-primary);
+            font-size: 22px;
+            margin-right: 12px;
+        }
+
+        ion-input,
+        ion-select {
+            --color: var(--ion-text-color);
+            font-size: 1rem;
+        }
+
+        &:focus-within,
+        &.item-has-focus {
+            --background: var(--input-focus-bg);
+            box-shadow: 0 0 0 2px var(--ion-color-primary);
+        }
+    }
+
+    ion-text {
+        display: block;
+        margin-top: 6px;
+        margin-left: 16px;
+        font-size: 0.85rem;
+
+        small {
+            display: block;
+        }
+    }
+}
+
+/* CAMPO DE ARCHIVO ESTILIZADO (manteniendo funcionalidad) */
+.adjuntar-archivo-item {
+    --background: var(--input-bg);
+    --border-radius: 12px;
+    --padding-start: 16px;
+    --inner-padding-end: 16px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+
+    ion-icon {
+        color: var(--ion-color-primary);
+        font-size: 22px;
+        margin-right: 12px;
+    }
+
+    ion-label {
+        color: var(--ion-text-color);
+        font-weight: 500;
+    }
+
+    .file-button {
+        --border-radius: 8px;
+        --padding-start: 16px;
+        --padding-end: 16px;
+        --padding-top: 12px;
+        --padding-bottom: 12px;
+        font-size: 0.9rem;
+    }
+
+    &:focus-within,
+    &.item-has-focus {
+        --background: var(--input-focus-bg);
+        box-shadow: 0 0 0 2px var(--ion-color-primary);
+    }
+}
+
+/* CONTENEDOR DE BOTÓN - SOLUCIÓN DEFINITIVA */
+.button-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 24px;
+
+    /* En desktop: asegura que el contenedor no limite el ancho del botón */
+    @media (min-width: 768px) {
+        max-width: 100%;
+        padding: 0;
+    }
+}
+
+/* BOTÓN CENTRADO - VERSIÓN CORREGIDA */
+.submit-button {
+    --background: var(--ion-color-primary);
+    --background-activated: var(--ion-color-primary-shade);
+    --background-hover: var(--ion-color-primary-tint);
+    --border-radius: 12px;
+    --padding-top: 18px;
+    --padding-bottom: 18px;
+    --box-shadow: 0 4px 12px rgba(100, 181, 246, 0.3);
+    font-weight: 500;
+    font-size: 1.1rem;
+    transition: transform 0.2s ease;
+    width: 100%;
+
+    /* En desktop: tamaño flexible */
+    @media (min-width: 768px) {
+        width: auto;
+        min-width: 300px;
+        max-width: 400px;
+    }
+
+    &:disabled {
+        --background: #bbdefb;
+        opacity: 0.7;
+    }
+
+    &:not(:disabled):active {
+        transform: scale(0.98);
+    }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .form-container {
+        padding: 16px;
+        padding-top: 80px;
+        justify-content: flex-start;
+        align-items: stretch;
+    }
+
+    .card-header {
+        padding: 24px 16px 16px;
+
+        ion-icon {
+            font-size: 40px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+    }
+
+    .vehicle-info {
+        padding: 0 16px;
+    }
+
+    .vehicle-form {
+        padding: 20px;
+    }
+
+    .adjuntar-archivo-item {
+        --padding-start: 12px;
+        --inner-padding-end: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-container {
+        padding: 12px;
+        padding-top: 70px;
+    }
+
+    .card-header {
+        padding: 20px 12px 14px;
+
+        h2 {
+            font-size: 1.3rem;
+        }
+
+        p {
+            font-size: 0.9rem;
+        }
+
+        ion-icon {
+            font-size: 36px;
+            padding: 10px;
+        }
+    }
+
+    .vehicle-info {
+        padding: 0 12px;
+
+        .info-group {
+            flex-direction: row;
+            text-align: left;
+            padding: 12px;
+
+            ion-icon {
+                font-size: 24px;
+            }
+        }
+    }
+
+    .vehicle-form {
+        padding: 16px;
+    }
+
+    .adjuntar-archivo-item {
+        flex-direction: column;
+        align-items: flex-start;
+
+        ion-label {
+            margin-bottom: 8px;
+        }
+
+        .file-button {
+            width: 100%;
+        }
+    }
+
+    .submit-button {
+        font-size: 1rem;
+        --padding-top: 16px;
+        --padding-bottom: 16px;
     }
 }
