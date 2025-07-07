@@ -17,7 +17,10 @@ import {
     checkmarkCircle,
     logOut,
     notifications,
-    arrowBack
+    arrowBack,
+    mail,
+    lockClosed,
+    arrowForward
 } from 'ionicons/icons';
 
 export const initializeIcons = () => {
@@ -38,6 +41,9 @@ export const initializeIcons = () => {
         checkmarkCircle,
         logOut,
         notifications,
-        arrowBack
+        arrowBack,
+        mail,
+        lockClosed,
+        arrowForward
     });
 };
