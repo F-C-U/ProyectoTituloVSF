@@ -6,7 +6,18 @@ import {
     flashOutline,
     constructOutline,
     cashOutline,
-    logOutOutline
+    logOutOutline,
+    personOutline,
+    peopleOutline,
+    mailOutline,
+    lockClosedOutline,
+    eyeOffOutline,
+    eyeOutline,
+    businessOutline,
+    checkmarkCircle,
+    logOut,
+    notifications,
+    arrowBack
 } from 'ionicons/icons';
 
 export const initializeIcons = () => {
@@ -16,6 +27,17 @@ export const initializeIcons = () => {
         flashOutline,
         constructOutline,
         cashOutline,
-        logOutOutline
+        logOutOutline,
+        personOutline,
+        peopleOutline,
+        mailOutline,
+        lockClosedOutline,
+        eyeOffOutline,
+        eyeOutline,
+        businessOutline,
+        checkmarkCircle,
+        logOut,
+        notifications,
+        arrowBack
     });
 };
