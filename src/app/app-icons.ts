@@ -22,12 +22,13 @@ import {
     mail,
     lockClosed,
     arrowForward,
-    pricetagOutline,  // Nuevo
-    logoAndroid,      // Nuevo
-    carOutline,       // Nuevo
-    calendarOutline,  // Nuevo
-    powerOutline,     // Nuevo
-    save              // Nuevo
+    pricetagOutline,
+    logoAndroid,
+    carOutline,
+    calendarOutline,
+    powerOutline,
+    save,
+    analyticsOutline // Nuevo icono
 } from 'ionicons/icons';
 
 export const initializeIcons = () => {
@@ -58,6 +59,7 @@ export const initializeIcons = () => {
         carOutline,
         calendarOutline,
         powerOutline,
-        save
+        save,
+        analyticsOutline // Añadido aquí
     });
 };

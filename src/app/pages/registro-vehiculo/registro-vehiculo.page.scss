@@ -42,19 +42,30 @@
 /* ESTRUCTURA CENTRADA */
 .form-container {
     --background: var(--ion-background-color);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: block;
+    /* Cambiar de flex a block */
     padding: 16px;
     padding-top: 80px;
-    min-height: 100vh;
     box-sizing: border-box;
+}
 
-    /* Centrado vertical en desktop */
-    @media (min-width: 768px) {
-        justify-content: center;
+/* Centrado solo para desktop */
+@media (min-width: 768px) {
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100%;
         padding-top: 16px;
+        padding-bottom: 50px;
+        /* Espacio inferior */
     }
+}
+
+/* Asegurar que ion-content permita scroll */
+ion-content {
+    --overflow: auto;
+    height: 100%;
 }
 
 /* CONTENEDOR PRINCIPAL CON AJUSTE DE CENTRADO */

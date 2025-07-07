@@ -1,49 +1,53 @@
-<ion-content [fullscreen]="true" class="ion-padding">
+<ion-content [fullscreen]="true" class="form-container">
+  <!-- Tarjeta unificada con información y formulario -->
+  <div class="form-card">
+    <div class="card-header">
+      <h2>Registro de kilometraje</h2>
+      <p>Actualiza el estado de tu vehículo</p>
+    </div>
 
-  <!-- Tarjeta con datos del vehículo -->
-  <ion-card class="vehiculo-card">
-    <ion-card-header>
-      <ion-card-subtitle>COLECTIVO</ion-card-subtitle>
-      <ion-card-title>
-        {{ vehiculoAsignado.marca + ' ' + vehiculoAsignado.modelo + ' ' + vehiculoAsignado.patente }}
-      </ion-card-title>
-    </ion-card-header>
-  </ion-card>
+    <div class="vehicle-info">
+      <div class="info-group">
+        <ion-icon name="car-sport-outline"></ion-icon>
+        <div>
+          <span class="info-label">VEHÍCULO ASIGNADO</span>
+          <span class="info-value">
+            {{ vehiculoAsignado.marca + ' ' + vehiculoAsignado.modelo }}
+          </span>
+          <span class="info-detail">
+            {{ vehiculoAsignado.patente }}
+          </span>
+        </div>
+      </div>
+    </div>
 
-  <!-- Tarjeta de formulario -->
-  <ion-card class="form-card">
-    <ion-card-header>
-      <ion-card-title>Registrar kilometraje</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <form [formGroup]="formularioKilometraje" (ngSubmit)="registrarKilometraje()">
-
-        <!-- Fecha automática -->
-        <ion-item>
-          <ion-label position="stacked">Fecha</ion-label>
-          <ion-input
-            [value]="fechaActual | date: 'mediumDate'"
-            readonly
-            aria-label="Fecha de registro">
+    <form [formGroup]="formularioKilometraje" (ngSubmit)="registrarKilometraje()" class="vehicle-form">
+      <!-- Fecha automática -->
+      <div class="form-group">
+        <ion-item lines="none" class="form-input">
+          <ion-icon name="calendar-outline" slot="start"></ion-icon>
+          <ion-input [value]="fechaActual | date: 'mediumDate'" readonly aria-label="Fecha de registro">
           </ion-input>
         </ion-item>
+      </div>
 
-        <!-- Campo de kilómetros -->
-        <ion-item>
-          <ion-label position="floating">Kilómetros</ion-label>
-          <ion-input type="number" formControlName="kilometros"></ion-input>
+      <!-- Campo de kilómetros -->
+      <div class="form-group">
+        <ion-item lines="none" class="form-input">
+          <ion-icon name="speedometer-outline" slot="start"></ion-icon>
+          <ion-input type="number" formControlName="kilometros" placeholder="Kilómetros actuales">
+          </ion-input>
         </ion-item>
         <ion-text color="danger" *ngIf="kilometros?.invalid && kilometros?.touched">
-          <p *ngIf="kilometros?.errors?.['required']">El valor de km es obligatorio.</p>
-          <p *ngIf="kilometros?.errors?.['min']">El valor no puede ser negativo.</p>
+          <small *ngIf="kilometros?.errors?.['required']">El valor de km es obligatorio.</small>
+          <small *ngIf="kilometros?.errors?.['min']">El valor no puede ser negativo.</small>
         </ion-text>
+      </div>
 
-        <!-- Botón de envío -->
-        <ion-button expand="block" type="submit" [disabled]="formularioKilometraje.invalid">
-          Registrar
-        </ion-button>
-      </form>
-    </ion-card-content>
-  </ion-card>
-
+      <!-- Botón de envío -->
+      <ion-button expand="block" type="submit" [disabled]="formularioKilometraje.invalid" class="submit-button">
+        Registrar Kilometraje
+      </ion-button>
+    </form>
+  </div>
 </ion-content>
