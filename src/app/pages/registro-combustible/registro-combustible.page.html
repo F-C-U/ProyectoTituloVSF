@@ -19,12 +19,20 @@
     </div>
 
     <!-- Formulario de combustible -->
-    <form [formGroup]="formularioCombustible" (ngSubmit)="registrarCombustible()" class="vehicle-form">
+    <form
+      [formGroup]="formularioCombustible"
+      (ngSubmit)="registrarCombustible()"
+      class="vehicle-form"
+    >
       <!-- Fecha -->
       <div class="form-group">
         <ion-item lines="none" class="form-input">
           <ion-icon name="calendar-outline" slot="start"></ion-icon>
-          <ion-input readonly [value]="formularioCombustible.get('fecha')?.value" aria-label="Fecha de carga">
+          <ion-input
+            readonly
+            [value]="formularioCombustible.get('fecha')?.value"
+            aria-label="Fecha de carga"
+          >
           </ion-input>
         </ion-item>
       </div>
@@ -33,13 +41,22 @@
       <div class="form-group">
         <ion-item lines="none" class="form-input">
           <ion-icon name="cash-outline" slot="start"></ion-icon>
-          <ion-input type="text" inputmode="numeric" [value]="montoFormateado" (ionInput)="formatearMonto($event)"
-            placeholder="Monto">
+          <ion-input
+            type="text"
+            inputmode="numeric"
+            [value]="montoFormateado"
+            (ionInput)="formatearMonto($event)"
+            placeholder="Monto"
+          >
           </ion-input>
         </ion-item>
         <ion-text color="danger" *ngIf="monto?.invalid && monto?.touched">
-          <small *ngIf="monto?.errors?.['required']">El monto es obligatorio.</small>
-          <small *ngIf="monto?.errors?.['min']">El monto no puede ser negativo.</small>
+          <small *ngIf="monto?.errors?.['required']"
+            >El monto es obligatorio.</small
+          >
+          <small *ngIf="monto?.errors?.['min']"
+            >El monto no puede ser negativo.</small
+          >
         </ion-text>
       </div>
 
@@ -48,13 +65,26 @@
         <ion-item lines="none" class="adjuntar-archivo-item">
           <ion-icon name="document-attach-outline" slot="start"></ion-icon>
           <ion-label>Boleta</ion-label>
-          <ion-button (click)="fileInput.click()" fill="outline" size="small" class="file-button">
+          <ion-button
+            (click)="fileInput.click()"
+            fill="outline"
+            size="small"
+            class="file-button"
+          >
             Seleccionar archivo
           </ion-button>
-          <input #fileInput type="file" accept=".pdf,.jpg,.jpeg,.png,.heic" hidden (change)="manejarArchivo($event)">
+          <input
+            #fileInput
+            type="file"
+            accept=".pdf,.jpg,.jpeg,.png,.heic"
+            hidden
+            (change)="manejarArchivo($event)"
+          />
         </ion-item>
         <ion-text color="danger" *ngIf="archivo?.invalid && archivo?.touched">
-          <small *ngIf="archivo?.errors?.['required']">Debes adjuntar la boleta.</small>
+          <small *ngIf="archivo?.errors?.['required']"
+            >Debes adjuntar la boleta.</small
+          >
           <small *ngIf="archivo?.errors?.['tipoInvalido']">
             Solo se permiten imágenes o PDF.
           </small>
@@ -63,7 +93,12 @@
 
       <!-- Botón de enviar -->
       <div class="button-container">
-        <ion-button expand="block" type="submit" [disabled]="formularioCombustible.invalid" class="submit-button">
+        <ion-button
+          expand="block"
+          type="submit"
+          [disabled]="formularioCombustible.invalid"
+          class="submit-button"
+        >
           Registrar Combustible
         </ion-button>
       </div>
