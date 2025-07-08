@@ -1,257 +1,215 @@
-/* lista-ganancias-duenio.page.scss */
-/* Variables para modo claro */
-:host {
-    --color-fondo: #ffffff;
-    --color-texto: #333333;
-    --color-borde: #e0e0e0;
-    --color-primario: #1a73e8;
-    --color-fondo-header: #f8f9fa;
-    --color-fondo-fila: #ffffff;
-    --color-fondo-fila-hover: #f1f3f4;
-    --color-error: #d32f2f;
-    --color-encabezado: #1a73e8;
-}
+/* ESTILOS GENERALES - Mantenemos el mismo card-header */
+.card-header {
+    padding: 30px 24px 20px;
+    text-align: center;
+    background: linear-gradient(to right, #64b5f6, #90caf9);
+    /* Azul pastel */
+    color: white;
 
-/* Variables para modo oscuro */
-@media (prefers-color-scheme: dark) {
-    :host {
-        --color-fondo: #121212;
-        --color-texto: #e0e0e0;
-        --color-borde: #444444;
-        --color-primario: #64b5f6;
-        --color-fondo-header: #1e1e1e;
-        --color-fondo-fila: #1e1e1e;
-        --color-fondo-fila-hover: #2d2d2d;
-        --color-encabezado: #64b5f6;
+    ion-icon {
+        font-size: 48px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        padding: 12px;
+        margin-bottom: 16px;
+    }
+
+    h2 {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin: 0 0 8px;
+    }
+
+    p {
+        margin: 0;
+        opacity: 0.9;
+        font-weight: 300;
     }
 }
 
-.contenedor-pagina {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 16px;
+/* CONTENEDOR PRINCIPAL */
+.reporte-container {
+    padding: 0 24px 24px;
 }
 
-ion-header {
-    ion-toolbar {
-        --background: var(--color-encabezado);
-        --color: white;
+/* FILTRO ESTILIZADO */
+.filtro-container {
+    margin-bottom: 24px;
+
+    ion-label {
+        font-weight: 500;
+        margin-bottom: 8px;
+        color: var(--ion-color-dark);
+    }
+
+    .custom-select {
+        background: var(--input-bg);
+        border-radius: 12px;
+        border: 1px solid var(--ion-border-color);
+        --padding-start: 16px;
+        --padding-end: 16px;
     }
 }
 
-ion-item {
-    --background: transparent;
-    --padding-start: 0;
-    --inner-padding-end: 0;
-    margin-bottom: 16px;
-}
-
-.tabla-contenedor {
-    overflow-x: auto;
-    border-radius: 8px;
-    border: 1px solid var(--color-borde);
-    background-color: var(--color-fondo);
-}
-
-.tabla-ganancias {
-    width: 100%;
-
-    .header-tabla {
-        background-color: var(--color-fondo-header);
-        font-weight: bold;
-        color: var(--color-texto);
-        border-bottom: 1px solid var(--color-borde);
-        padding: 12px 8px;
-    }
-
-    ion-row {
-        border-bottom: 1px solid var(--color-borde);
-        padding: 12px 8px;
-
-        ion-col {
-            display: flex;
-            align-items: center;
-            color: var(--color-texto);
-        }
-    }
-
-    .fila-tabla {
-        background-color: var(--color-fondo-fila);
-
-        &:hover {
-            background-color: var(--color-fondo-fila-hover);
-        }
-    }
-
-    .sin-resultados {
-        text-align: center;
-        padding: 30px;
-        font-style: italic;
-        color: var(--color-texto);
-    }
-}
-
+/* ESTADOS DE CARGA Y ERROR */
 .estado {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 32px 24px;
+    background: var(--input-bg);
+    border-radius: 16px;
+    border: 1px solid var(--ion-border-color);
     text-align: center;
-    padding: 20px;
-    margin: 20px 0;
-    border-radius: 8px;
-    color: var(--color-texto);
 
-    ion-spinner {
-        margin-bottom: 12px;
-        color: var(--color-primario);
+    ion-spinner,
+    ion-icon {
+        font-size: 48px;
+        margin-bottom: 16px;
     }
 
-    &.error {
-        background-color: rgba(211, 47, 47, 0.1);
-        color: var(--color-error);
-        border: 1px solid var(--color-error);
+    p {
+        margin: 0;
+        font-size: 1rem;
+    }
 
-        ion-icon {
-            font-size: 32px;
-            margin-bottom: 12px;
-            color: var(--color-error);
-        }
+    &.cargando ion-spinner {
+        color: var(--ion-color-primary);
+    }
+
+    &.error ion-icon {
+        color: #f44336;
     }
 }
 
-/* Optimización para móviles */
-@media (max-width: 768px) {
-    .tabla-ganancias {
-        min-width: 600px;
-    }
-}
-
-/* lista-ganancias-duenio.page.scss */
-/* Variables para modo claro */
-:host {
-    --color-fondo: #ffffff;
-    --color-texto: #333333;
-    --color-borde: #e0e0e0;
-    --color-primario: #1a73e8;
-    --color-fondo-header: #f8f9fa;
-    --color-fondo-fila: #ffffff;
-    --color-fondo-fila-hover: #f1f3f4;
-    --color-error: #d32f2f;
-    --color-encabezado: #1a73e8;
-}
-
-/* Variables para modo oscuro */
-@media (prefers-color-scheme: dark) {
-    :host {
-        --color-fondo: #121212;
-        --color-texto: #e0e0e0;
-        --color-borde: #444444;
-        --color-primario: #007bff;;
-        --color-fondo-header: #007bff;;
-        --color-fondo-fila: #1e1e1e;
-        --color-fondo-fila-hover: #2d2d2d;
-        --color-encabezado: #007bff;;
-    }
-}
-
-.contenedor-pagina {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 16px;
-}
-
-ion-header {
-    ion-toolbar {
-        --background: var(--color-encabezado);
-        --color: white;
-    }
-}
-
-ion-item {
-    --background: transparent;
-    --padding-start: 0;
-    --inner-padding-end: 0;
-    margin-bottom: 16px;
-}
-
+/* TABLA ESTILIZADA */
 .tabla-contenedor {
-    overflow-x: auto;
-    border-radius: 8px;
-    border: 1px solid var(--color-borde);
-    background-color: var(--color-fondo);
+    overflow: auto;
+    border-radius: 16px;
+    border: 1px solid var(--ion-border-color);
+    background: var(--input-bg);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
 .tabla-ganancias {
-    width: 100%;
-
-    .header-tabla {
-        background-color: var(--color-fondo-header);
-        font-weight: bold;
-        color: var(--color-texto);
-        border-bottom: 1px solid var(--color-borde);
-        padding: 12px 8px;
-    }
-
-    ion-row {
-        border-bottom: 1px solid var(--color-borde);
-        padding: 12px 8px;
-
-        ion-col {
-            display: flex;
-            align-items: center;
-            color: var(--color-texto);
-        }
-    }
-
-    .fila-tabla {
-        background-color: var(--color-fondo-fila);
-
-        &:hover {
-            background-color: var(--color-fondo-fila-hover);
-        }
-    }
-
-    .sin-resultados {
-        text-align: center;
-        padding: 30px;
-        font-style: italic;
-        color: var(--color-texto);
-    }
-}
-
-.estado {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 20px;
-    margin: 20px 0;
-    border-radius: 8px;
-    color: var(--color-texto);
+    min-width: 700px;
+}
 
-    ion-spinner {
-        margin-bottom: 12px;
-        color: var(--color-primario);
+.header-tabla,
+.fila-tabla {
+    display: flex;
+    padding: 16px;
+    border-bottom: 1px solid var(--ion-border-color);
+}
+
+.header-tabla {
+    font-weight: 600;
+    background: rgba(100, 181, 246, 0.1);
+    color: var(--ion-color-primary);
+}
+
+.fila-tabla {
+    transition: background 0.2s ease;
+
+    &:hover {
+        background: rgba(100, 181, 246, 0.05);
     }
 
-    &.error {
-        background-color: rgba(211, 47, 47, 0.1);
-        color: var(--color-error);
-        border: 1px solid var(--color-error);
-
-        ion-icon {
-            font-size: 32px;
-            margin-bottom: 12px;
-            color: var(--color-error);
-        }
+    &:last-child {
+        border-bottom: none;
     }
 }
 
-/* Optimización para móviles */
+.columna {
+    flex: 1;
+    padding: 0 8px;
+    text-align: center;
+
+    &:first-child {
+        text-align: left;
+        flex: 0 0 100px;
+    }
+
+    &:nth-child(2) {
+        text-align: left;
+    }
+}
+
+.sin-resultados {
+    padding: 24px;
+    text-align: center;
+    color: var(--ion-color-medium);
+    font-style: italic;
+}
+
+/* RESPONSIVE - Mismos ajustes que la página anterior */
 @media (max-width: 768px) {
-    .tabla-ganancias {
-        min-width: 600px;
+    .card-header {
+        padding: 24px 16px 16px;
+
+        ion-icon {
+            font-size: 40px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+    }
+
+    .reporte-container {
+        padding: 0 16px 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .card-header {
+        padding: 20px 12px 14px;
+
+        h2 {
+            font-size: 1.3rem;
+        }
+
+        p {
+            font-size: 0.9rem;
+        }
+
+        ion-icon {
+            font-size: 36px;
+            padding: 10px;
+        }
+    }
+
+    .reporte-container {
+        padding: 0 12px 12px;
+    }
+
+    .filtro-container {
+        margin-bottom: 16px;
+    }
+
+    .estado {
+        padding: 24px 16px;
+
+        ion-spinner,
+        ion-icon {
+            font-size: 36px;
+        }
+    }
+
+    .tabla-contenedor {
+        border-radius: 12px;
+    }
+
+    .header-tabla,
+    .fila-tabla {
+        padding: 12px 8px;
+        font-size: 0.9rem;
+    }
+
+    .columna:first-child {
+        flex: 0 0 80px;
     }
 }

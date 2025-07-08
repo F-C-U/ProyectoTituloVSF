@@ -1,11 +1,7 @@
 import { Component } from '@angular/core';
 import { 
         IonContent, 
-        IonList, 
-        IonItem, 
-        IonLabel, 
         IonIcon, 
-        IonBadge 
 } from '@ionic/angular/standalone';
 
 @Component({
@@ -15,11 +11,7 @@ import {
   standalone: true,
   imports: [
     IonContent, 
-    IonList, 
-    IonItem, 
-    IonLabel, 
     IonIcon, 
-    IonBadge
   ]
 })
 export class ListarAlertasPage {

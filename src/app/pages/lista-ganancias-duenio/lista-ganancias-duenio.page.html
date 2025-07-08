@@ -1,66 +1,64 @@
-<!-- lista-ganancias-duenio.page.html -->
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Reporte de ganancias</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-  <div class="contenedor-pagina">
-    <!-- Filtro por patente con componente Ionic -->
-    <ion-item>
-      <ion-label position="stacked">Filtrar por patente:</ion-label>
-      <ion-select 
-        [(ngModel)]="patenteSeleccionada" 
-        (ionChange)="aplicarFiltro()"
-        interface="action-sheet"
-      >
-        <ion-select-option *ngFor="let patente of patentes()" [value]="patente">
-          {{ patente === 'todas' ? 'Todas las patentes' : patente }}
-        </ion-select-option>
-      </ion-select>
-    </ion-item>
-
-    <!-- Mensajes de estado -->
-    <div *ngIf="cargando()" class="ion-padding estado">
-      <ion-spinner name="crescent"></ion-spinner>
-      <p>Cargando datos...</p>
+<ion-content [fullscreen]="true" class="form-container">
+  <!-- Tarjeta unificada con gradiente azul pastel -->
+  <div class="form-card">
+    <!-- ENCABEZADO CON GRADIENTE AZUL PASTEL -->
+    <div class="card-header">
+      <ion-icon name="cash-outline"></ion-icon>
+      <h2>Reporte de ganancias</h2>
+      <p>Visualiza tus ingresos y gastos por vehículo</p>
     </div>
-    
-    <div *ngIf="error()" class="ion-padding estado error">
-      <ion-icon name="warning-outline"></ion-icon>
-      <p>{{ error() }}</p>
-    </div>
+    <br>
 
-    <!-- Tabla de resultados -->
-    <div *ngIf="!cargando() && !error()" class="tabla-contenedor">
-      <ion-grid class="tabla-ganancias" fixed>
-        <ion-row class="header-tabla">
-          <ion-col size="2.5">Fecha</ion-col>
-          <ion-col>Patente</ion-col>
-          <ion-col>Bruta</ion-col>
-          <ion-col>Neta</ion-col>
-          <ion-col>Combustible</ion-col>
-        </ion-row>
+    <div class="reporte-container">
+      <!-- Filtro por patente con nuevo diseño -->
+      <div class="filtro-container">
+        <ion-label position="stacked">Filtrar por patente:</ion-label>
+        <br>
+        <br>
+        <ion-select [(ngModel)]="patenteSeleccionada" (ionChange)="aplicarFiltro()" interface="action-sheet"
+          class="custom-select">
+          <ion-select-option *ngFor="let patente of patentes()" [value]="patente">
+            {{ patente === 'todas' ? 'Todas las patentes' : patente }}
+          </ion-select-option>
+        </ion-select>
+      </div>
 
-        <ion-row 
-          *ngFor="let item of gananciasFiltradas(); trackBy: trackByPatente"
-          class="fila-tabla"
-        >
-          <ion-col size="2.5">{{ item.fecha | date:'dd/MM/yy' }}</ion-col>
-          <ion-col>{{ item.patente }}</ion-col>
-          <ion-col>{{ item.gananciaBruta | currency:'$':'symbol':'1.0-0' }}</ion-col>
-          <ion-col>{{ item.gananciaNeta | currency:'$':'symbol':'1.0-0' }}</ion-col>
-          <ion-col>{{ item.gastosCombustible | currency:'$':'symbol':'1.0-0' }}</ion-col>
-        </ion-row>
-        
-        <!-- Caso sin resultados -->
-        <ion-row *ngIf="gananciasFiltradas().length === 0">
-          <ion-col class="sin-resultados">
+      <!-- Mensajes de estado con nuevo diseño -->
+      <div *ngIf="cargando()" class="estado cargando">
+        <ion-spinner name="crescent"></ion-spinner>
+        <p>Cargando datos...</p>
+      </div>
+
+      <div *ngIf="error()" class="estado error">
+        <ion-icon name="warning-outline"></ion-icon>
+        <p>{{ error() }}</p>
+      </div>
+
+      <!-- Tabla de resultados con nuevo diseño -->
+      <div *ngIf="!cargando() && !error()" class="tabla-contenedor">
+        <div class="tabla-ganancias">
+          <div class="header-tabla">
+            <div class="columna">Fecha</div>
+            <div class="columna">Patente</div>
+            <div class="columna">Bruta</div>
+            <div class="columna">Neta</div>
+            <div class="columna">Combustible</div>
+          </div>
+
+          <div *ngFor="let item of gananciasFiltradas(); trackBy: trackByPatente" class="fila-tabla">
+            <div class="columna">{{ item.fecha | date:'dd/MM/yy' }}</div>
+            <div class="columna">{{ item.patente }}</div>
+            <div class="columna">{{ item.gananciaBruta | currency:'$':'symbol':'1.0-0' }}</div>
+            <div class="columna">{{ item.gananciaNeta | currency:'$':'symbol':'1.0-0' }}</div>
+            <div class="columna">{{ item.gastosCombustible | currency:'$':'symbol':'1.0-0' }}</div>
+          </div>
+
+          <!-- Caso sin resultados -->
+          <div *ngIf="gananciasFiltradas().length === 0" class="sin-resultados">
             No se encontraron registros para esta patente
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </ion-content>
