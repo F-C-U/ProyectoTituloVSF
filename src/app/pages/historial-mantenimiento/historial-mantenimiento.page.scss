@@ -1,42 +1,264 @@
-.tabla-responsive {
-  overflow-x: auto;
+/* ESTILOS GENERALES - Mantenemos el mismo card-header */
+.card-header {
+  padding: 30px 24px 20px;
+  text-align: center;
+  background: linear-gradient(to right, #64b5f6, #90caf9);
+  /* Azul pastel */
+  color: white;
+
+  ion-icon {
+    font-size: 48px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    padding: 12px;
+    margin-bottom: 16px;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin: 0 0 8px;
+  }
+
+  p {
+    margin: 0;
+    opacity: 0.9;
+    font-weight: 300;
+  }
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
-  background-color: var(--ion-background-color);
+/* CONTENIDO PRINCIPAL */
+.contenido-pagina {
+  padding: 24px;
+}
 
-  th, td {
-    padding: 8px 12px;
-    border-bottom: 1px solid #ccc;
-    text-align: left;
-    color: var(--ion-text-color);
-    vertical-align: middle;
+/* FILTRO ESTILIZADO */
+.filtro-container {
+  margin-bottom: 24px;
+
+  .form-label {
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--ion-color-dark);
   }
 
-  th {
-    background-color: var(--ion-color-primary);
-    color: white;
-  }
+  .custom-select {
+    width: 100%;
+    background: var(--input-bg);
+    border-radius: 12px;
+    border: 1px solid var(--ion-border-color);
+    --padding-start: 16px;
+    --padding-end: 16px;
+    padding: 16px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 
-  img {
-    border-radius: 4px;
-    object-fit: cover;
+    &:focus-within {
+      border-color: var(--ion-color-primary);
+      box-shadow: 0 0 0 3px rgba(100, 181, 246, 0.2);
+    }
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  table {
-    background-color: #121212;
+/* LISTA DE REGISTROS */
+.registros-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.registro-item {
+  background: var(--input-bg);
+  border-radius: 16px;
+  padding: 18px;
+  border: 1px solid var(--ion-border-color);
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(100, 181, 246, 0.15);
+    border-color: var(--ion-color-primary);
+  }
+}
+
+.registro-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f0f0f0;
+
+  .patente {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--ion-color-dark);
   }
 
-  th {
-    background-color: var(--ion-color-primary);
+  .fecha {
+    font-size: 0.9rem;
+    color: var(--ion-color-medium);
+  }
+}
+
+.registro-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+
+  .tipo {
+    background: rgba(100, 181, 246, 0.15);
+    color: var(--ion-color-primary);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
   }
 
-  td {
-    color: #ccc;
+  .costo {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--ion-color-dark);
+  }
+}
+
+.factura-container {
+  display: flex;
+  justify-content: flex-end;
+
+  .btn-factura {
+    --color: var(--ion-color-primary);
+    --background-activated: rgba(100, 181, 246, 0.15);
+    --background-hover: rgba(100, 181, 246, 0.1);
+    --border-radius: 12px;
+    --padding-top: 8px;
+    --padding-bottom: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+
+    ion-icon {
+      font-size: 1.2rem;
+    }
+  }
+
+  .sin-factura {
+    color: var(--ion-color-medium);
+    font-style: italic;
+    font-size: 0.9rem;
+  }
+}
+
+.sin-registros {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  background: var(--input-bg);
+  border-radius: 16px;
+  border: 1px solid var(--ion-border-color);
+  text-align: center;
+
+  ion-icon {
+    font-size: 48px;
+    color: var(--ion-color-medium);
+    margin-bottom: 16px;
+  }
+
+  p {
+    margin: 0;
+    color: var(--ion-color-medium);
+    font-size: 1rem;
+  }
+}
+
+/* RESPONSIVE - Mismos ajustes que la página anterior */
+@media (max-width: 768px) {
+  .card-header {
+    padding: 24px 16px 16px;
+
+    ion-icon {
+      font-size: 40px;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+    }
+  }
+
+  .contenido-pagina {
+    padding: 20px;
+  }
+
+  .registro-item {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-header {
+    padding: 20px 12px 14px;
+
+    h2 {
+      font-size: 1.3rem;
+    }
+
+    p {
+      font-size: 0.9rem;
+    }
+
+    ion-icon {
+      font-size: 36px;
+      padding: 10px;
+    }
+  }
+
+  .contenido-pagina {
+    padding: 16px;
+  }
+
+  .filtro-container {
+    margin-bottom: 16px;
+  }
+
+  .registro-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+
+    .patente {
+      font-size: 1rem;
+    }
+
+    .fecha {
+      font-size: 0.85rem;
+    }
+  }
+
+  .registro-details {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+
+    .tipo {
+      font-size: 0.85rem;
+    }
+
+    .costo {
+      font-size: 1rem;
+    }
+  }
+
+  .sin-registros {
+    padding: 24px;
+
+    ion-icon {
+      font-size: 36px;
+    }
+
+    p {
+      font-size: 0.95rem;
+    }
   }
 }

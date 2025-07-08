@@ -39,6 +39,7 @@ export class AppComponent {
     { titulo: 'Combustible', url: '/lista-combustible', icono: '' },
     { titulo: 'Kilometraje', url: '/lista-kilometraje', icono: '' },
     { titulo: 'Ganancias', url: '/lista-ganancias-duenio', icono: '' },
+    { titulo: 'Mantenimientos', url: '/historial-mantenimiento', icono: '' },
     { titulo: 'Informes', url: '/generar-informe', icono: '' },
   ]);
 

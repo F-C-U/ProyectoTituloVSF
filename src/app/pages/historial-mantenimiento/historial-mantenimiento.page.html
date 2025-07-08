@@ -1,62 +1,57 @@
-<ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>Historial de mantenimiento</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true" class="form-container">
+  <div class="form-card">
+    <div class="card-header">
+      <ion-icon name="construct-outline"></ion-icon>
+      <h2>Historial de mantenimiento</h2>
+      <p>Registro completo de servicios realizados</p>
+    </div>
 
-<ion-content class="ion-padding">
-  <!-- Filtro por tipo de mantenimiento -->
-  <ion-item>
-    <ion-label>Filtrar por tipo</ion-label>
-    <ion-select [(ngModel)]="tipoSeleccionado" placeholder="Todos">
-      <ion-select-option value="">Todos</ion-select-option>
-      <ion-select-option value="Cambio de aceite">Cambio de aceite</ion-select-option>
-      <ion-select-option value="Frenos">Frenos</ion-select-option>
-      <ion-select-option value="Neumáticos">Neumáticos</ion-select-option>
-      <ion-select-option value="Motor">Motor</ion-select-option>
-    </ion-select>
-  </ion-item>
+    <div class="contenido-pagina">
+      <!-- Filtro por tipo de mantenimiento -->
+      <div class="filtro-container">
+        <ion-label position="stacked" class="form-label">Filtrar por tipo</ion-label>
+        <ion-select [(ngModel)]="tipoSeleccionado" class="custom-select" placeholder="Todos los tipos">
+          <ion-select-option value="">Todos</ion-select-option>
+          <ion-select-option value="Cambio de aceite">Cambio de aceite</ion-select-option>
+          <ion-select-option value="Frenos">Frenos</ion-select-option>
+          <ion-select-option value="Neumáticos">Neumáticos</ion-select-option>
+          <ion-select-option value="Motor">Motor</ion-select-option>
+        </ion-select>
+      </div>
 
-  <!-- Tabla de historial -->
-  <div class="tabla-responsive">
-    <table>
-      <thead>
-        <tr>
-          <th>Patente</th>
-          <th>Fecha</th>
-          <th>Tipo</th>
-          <th>Costo</th>
-          <th>Factura</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let r of registrosFiltrados">
-          <td>{{ r.patente }}</td>
-          <td>{{ r.fecha }}</td>
-          <td>{{ r.tipo }}</td>
-          <td>${{ r.costo }}</td>
-          <td>
-            <ng-container *ngIf="r.facturaUrl">
-              <!-- Imagen -->
-              <img *ngIf="esImagen(r.facturaUrl)"
-                [src]="r.facturaUrl"
-                alt="Factura"
-                width="40"
-                height="40"
-                (click)="abrirFactura(r.facturaUrl)"
-                style="cursor: pointer;" />
+      <!-- Lista de registros de mantenimiento -->
+      <div class="registros-container">
+        <div *ngFor="let r of registrosFiltrados" class="registro-item">
+          <div class="registro-header">
+            <div class="patente">{{ r.patente }}</div>
+            <div class="fecha">{{ r.fecha }}</div>
+          </div>
 
-              <!-- PDF -->
-              <ion-icon *ngIf="esPDF(r.facturaUrl)"
-                        name="document"
-                        (click)="abrirFactura(r.facturaUrl)"
-                        style="font-size: 24px; cursor: pointer;">
-              </ion-icon>
-            </ng-container>
-            <ng-container *ngIf="!r.facturaUrl">-</ng-container>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          <div class="registro-details">
+            <div class="tipo">{{ r.tipo }}</div>
+            <div class="costo">{{ r.costo | currency:'$':'symbol':'1.0-0' }}</div>
+          </div>
+
+          <div class="factura-container">
+            <div *ngIf="r.facturaUrl; else sinFactura">
+              <ion-button fill="clear" size="small" (click)="abrirFactura(r.facturaUrl)" class="btn-factura">
+                <ion-icon [name]="esImagen(r.facturaUrl) ? 'image-outline' : 'document-outline'"
+                  slot="start"></ion-icon>
+                Ver {{ esImagen(r.facturaUrl) ? 'Imagen' : 'Documento' }}
+              </ion-button>
+            </div>
+            <ng-template #sinFactura>
+              <div class="sin-factura">Sin factura</div>
+            </ng-template>
+          </div>
+        </div>
+
+        <!-- Mensaje cuando no hay registros -->
+        <div *ngIf="registrosFiltrados.length === 0" class="sin-registros">
+          <ion-icon name="file-tray-outline"></ion-icon>
+          <p>No se encontraron registros de mantenimiento</p>
+        </div>
+      </div>
+    </div>
   </div>
 </ion-content>
