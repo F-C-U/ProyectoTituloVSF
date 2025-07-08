@@ -1,35 +1,186 @@
-:host {
-    display: block;
-    height: 100%;
-}
+/* ESTILOS GENERALES - Mantenemos el mismo card-header */
+.card-header {
+    padding: 30px 24px 20px;
+    text-align: center;
+    background: linear-gradient(to right, #64b5f6, #90caf9);
+    /* Azul pastel */
+    color: white;
 
-ion-content {
-    --background: var(--ion-background-color);
-    color: var(--ion-text-color);
-}
+    ion-icon {
+        font-size: 48px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        padding: 12px;
+        margin-bottom: 16px;
+    }
 
-ion-item {
-    --background: transparent;
-}
+    h2 {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin: 0 0 8px;
+    }
 
-ion-button {
-    margin-top: 1rem;
-}
-
-// Estilo responsivo y minimalista, claro y oscuro
-
-// Tema claro
-@media (prefers-color-scheme: light) {
-    :host {
-        --ion-background-color: #ffffff;
-        --ion-text-color: #000000;
+    p {
+        margin: 0;
+        opacity: 0.9;
+        font-weight: 300;
     }
 }
 
-// Tema oscuro
-@media (prefers-color-scheme: dark) {
-    :host {
-        --ion-background-color: #121212;
-        --ion-text-color: #ffffff;
+/* CONTENIDO PRINCIPAL */
+.contenido-pagina {
+    padding: 24px;
+}
+
+/* ESTILOS DE FORMULARIO */
+.form-item {
+    margin-bottom: 24px;
+}
+
+.form-label {
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--ion-color-dark);
+    font-size: 1rem;
+}
+
+.custom-input,
+.custom-select {
+    width: 100%;
+    background: var(--input-bg);
+    border-radius: 12px;
+    border: 1px solid var(--ion-border-color);
+    --padding-start: 16px;
+    --padding-end: 16px;
+    margin-top: 8px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+    &:focus-within {
+        border-color: var(--ion-color-primary);
+        box-shadow: 0 0 0 3px rgba(100, 181, 246, 0.2);
+    }
+}
+
+.custom-select {
+    padding: 16px;
+}
+
+/* MENSAJES DE ERROR */
+.error-message {
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+    color: #f44336;
+    font-size: 0.9rem;
+
+    ion-icon {
+        margin-right: 6px;
+        font-size: 1.1rem;
+    }
+}
+
+/* BOTÓN DE REGISTRO */
+.btn-registrar {
+    --background: var(--ion-color-primary);
+    --background-activated: var(--ion-color-primary-shade);
+    --background-hover: var(--ion-color-primary-tint);
+    --border-radius: 12px;
+    --padding-top: 18px;
+    --padding-bottom: 18px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 10px rgba(100, 181, 246, 0.3);
+    margin-top: 16px;
+
+    &:hover:not([disabled]) {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 14px rgba(100, 181, 246, 0.4);
+    }
+
+    &:active:not([disabled]) {
+        transform: translateY(0);
+        box-shadow: 0 4px 10px rgba(100, 181, 246, 0.3);
+    }
+
+    &:disabled {
+        --background: #b0d5f8;
+        transform: none;
+        box-shadow: none;
+        opacity: 0.7;
+    }
+
+    ion-icon {
+        font-size: 1.3rem;
+    }
+}
+
+/* RESPONSIVE - Mismos ajustes que la página anterior */
+@media (max-width: 768px) {
+    .card-header {
+        padding: 24px 16px 16px;
+
+        ion-icon {
+            font-size: 40px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+    }
+
+    .contenido-pagina {
+        padding: 20px;
+    }
+
+    .form-item {
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .card-header {
+        padding: 20px 12px 14px;
+
+        h2 {
+            font-size: 1.3rem;
+        }
+
+        p {
+            font-size: 0.9rem;
+        }
+
+        ion-icon {
+            font-size: 36px;
+            padding: 10px;
+        }
+    }
+
+    .contenido-pagina {
+        padding: 16px;
+    }
+
+    .form-item {
+        margin-bottom: 16px;
+    }
+
+    .form-label {
+        font-size: 0.95rem;
+    }
+
+    .custom-input,
+    .custom-select {
+        --padding-start: 14px;
+        --padding-end: 14px;
+    }
+
+    .btn-registrar {
+        font-size: 1rem;
+        --padding-top: 16px;
+        --padding-bottom: 16px;
+
+        ion-icon {
+            font-size: 1.1rem;
+        }
     }
 }
