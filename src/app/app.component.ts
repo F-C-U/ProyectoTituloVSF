@@ -4,6 +4,7 @@ import { Router, RouterLink, NavigationEnd } from '@angular/router';
 import { IonicModule, MenuController, IonMenu } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FirebaseService } from 'src/app/services/firebase.service'; // ✅ NUEVO
 
 @Component({
   selector: 'app-root',
@@ -20,6 +21,7 @@ export class AppComponent {
   private menuCtrl = inject(MenuController);
   private destroyRef = inject(DestroyRef);
   private cdRef = inject(ChangeDetectorRef);
+  private firebase = inject(FirebaseService); // ✅ NUEVO
 
   @ViewChild('mainMenu') menuRef!: IonMenu;
 
@@ -29,7 +31,7 @@ export class AppComponent {
   // Estado para controlar si el menú está abierto
   menuAbierto = signal<boolean>(false);
 
-  // Lista de páginas para el menú (datos falsos)
+  // Lista de páginas para el menú
   paginas = signal<Array<{ titulo: string, url: string, icono: string }>>([
     { titulo: 'Inicio', url: '/home', icono: '' },
     { titulo: 'Vehiculos', url: '/lista-vehiculos', icono: '' },
@@ -58,27 +60,23 @@ export class AppComponent {
       )
       .subscribe((event: any) => {
         this.actualizarVisibilidadMenu(event.url);
-        this.cerrarMenu(); // Cerrar menú al cambiar de ruta
+        this.cerrarMenu();
       });
   }
 
-  // Actualiza la visibilidad del menú basado en la ruta actual - CORREGIDO
   private actualizarVisibilidadMenu(url: string): void {
     const rutasOcultarMenu = ['/login', '/crear-usuario'];
     const debeOcultar = rutasOcultarMenu.some(ruta => url.startsWith(ruta));
     this.mostrarMenu.set(!debeOcultar);
-    
-    // Resetear estado cuando se oculta el menú
+
     if (debeOcultar) {
       this.menuAbierto.set(false);
     }
-    
-    this.cdRef.detectChanges(); // Forzar detección de cambios
+
+    this.cdRef.detectChanges();
   }
 
-  // Método para cerrar el menú - CORREGIDO
   async cerrarMenu() {
-    // Solo cerrar si el menú está abierto Y existe en el DOM
     if (this.menuAbierto() && this.mostrarMenu()) {
       try {
         if (this.menuRef) {
@@ -93,9 +91,7 @@ export class AppComponent {
     }
   }
 
-  // Método para abrir el menú - CORREGIDO
   async abrirMenu() {
-    // Solo abrir si el menú está cerrado Y existe en el DOM
     if (!this.menuAbierto() && this.mostrarMenu()) {
       try {
         if (this.menuRef) {
@@ -110,7 +106,6 @@ export class AppComponent {
     }
   }
 
-  // Manejar evento de apertura/cierre del menú - SIN CAMBIOS
   async toggleMenu() {
     if (this.menuAbierto()) {
       await this.cerrarMenu();
@@ -119,17 +114,20 @@ export class AppComponent {
     }
   }
 
-  // Método para navegar cerrando el menú primero - SIN CAMBIOS
   async navegar(url: string) {
     await this.cerrarMenu();
     this.router.navigateByUrl(url);
   }
 
-  // Manejar evento de cambio de estado del menú - CORREGIDO
   onMenuChange(event: CustomEvent) {
-    // Verificación segura para evitar errores con eventos nulos
     if (event.detail) {
       this.menuAbierto.set(event.detail.visible);
     }
+  }
+
+  // ✅ NUEVO: cerrar sesión
+  async signOut() {
+    await this.cerrarMenu();
+    await this.firebase.signOut();
   }
 }

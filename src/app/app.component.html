@@ -44,8 +44,9 @@
         }
       </ion-list>
 
+      <!-- Botón de cerrar sesión -->
       <div class="menu-footer">
-        <ion-button expand="block" fill="clear" class="logout-button">
+        <ion-button expand="block" fill="clear" class="logout-button" (click)="signOut()">
           <ion-icon name="log-out" slot="start"></ion-icon>
           Cerrar Sesión
         </ion-button>
