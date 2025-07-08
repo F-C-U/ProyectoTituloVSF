@@ -40,7 +40,8 @@ import {
     walletOutline,
     reloadOutline,
     alertCircleOutline,
-    checkmarkCircleOutline
+    checkmarkCircleOutline,
+    notificationsOutline
 } from 'ionicons/icons';
 
 export const initializeIcons = () => {
@@ -84,6 +85,7 @@ export const initializeIcons = () => {
         walletOutline,
         reloadOutline,
         alertCircleOutline,
-        checkmarkCircleOutline
+        checkmarkCircleOutline,
+        notificationsOutline
     });
 };
