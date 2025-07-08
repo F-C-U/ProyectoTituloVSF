@@ -1,29 +1,33 @@
-<ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>Mantenimiento</ion-title>
-  </ion-toolbar>
-</ion-header>
+<div class="form-container">
+  <!-- Tarjeta unificada -->
+  <div class="form-card">
+    <!-- Encabezado con gradiente -->
+    <div class="card-header">
+      <div class="icon-container">
+        <ion-icon name="construct-outline" class="header-icon"></ion-icon>
+      </div>
+      <h2>Configuración de mantenimiento</h2>
+      <p>Define los intervalos de kilómetros para cada tipo</p>
+    </div>
 
-<ion-content [fullscreen]="true">
-  <ion-list lines="none" class="lista-mantenimiento">
-    <ion-item *ngFor="let tipo of tiposMantenimiento" class="item-mantenimiento">
-      <ion-label class="etiqueta">{{ tipo }}</ion-label>
+    <!-- Lista de configuraciones -->
+    <div class="configuraciones-list">
+      <div *ngFor="let tipo of tiposMantenimiento" class="configuracion-item">
+        <div class="configuracion-info">
+          <ion-icon name="settings-outline" class="configuracion-icon"></ion-icon>
+          <span class="configuracion-label">{{ tipo }}</span>
+        </div>
 
-      <ion-input
-        type="number"
-        [(ngModel)]="configuraciones[tipo]"
-        placeholder="Intervalo en km"
-        inputmode="numeric"
-        class="input-km">
-      </ion-input>
+        <div class="configuracion-controls">
+          <input type="number" [(ngModel)]="configuraciones[tipo]" placeholder="Intervalo en km" inputmode="numeric"
+            class="input-km" min="0">
 
-      <ion-button
-        fill="solid"
-        size="small"
-        (click)="guardar(tipo)"
-        class="btn-guardar">
-        Guardar
-      </ion-button>
-    </ion-item>
-  </ion-list>
-</ion-content>
+          <button (click)="guardar(tipo)" class="btn-guardar">
+            <ion-icon name="save-outline" class="btn-icon"></ion-icon>
+            Guardar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

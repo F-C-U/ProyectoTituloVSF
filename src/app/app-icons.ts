@@ -35,7 +35,8 @@ import {
     refreshOutline,
     createOutline,
     trashOutline,
-    informationCircleOutline
+    informationCircleOutline,
+    saveOutline
 } from 'ionicons/icons';
 
 export const initializeIcons = () => {
@@ -74,6 +75,7 @@ export const initializeIcons = () => {
         refreshOutline,
         createOutline,
         trashOutline,
-        informationCircleOutline
+        informationCircleOutline,
+        saveOutline
     });
 };
