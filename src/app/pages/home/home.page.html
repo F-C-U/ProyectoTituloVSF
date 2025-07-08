@@ -63,13 +63,23 @@
         </ion-card-content>
       </ion-card>
 
-      <ion-card button (click)="signOut()" class="menu-card cerrar-sesion">
+      <ion-card button routerLink="/registro-esquema-pago" class="menu-card">
         <div class="card-icon-container">
-          <ion-icon name="log-out-outline" class="menu-icon"></ion-icon>
+          <ion-icon name="wallet-outline" class="menu-icon"></ion-icon>
         </div>
         <ion-card-content>
-          <h2>Cerrar Sesión</h2>
-          <p>Salir de la aplicación</p>
+          <h2>Crear esquema de pago</h2>
+          <p>Esquemas de pago para conductores</p>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card button routerLink="/seleccionar-vehiculo" class="menu-card">
+        <div class="card-icon-container">
+          <ion-icon name="car-sport-outline" class="menu-icon"></ion-icon>
+        </div>
+        <ion-card-content>
+          <h2>Seleccionar vehículo</h2>
+          <p>Seleccionar vehículo a trabajar</p>
         </ion-card-content>
       </ion-card>
     </div>
