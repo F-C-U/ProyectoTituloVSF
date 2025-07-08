@@ -1,23 +1,38 @@
+<ion-content [fullscreen]="true" class="form-container">
+  <div class="form-card">
+    <div class="card-header">
+      <ion-icon name="car-outline"></ion-icon>
+      <h2>Selección de vehículo</h2>
+      <p>Por favor, elige un vehículo para continuar</p>
+    </div>
 
+    <div class="contenido-pagina">
+      <div class="mensaje-inicial">
+        <p>Por favor, selecciona un vehículo para comenzar:</p>
+      </div>
 
-<ion-content class="ion-padding">
-  <div class="mensaje-inicial">
-    <p>Por favor, selecciona un vehículo para comenzar:</p>
+      <div class="vehiculos-lista">
+        <ion-radio-group [(ngModel)]="vehiculoSeleccionado">
+          <div *ngFor="let vehiculo of vehiculos" class="vehiculo-item"
+            [class.selected]="vehiculoSeleccionado === vehiculo" (click)="vehiculoSeleccionado = vehiculo">
+            <div class="vehiculo-icon">
+              <ion-icon name="car-sport-outline"></ion-icon>
+            </div>
+            <div class="vehiculo-info">
+              <h3>{{ vehiculo.patente }}</h3>
+              <p>{{ vehiculo.marca }} - {{ vehiculo.modelo }}</p>
+            </div>
+            <div class="radio-selected">
+              <ion-icon name="checkmark"></ion-icon>
+            </div>
+          </div>
+        </ion-radio-group>
+      </div>
+
+      <ion-button expand="block" class="btn-continuar" [disabled]="!vehiculoSeleccionado"
+        (click)="confirmarSeleccion()">
+        Continuar
+      </ion-button>
+    </div>
   </div>
-
-  <ion-list lines="inset">
-    <ion-radio-group [(ngModel)]="vehiculoSeleccionado">
-      <ion-item *ngFor="let vehiculo of vehiculos">
-        <ion-label>
-          <h2>{{ vehiculo.patente }}</h2>
-          <p>{{ vehiculo.marca }} - {{ vehiculo.modelo }}</p>
-        </ion-label>
-        <ion-radio slot="end" [value]="vehiculo"></ion-radio>
-      </ion-item>
-    </ion-radio-group>
-  </ion-list>
-
-  <ion-button expand="block" [disabled]="!vehiculoSeleccionado" (click)="confirmarSeleccion()">
-    Continuar
-  </ion-button>
 </ion-content>

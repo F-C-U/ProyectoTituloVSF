@@ -1,25 +1,251 @@
-:host {
-    display: block;
-    height: 100%;
+/* ESTILOS GENERALES - Mantenemos el mismo card-header */
+.card-header {
+    padding: 30px 24px 20px;
+    text-align: center;
+    background: linear-gradient(to right, #64b5f6, #90caf9);
+    /* Azul pastel */
+    color: white;
+
+    ion-icon {
+        font-size: 48px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        padding: 12px;
+        margin-bottom: 16px;
+    }
+
+    h2 {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin: 0 0 8px;
+    }
+
+    p {
+        margin: 0;
+        opacity: 0.9;
+        font-weight: 300;
+    }
+}
+
+/* CONTENIDO PRINCIPAL */
+.contenido-pagina {
+    padding: 24px;
+}
+
+.mensaje-inicial {
+    text-align: center;
+    margin-bottom: 24px;
+    color: var(--ion-color-dark);
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* LISTA DE VEHÍCULOS ESTILIZADA */
+.vehiculos-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.vehiculo-item {
+    display: flex;
+    align-items: center;
+    background: var(--input-bg);
+    border-radius: 16px;
+    padding: 18px;
+    border: 1px solid var(--ion-border-color);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+
+    &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(100, 181, 246, 0.15);
+        border-color: var(--ion-color-primary);
+    }
+
+    &.selected {
+        border: 2px solid var(--ion-color-primary);
+        background-color: rgba(100, 181, 246, 0.05);
+
+        .vehiculo-info h3 {
+            color: var(--ion-color-primary);
+        }
+    }
+}
+
+.vehiculo-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(100, 181, 246, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 16px;
+    flex-shrink: 0;
+
+    ion-icon {
+        font-size: 24px;
+        color: var(--ion-color-primary);
+    }
+}
+
+.vehiculo-info {
+    flex-grow: 1;
+
+    h3 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: var(--ion-color-dark);
+    }
+
+    p {
+        font-size: 0.95rem;
+        color: var(--ion-color-medium);
+        margin: 0;
+    }
+}
+
+.radio-selected {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #e0e0e0;
+    border: 1px solid #bdbdbd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    ion-icon {
+        font-size: 16px;
+        color: transparent;
+        transition: color 0.2s ease;
+    }
+
+    .selected & {
+        background: var(--ion-color-primary);
+        border-color: var(--ion-color-primary);
+
+        ion-icon {
+            color: white;
+        }
+    }
+}
+
+/* BOTÓN ESTILIZADO */
+.btn-continuar {
+    --background: var(--ion-color-primary);
+    --background-activated: var(--ion-color-primary-shade);
+    --background-hover: var(--ion-color-primary-tint);
+    --border-radius: 12px;
+    --padding-top: 18px;
+    --padding-bottom: 18px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 10px rgba(100, 181, 246, 0.3);
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 14px rgba(100, 181, 246, 0.4);
+    }
+
+    &:active {
+        transform: translateY(0);
+        box-shadow: 0 4px 10px rgba(100, 181, 246, 0.3);
+    }
+
+    &:disabled {
+        --background: #b0d5f8;
+        transform: none;
+        box-shadow: none;
+        opacity: 0.7;
+    }
+}
+
+/* RESPONSIVE - Mismos ajustes que la página anterior */
+@media (max-width: 768px) {
+    .card-header {
+        padding: 24px 16px 16px;
+
+        ion-icon {
+            font-size: 40px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+    }
+
+    .contenido-pagina {
+        padding: 20px;
+    }
+
+    .vehiculo-item {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .card-header {
+        padding: 20px 12px 14px;
+
+        h2 {
+            font-size: 1.3rem;
+        }
+
+        p {
+            font-size: 0.9rem;
+        }
+
+        ion-icon {
+            font-size: 36px;
+            padding: 10px;
+        }
+    }
+
+    .contenido-pagina {
+        padding: 16px;
+    }
 
     .mensaje-inicial {
-        text-align: center;
-        margin-bottom: 1rem;
-        font-size: 1.1rem;
-        color: var(--ion-text-color);
+        font-size: 1rem;
     }
 
-    ion-list {
-        border-radius: 8px;
-        background: var(--ion-item-background);
+    .vehiculos-lista {
+        gap: 12px;
     }
 
-    ion-item {
-        border-radius: 8px;
-        margin-bottom: 0.5rem;
+    .vehiculo-item {
+        padding: 14px;
     }
 
-    ion-button {
-        margin-top: 1.5rem;
+    .vehiculo-icon {
+        width: 40px;
+        height: 40px;
+
+        ion-icon {
+            font-size: 20px;
+        }
+    }
+
+    .vehiculo-info {
+        h3 {
+            font-size: 1.1rem;
+        }
+
+        p {
+            font-size: 0.9rem;
+        }
+    }
+
+    .btn-continuar {
+        font-size: 1rem;
+        --padding-top: 16px;
+        --padding-bottom: 16px;
     }
 }
