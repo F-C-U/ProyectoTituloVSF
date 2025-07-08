@@ -1,38 +1,329 @@
-@use 'sass:color';
-
+/* Variables basadas en la paleta de azul pastel */
 :host {
-    --color-fondo-claro: #ffffff;
-    --color-texto-claro: #000000;
-    --color-fondo-oscuro: #000000;
-    --color-texto-oscuro: #ffffff;
-    --color-principal: #007bff; // azul principal
+    /* Modo claro */
+    --ion-color-primary: #64b5f6;
+    --ion-color-primary-rgb: 100, 181, 246;
+    --ion-color-primary-contrast: #000000;
+    --ion-color-primary-shade: #58a0d8;
+    --ion-color-primary-tint: #74bcf7;
 
-    ion-content {
-        background-color: var(--color-fondo-claro);
+    --ion-color-secondary: #90caf9;
+    --ion-color-secondary-rgb: 144, 202, 249;
+    --ion-color-secondary-contrast: #000000;
+    --ion-color-secondary-shade: #7fb2db;
+    --ion-color-secondary-tint: #9bcffa;
 
-        @media (prefers-color-scheme: dark) {
-            background-color: var(--color-fondo-oscuro);
+    --ion-background-color: #e3f2fd;
+    --ion-text-color: #0d47a1;
+    --ion-border-color: rgba(100, 181, 246, 0.2);
+
+    --card-bg: #ffffff;
+    --card-shadow: rgba(100, 181, 246, 0.15);
+    --input-bg: #f5f9ff;
+    --input-focus-bg: #ffffff;
+    --active-color: rgba(100, 181, 246, 0.15);
+
+    --edit-color: #ffc107;
+    --delete-color: #f44336;
+}
+
+/* Modo oscuro */
+@media (prefers-color-scheme: dark) {
+    :host {
+        --ion-background-color: #0d1b2a;
+        --ion-text-color: #e3f2fd;
+        --ion-border-color: rgba(100, 181, 246, 0.3);
+
+        --card-bg: #1b263b;
+        --card-shadow: rgba(0, 0, 0, 0.3);
+        --input-bg: #2a3a5a;
+        --input-focus-bg: #334b6e;
+        --active-color: rgba(100, 181, 246, 0.25);
+
+        --edit-color: #ffca28;
+        --delete-color: #ef5350;
+    }
+}
+
+/* CENTRADO PERFECTO EN DESKTOP */
+.form-container {
+    --background: var(--ion-background-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    min-height: 100vh;
+    box-sizing: border-box;
+    background: var(--ion-background-color);
+}
+
+/* TARJETA PRINCIPAL CON ANCHO FIJO */
+.form-card {
+    background: var(--card-bg);
+    border-radius: 24px;
+    box-shadow: 0 8px 30px var(--card-shadow);
+    width: 100%;
+    max-width: 900px;
+    /* Un poco más ancho para la lista */
+    overflow: hidden;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ENCABEZADO CON GRADIENTE */
+.card-header {
+    padding: 30px 24px 20px;
+    text-align: center;
+    background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-secondary));
+    color: white;
+
+    .icon-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 16px;
+    }
+
+    .header-icon {
+        font-size: 48px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        padding: 12px;
+        width: 72px;
+        height: 72px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    h2 {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin: 0 0 8px;
+    }
+
+    p {
+        margin: 0;
+        opacity: 0.9;
+        font-weight: 300;
+    }
+}
+
+/* CONTENIDO DE LA LISTA */
+.list-content {
+    padding: 24px;
+    flex-grow: 1;
+}
+
+/* REFRESHER ESTILIZADO */
+.refresher-container {
+    background: var(--input-bg);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 16px;
+    text-align: center;
+    border: 1px solid var(--ion-border-color);
+
+    .refresher-placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        color: var(--ion-color-primary);
+        font-size: 0.9rem;
+    }
+
+    .refresh-icon {
+        font-size: 20px;
+        animation: rotate 2s infinite linear;
+    }
+
+    @keyframes rotate {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+}
+
+/* LISTA DE VEHÍCULOS */
+.vehicle-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* TARJETA DE VEHÍCULO */
+.vehicle-card {
+    background: var(--input-bg);
+    border-radius: 16px;
+    border: 1px solid var(--ion-border-color);
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+}
+
+.vehicle-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    .vehicle-icon {
+        font-size: 32px;
+        color: var(--ion-color-primary);
+    }
+
+    .vehicle-details {
+        h3 {
+            margin: 0 0 4px;
+            font-size: 1.2rem;
+            color: var(--ion-text-color);
+        }
+
+        p {
+            margin: 4px 0;
+            font-size: 0.9rem;
+            color: var(--ion-text-color);
+            opacity: 0.8;
+        }
+    }
+}
+
+.vehicle-actions {
+    display: flex;
+    gap: 8px;
+
+    .action-button {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        transition: background 0.2s;
+
+        ion-icon {
+            font-size: 18px;
+        }
+
+        &.edit-button {
+            background: rgba(var(--edit-color), 0.1);
+            color: var(--edit-color);
+            border: 1px solid var(--edit-color);
+
+            &:hover {
+                background: rgba(var(--edit-color), 0.2);
+            }
+        }
+
+        &.delete-button {
+            background: rgba(var(--delete-color), 0.1);
+            color: var(--delete-color);
+            border: 1px solid var(--delete-color);
+
+            &:hover {
+                background: rgba(var(--delete-color), 0.2);
+            }
+        }
+    }
+}
+
+/* MENSAJE SIN VEHÍCULOS */
+.no-vehicles {
+    text-align: center;
+    padding: 24px;
+    color: var(--ion-color-medium);
+
+    .info-icon {
+        font-size: 48px;
+        margin-bottom: 16px;
+        color: var(--ion-color-primary);
+    }
+
+    p {
+        margin: 0;
+    }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .form-container {
+        padding: 16px;
+        padding-top: 80px;
+        justify-content: flex-start;
+        align-items: stretch;
+    }
+
+    .card-header {
+        padding: 24px 16px 16px;
+
+        .header-icon {
+            font-size: 40px;
+            width: 60px;
+            height: 60px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
         }
     }
 
-    ion-item {
-        --background: transparent;
-        border-bottom: 1px solid #ccc;
+    .list-content {
+        padding: 16px;
+    }
 
-        @media (prefers-color-scheme: dark) {
-            color: var(--color-texto-oscuro);
+    .vehicle-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .vehicle-actions {
+        align-self: flex-end;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-container {
+        padding: 12px;
+        padding-top: 70px;
+    }
+
+    .card-header {
+        padding: 20px 12px 14px;
+
+        h2 {
+            font-size: 1.3rem;
+        }
+
+        p {
+            font-size: 0.9rem;
+        }
+
+        .header-icon {
+            font-size: 36px;
+            width: 54px;
+            height: 54px;
         }
     }
 
-    ion-label {
-        color: var(--color-texto-claro);
-        @media (prefers-color-scheme: dark) {
-            color: var(--color-texto-oscuro);
-        }
-    }
+    .vehicle-actions {
+        flex-direction: column;
+        width: 100%;
 
-    ion-toolbar {
-        --background: var(--color-principal);
-        --color: white;
+        .action-button {
+            justify-content: center;
+            width: 100%;
+        }
     }
 }

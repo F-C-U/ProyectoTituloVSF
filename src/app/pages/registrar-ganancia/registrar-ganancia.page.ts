@@ -1,8 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { 
-  IonContent,
-  IonItem, IonInput, IonButton, IonLabel,
-  IonCard, IonCardHeader, IonCardTitle, IonCardContent,
   AlertController
 } from '@ionic/angular/standalone';
 import { FormsModule } from '@angular/forms';
@@ -14,9 +11,6 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./registrar-ganancia.page.scss'],
   standalone: true,
   imports: [
-    IonContent,
-    IonItem, IonInput, IonButton, IonLabel,
-    IonCard, IonCardHeader, IonCardTitle, IonCardContent,
     FormsModule, CommonModule
   ]
 })

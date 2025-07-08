@@ -1,29 +1,59 @@
-<ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>Lista de vehículos</ion-title>
-  </ion-toolbar>
-</ion-header>
+<div class="form-container">
+  <!-- Tarjeta unificada -->
+  <div class="form-card">
+    <!-- Encabezado con gradiente -->
+    <div class="card-header">
+      <div class="icon-container">
+        <ion-icon name="car-outline" class="header-icon"></ion-icon>
+      </div>
+      <h2>Mis vehículos</h2>
+      <p>Administra los vehículos registrados</p>
+    </div>
 
-<ion-content [fullscreen]="true">
-  <ion-refresher slot="fixed" (ionRefresh)="obtenerVehiculos()">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
+    <!-- Contenido principal -->
+    <div class="list-content">
+      <!-- Refresher integrado en la tarjeta -->
+      <div class="refresher-container">
+        <div class="refresher-placeholder">
+          <ion-icon name="refresh-outline" class="refresh-icon"></ion-icon>
+          <span>Desliza hacia abajo para actualizar</span>
+        </div>
+      </div>
 
-  <ion-list>
-    <ion-item *ngFor="let vehiculo of registroVehiculos">
-      <ion-label>
-        <h2>Patente: {{ vehiculo.patente }}</h2>
-        <p>Modelo: {{ vehiculo.modelo }}</p>
-        <p>Año: {{ vehiculo.anio }}</p>
-      </ion-label>
-      <ion-button fill="clear" slot="end" (click)="editarVehiculo(vehiculo.patente)">Editar</ion-button>
-      <ion-button fill="clear" slot="end" (click)="eliminarVehiculo(vehiculo.patente)">Eliminar</ion-button>
-    </ion-item>
-  </ion-list>
+      <!-- Lista de vehículos -->
+      <div class="vehicle-list">
+        <!-- Mensaje de carga o sin datos -->
+        <ng-container *ngIf="registroVehiculos && registroVehiculos.length > 0; else mensajeCarga">
+          <!-- Tarjeta por cada vehículo -->
+          <div class="vehicle-card" *ngFor="let vehiculo of registroVehiculos">
+            <div class="vehicle-info">
+              <ion-icon name="car-sport-outline" class="vehicle-icon"></ion-icon>
+              <div class="vehicle-details">
+                <h3>Patente: {{ vehiculo.patente }}</h3>
+                <p>Modelo: {{ vehiculo.modelo }}</p>
+                <p>Año: {{ vehiculo.anio }}</p>
+              </div>
+            </div>
+            <div class="vehicle-actions">
+              <button (click)="editarVehiculo(vehiculo.patente)" class="action-button edit-button">
+                <ion-icon name="create-outline"></ion-icon>
+                <span>Editar</span>
+              </button>
+              <button (click)="eliminarVehiculo(vehiculo.patente)" class="action-button delete-button">
+                <ion-icon name="trash-outline"></ion-icon>
+                <span>Eliminar</span>
+              </button>
+            </div>
+          </div>
+        </ng-container>
 
-  <ng-template #mensajeCarga>
-    <ion-text color="medium">
-      <p class="ion-padding">No se encontraron vehículos o está cargando...</p>
-    </ion-text>
-  </ng-template>
-</ion-content>
+        <ng-template #mensajeCarga>
+          <div class="no-vehicles">
+            <ion-icon name="information-circle-outline" class="info-icon"></ion-icon>
+            <p>No se encontraron vehículos o está cargando...</p>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

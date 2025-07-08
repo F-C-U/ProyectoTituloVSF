@@ -29,9 +29,13 @@ import {
     powerOutline,
     save,
     analyticsOutline,
-    busOutline,    
+    busOutline,
     documentAttachOutline,
-    settingsOutline 
+    settingsOutline,
+    refreshOutline,
+    createOutline,
+    trashOutline,
+    informationCircleOutline
 } from 'ionicons/icons';
 
 export const initializeIcons = () => {
@@ -66,6 +70,10 @@ export const initializeIcons = () => {
         analyticsOutline,
         busOutline,
         documentAttachOutline,
-        settingsOutline 
+        settingsOutline,
+        refreshOutline,
+        createOutline,
+        trashOutline,
+        informationCircleOutline
     });
 };
