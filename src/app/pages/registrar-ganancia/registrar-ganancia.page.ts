@@ -1,26 +1,32 @@
 import { Component, Input } from '@angular/core';
-import { 
-  AlertController
-} from '@ionic/angular/standalone';
+import { AlertController } from '@ionic/angular/standalone';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { FirebaseService } from 'src/app/services/firebase.service';
+import { UtilsService } from 'src/app/services/utils.service';
 
 @Component({
   selector: 'app-registrar-ganancia',
   templateUrl: './registrar-ganancia.page.html',
   styleUrls: ['./registrar-ganancia.page.scss'],
   standalone: true,
-  imports: [
-    FormsModule, CommonModule
-  ]
+  imports: [FormsModule, CommonModule],
 })
 export class RegistrarGananciaPage {
   @Input() patente: string = '';
   ganancia: number | null = null;
   fechaRegistro: string = new Date().toISOString();
 
-  constructor(private alertController: AlertController) {}
+  constructor(
+    private alertController: AlertController,
+    private firebase: FirebaseService,
+    private utils: UtilsService
+  ) {}
+  vehiculo: any;
 
+  ngOnInit() {
+    this.vehiculo = this.utils.getFromlocalStorage('vehiculo');
+  }
   // === MÉTODOS NUEVOS PARA BOTONES DE INCREMENTO ===
   ajustarMonto(incremento: number) {
     this.ganancia = (this.ganancia || 0) + incremento;
@@ -31,7 +37,7 @@ export class RegistrarGananciaPage {
     if (this.ganancia !== null && this.ganancia < 0) {
       this.ganancia = 0;
       this.mostrarAlerta(
-        'Ajuste automático', 
+        'Ajuste automático',
         'El monto no puede ser negativo. Se estableció a $0'
       );
     }
@@ -43,11 +49,27 @@ export class RegistrarGananciaPage {
     const currentValue = (event.target as HTMLInputElement).value;
 
     // Permitir teclas de control
-    if ([
-      'Backspace', 'Delete', 'Tab', 
-      'ArrowLeft', 'ArrowRight', 'Enter',
-      '.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
-    ].includes(inputChar)) {
+    if (
+      [
+        'Backspace',
+        'Delete',
+        'Tab',
+        'ArrowLeft',
+        'ArrowRight',
+        'Enter',
+        '.',
+        '0',
+        '1',
+        '2',
+        '3',
+        '4',
+        '5',
+        '6',
+        '7',
+        '8',
+        '9',
+      ].includes(inputChar)
+    ) {
       return;
     }
 
@@ -81,24 +103,28 @@ export class RegistrarGananciaPage {
     // Validación final reforzada
     if (this.ganancia === null || isNaN(this.ganancia) || this.ganancia <= 0) {
       this.mostrarAlerta(
-        'Valor inválido', 
+        'Valor inválido',
         'Debe ingresar una ganancia mayor a $0'
       );
       return;
     }
-
     // Lógica de registro
     const registro = {
-      patente: this.patente,
+      patente: this.vehiculo.patente,
       ganancia: this.ganancia,
       fecha: new Date(this.fechaRegistro).toLocaleDateString('es-CL'),
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
 
-    console.log('Registro exitoso:', registro);
+    this.firebase.setDocument(
+      `ganancias/${registro.patente}_${registro.timestamp}`,
+      registro
+    );
     this.mostrarAlerta(
-      'Registro exitoso', 
-      `Se registró una ganancia de $${this.ganancia.toLocaleString('es-CL')} para ${this.patente}`
+      'Registro exitoso',
+      `Se registró una ganancia de $${this.ganancia.toLocaleString(
+        'es-CL'
+      )} para ${this.patente}`
     );
     this.ganancia = null;
   }
@@ -107,7 +133,7 @@ export class RegistrarGananciaPage {
     const alert = await this.alertController.create({
       header: titulo,
       message: mensaje,
-      buttons: ['OK']
+      buttons: ['OK'],
     });
     await alert.present();
   }
