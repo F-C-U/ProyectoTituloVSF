@@ -1,164 +1,416 @@
-/* Estilos generales para el modo claro (sin cambios significativos, se mantienen los azules y blancos originales) */
-ion-header {
-    ion-toolbar {
-        --background: var(--ion-color-primary, #3880ff); // Azul principal de Ionic
-        --color: var(--ion-color-primary-contrast, #fff); // Texto blanco
-    }
+/* Variables basadas en la paleta de azul pastel */
+:root {
+    /* Modo claro */
+    --ion-color-primary: #64b5f6;
+    --ion-color-primary-rgb: 100, 181, 246;
+    --ion-color-primary-contrast: #000000;
+    --ion-color-primary-shade: #58a0d8;
+    --ion-color-primary-tint: #74bcf7;
 
-    ion-title {
-        color: var(--ion-color-primary-contrast, #fff);
+    --ion-color-secondary: #90caf9;
+    --ion-color-secondary-rgb: 144, 202, 249;
+    --ion-color-secondary-contrast: #000000;
+    --ion-color-secondary-shade: #7fb2db;
+    --ion-color-secondary-tint: #9bcffa;
+
+    --ion-background-color: #e3f2fd;
+    --ion-text-color: #0d47a1;
+    --ion-border-color: rgba(100, 181, 246, 0.2);
+
+    --card-bg: #ffffff;
+    --card-shadow: rgba(100, 181, 246, 0.15);
+    --input-bg: #f5f9ff;
+    --input-focus-bg: #ffffff;
+    --active-color: rgba(100, 181, 246, 0.15);
+
+    --assign-color: #4caf50;
+    --edit-color: #ffc107;
+    --delete-color: #f44336;
+}
+
+/* Modo oscuro */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --ion-background-color: #0d1b2a;
+        --ion-text-color: #e3f2fd;
+        --ion-border-color: rgba(100, 181, 246, 0.3);
+
+        --card-bg: #1b263b;
+        --card-shadow: rgba(0, 0, 0, 0.3);
+        --input-bg: #2a3a5a;
+        --input-focus-bg: #334b6e;
+        --active-color: rgba(100, 181, 246, 0.25);
+
+        --assign-color: #66bb6a;
+        --edit-color: #ffca28;
+        --delete-color: #ef5350;
     }
 }
 
-ion-content {
-    --background: var(--ion-color-step-50, #f2f2f2); // Fondo blanco/gris claro para el contenido
+/* ESTILOS GLOBALES */
+.page-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: var(--ion-background-color);
+}
 
-    ion-list {
-        background: transparent; // La lista es transparente para que el fondo de la página se vea
-    }
+.scrollable-content {
+    overflow-y: auto;
+    flex-grow: 1;
+    padding: 16px;
+    box-sizing: border-box;
+}
 
-    ion-item {
-        --background: var(--ion-color-step-100, #ffffff); // Fondo blanco para cada item
-        --border-color: var(--ion-color-step-200, #cccccc); // Bordes gris claro
-        margin-bottom: 8px; // Espacio entre ítems
-        border-radius: 8px; // Bordes redondeados
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // Sombra sutil para profundidad
+/* TARJETA PRINCIPAL */
+.form-card {
+    background: var(--card-bg);
+    border-radius: 24px;
+    box-shadow: 0 8px 30px var(--card-shadow);
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    overflow: hidden;
+    padding-bottom: 40px;
+}
 
-        ion-label {
-            h2 {
-                color: var(--ion-color-dark, #000); // Negro para el nombre del esquema
-                font-weight: bold;
-            }  
+/* ENCABEZADO CON GRADIENTE */
+.card-header {
+    padding: 30px 24px 20px;
+    text-align: center;
+    background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-secondary));
+    color: white;
 
-            p {
-                color: var(--ion-color-medium, #666); // Gris oscuro para los detalles
-                font-size: 0.9em;
-            }
-
-            .monto, .porcentaje {
-                color: var(--ion-color-secondary, #0cd1e8); // Azul claro para montos/porcentajes (puede ser otro azul)
-                font-weight: 600;
-            }
-        }
-
-        .esquema-icon {
-        color: var(--ion-color-primary, #3880ff); // Icono azul
-        }
-
-        .button-group {
-            display: flex;
-            --padding-start: 8px;
-            --padding-end: 8px;
-            --padding-top: 4px;
-            --padding-bottom: 4px;
-            height: auto;
-            min-width: unset;
-            font-size: 0.75em;
-            margin-left: 4px;
-        }
-    }
-
-  // Estilos para el mensaje de "No hay ítems"
-    .no-items-message {
-        --background: var(--ion-color-light, #f4f5f8);
-        color: var(--ion-color-medium, #666);
-        text-align: center;
-        padding: 20px;
-        margin-top: 20px;
-        border-radius: 8px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-    }
-
-  // Estilos para el mensaje de error
-    error-message {
-        --background: var(--ion-color-danger-tint, #ff8a8a); // Tono rojo claro
-        color: var(--ion-color-danger-contrast, #fff); // Texto blanco
-        padding: 15px;
-        border-radius: 8px;
-        margin: 16px;
+    .icon-container {
         display: flex;
-        flex-direction: column;
+        justify-content: center;
+        margin-bottom: 16px;
+    }
+
+    .header-icon {
+        font-size: 48px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        padding: 12px;
+        width: 72px;
+        height: 72px;
+        display: flex;
         align-items: center;
         justify-content: center;
-        text-align: center;
+    }
+
+    h2 {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin: 0 0 8px;
+    }
+
+    p {
+        margin: 0;
+        opacity: 0.9;
+        font-weight: 300;
+    }
+}
+
+/* REFRESHER ESTILIZADO */
+.refresher-container {
+    background: var(--input-bg);
+    border-radius: 12px;
+    padding: 12px;
+    margin: 0 24px 24px;
+    text-align: center;
+    border: 1px solid var(--ion-border-color);
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+        background: var(--input-focus-bg);
+    }
+
+    .refresher-placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        color: var(--ion-color-primary);
+        font-size: 0.9rem;
+    }
+
+    .refresh-icon {
+        font-size: 20px;
+    }
+}
+
+/* ESTADOS DE CARGA Y ERROR */
+.loading-state,
+.error-state,
+.no-esquemas {
+    text-align: center;
+    padding: 32px 24px;
+    background: var(--input-bg);
+    border-radius: 16px;
+    border: 1px solid var(--ion-border-color);
+    margin: 0 24px 24px;
+}
+
+.loading-state {
+    .spinner-container {
+        margin-bottom: 16px;
+    }
+
+    .spinner-icon {
+        font-size: 48px;
+        color: var(--ion-color-primary);
+        animation: spin 1.5s infinite linear;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    p {
+        margin: 0;
+        color: var(--ion-text-color);
+    }
+}
+
+.error-state {
+    .error-icon {
+        font-size: 48px;
+        color: var(--delete-color);
+        margin-bottom: 16px;
+    }
+
+    p {
+        margin: 0 0 16px;
+        color: var(--ion-text-color);
+    }
+
+    .retry-button {
+        background: var(--ion-color-primary);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.2s;
+
+        &:hover {
+            background: var(--ion-color-primary-tint);
+        }
+    }
+}
+
+/* LISTA DE ESQUEMAS */
+.esquemas-container {
+    padding: 0 24px 24px;
+}
+
+.no-esquemas {
+    .info-icon {
+        font-size: 48px;
+        color: var(--ion-color-primary);
+        margin-bottom: 16px;
+    }
+
+    p {
+        margin: 0;
+        color: var(--ion-text-color);
+    }
+}
+
+.esquemas-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.esquema-card {
+    background: var(--input-bg);
+    border-radius: 16px;
+    border: 1px solid var(--ion-border-color);
+    padding: 20px;
+    transition: transform 0.2s, box-shadow 0.2s;
+
+    &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+}
+
+.esquema-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--ion-border-color);
+
+    .esquema-icon {
+        font-size: 32px;
+        color: var(--ion-color-primary);
+    }
+
+    h3 {
+        margin: 0;
+        font-size: 1.3rem;
+        color: var(--ion-text-color);
+    }
+}
+
+.esquema-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 20px;
+
+    .esquema-detail {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .detail-label {
+        font-size: 0.9rem;
+        color: var(--ion-color-medium);
+    }
+
+    .detail-value {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--ion-text-color);
+    }
+}
+
+.esquema-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+
+    .action-button {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
 
         ion-icon {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            color: var(--ion-color-danger, #eb445a); // Rojo para el icono
+            font-size: 18px;
+        }
+
+        &.assign-button {
+            background: rgba(var(--assign-color), 0.1);
+            color: var(--assign-color);
+            border: 1px solid var(--assign-color);
+
+            &:hover {
+                background: rgba(var(--assign-color), 0.2);
+            }
+        }
+
+        &.edit-button {
+            background: rgba(var(--edit-color), 0.1);
+            color: var(--edit-color);
+            border: 1px solid var(--edit-color);
+
+            &:hover {
+                background: rgba(var(--edit-color), 0.2);
+            }
+        }
+
+        &.delete-button {
+            background: rgba(var(--delete-color), 0.1);
+            color: var(--delete-color);
+            border: 1px solid var(--delete-color);
+
+            &:hover {
+                background: rgba(var(--delete-color), 0.2);
+            }
+        }
+    }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .scrollable-content {
+        padding: 0;
+    }
+
+    .form-card {
+        border-radius: 0;
+        box-shadow: none;
+        min-height: 100vh;
+    }
+
+    .card-header {
+        padding: 30px 16px 20px;
+
+        .header-icon {
+            font-size: 40px;
+            width: 60px;
+            height: 60px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+    }
+
+    .refresher-container,
+    .loading-state,
+    .error-state,
+    .esquemas-container {
+        margin-left: 16px;
+        margin-right: 16px;
+    }
+
+    .esquema-actions {
+        .action-button {
+            flex: 1;
+            min-width: 120px;
+            justify-content: center;
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .card-header {
+        padding: 20px 12px 14px;
+
+        h2 {
+            font-size: 1.3rem;
         }
 
         p {
-            margin-bottom: 15px;
-            font-weight: 500;
+            font-size: 0.9rem;
         }
 
-        ion-button {
-        --background: var(--ion-color-danger, #eb445a); // Botón rojo
-        --color: var(--ion-color-danger-contrast, #fff); // Texto blanco
-        }
-    }
-}
-
-/* Estilos para el modo oscuro, inspirados en la imagen proporcionada */
-@media (prefers-color-scheme: dark) {
-    ion-header {
-        ion-toolbar {
-            --background: #007bff; // Negro puro para el encabezado (similar a la imagen)
-            --color: #000000; // Azul para el texto del título (similar al azul de la tabla)
-        }
-
-        ion-title {
-            color: #000000; // Azul para el título grande
+        .header-icon {
+            font-size: 36px;
+            width: 54px;
+            height: 54px;
         }
     }
 
-    ion-content {
-        --background: #000000; // Fondo negro puro para el contenido
+    .esquema-actions {
+        flex-direction: column;
 
-        ion-item {
-            --background: #1a1a1a; // Un gris oscuro para el fondo de cada ítem, similar a la tabla
-            --border-color: #333333; // Un gris un poco más claro para los bordes
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); // Sombra más pronunciada en modo oscuro
-
-            ion-label {
-                h2 {
-                    color: #3880ff; // Azul para el nombre del esquema (similar al azul de la tabla)
-                }
-
-                p {
-                    color: #cccccc; // Gris claro para los detalles, para que se vea bien
-                }
-
-                .monto, .porcentaje {
-                    color: #64b5f6; // Un azul más claro para montos/porcentajes, que contraste bien con el gris oscuro
-                }
-            }
-
-            .esquema-icon {
-                color: #3880ff; // Icono azul
-            }
+        .action-button {
+            width: 100%;
         }
+    }
 
-        // Estilos para el mensaje de "No hay ítems" en modo oscuro
-        .no-items-message {
-            --background: #1a1a1a; // Fondo oscuro
-            color: #cccccc; // Texto gris claro
-            border: 1px solid #333333; // Borde sutil
-        }
-
-        // Estilos para el mensaje de error en modo oscuro
-        .error-message {
-            --background: #330000; // Un rojo muy oscuro, casi negro con un tinte rojo
-            color: #ffcccc; // Texto rojo muy claro para contrastar
-            border: 1px solid #660000; // Borde rojo oscuro
-            ion-icon {
-                color: #ff4d4d; // Rojo un poco más vivo para el icono
-            }
-            ion-button {
-                --background: #b30000; // Un rojo más oscuro para el botón
-                --color: #fff; // Texto blanco
-            }
-        }
+    .esquema-details {
+        flex-direction: column;
+        gap: 10px;
     }
 }
