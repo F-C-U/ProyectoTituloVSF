@@ -1,44 +1,39 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Asignar esquema de pago</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true" class="form-container">
+  <div class="form-card">
+    <div class="card-header">
+      <ion-icon name="wallet-outline"></ion-icon>
+      <h2>Asignar esquema de pago</h2>
+      <p>Asigna un esquema de pago a un conductor</p>
+    </div>
 
-<ion-content class="ion-padding">
+    <div class="contenido-pagina">
+      <!-- Campo: Seleccionar conductor -->
+      <div class="form-item">
+        <ion-label position="stacked" class="form-label">Seleccionar conductor</ion-label>
+        <ion-select interface="popover" [(ngModel)]="conductorSeleccionado" class="custom-select"
+          placeholder="Selecciona un conductor">
+          <ion-select-option *ngFor="let conductor of conductores" [value]="conductor">
+            {{ conductor }}
+          </ion-select-option>
+        </ion-select>
+      </div>
 
-  <ion-item>
-    <ion-label position="floating">Seleccionar conductor</ion-label>
-    <ion-select interface="popover" [(ngModel)]="conductorSeleccionado">
-      <ion-select-option *ngFor="let conductor of conductores" [value]="conductor">
-        {{ conductor }}
-      </ion-select-option>
-    </ion-select>
-  </ion-item>
+      <!-- Campo: Esquema de pago -->
+      <div class="form-item">
+        <ion-label position="stacked" class="form-label">Esquema de pago</ion-label>
+        <ion-select interface="popover" [(ngModel)]="esquemaSeleccionado" class="custom-select"
+          placeholder="Selecciona un esquema">
+          <ion-select-option *ngFor="let esquema of esquemas" [value]="esquema">
+            {{ esquema }}
+          </ion-select-option>
+        </ion-select>
+      </div>
 
-  <ion-item>
-    <ion-label position="floating">Esquema de pago</ion-label>
-    <ion-select interface="popover" [(ngModel)]="esquemaSeleccionado">
-      <ion-select-option *ngFor="let esquema of esquemas" [value]="esquema">
-        {{ esquema }}
-      </ion-select-option>
-    </ion-select>
-  </ion-item>
-
-  <ion-button
-    expand="block"
-    class="boton-primario"
-    (click)="asignarEsquema()"
-    [disabled]="!conductorSeleccionado || !esquemaSeleccionado">
-    Asignar esquema
-  </ion-button>
-
-  <!-- Eliminamos el trigger ya que el toast se invoca desde TypeScript -->
-  <ion-toast
-    *ngIf="false"
-    message=""
-    duration="0"
-    color="success"
-    position="bottom">
-  </ion-toast>
-
+      <!-- Botón de asignación -->
+      <ion-button expand="block" class="btn-asignar" (click)="asignarEsquema()"
+        [disabled]="!conductorSeleccionado || !esquemaSeleccionado">
+        Asignar Esquema
+      </ion-button>
+    </div>
+  </div>
 </ion-content>
