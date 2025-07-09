@@ -24,7 +24,7 @@ export class RegistroKilometrajePage implements OnInit {
   vehiculoAsignado: any = {
     marca: '--',
     modelo: '--',
-    patente: '--'
+    patente: '--',
   };
 
   constructor(
@@ -39,18 +39,20 @@ export class RegistroKilometrajePage implements OnInit {
 
   async ngOnInit() {
     const vehiculoStorage = this.utils.getFromlocalStorage('vehiculo');
-    
-    if (vehiculoStorage && 
-        vehiculoStorage.marca && 
-        vehiculoStorage.modelo && 
-        vehiculoStorage.patente) {
+
+    if (
+      vehiculoStorage &&
+      vehiculoStorage.marca &&
+      vehiculoStorage.modelo &&
+      vehiculoStorage.patente
+    ) {
       this.vehiculoAsignado = vehiculoStorage;
     } else {
       console.warn('Vehículo no encontrado en localStorage:', vehiculoStorage);
       await this.utils.presentToast({
         message: 'No se encontró vehículo asignado válido',
         duration: 2500,
-        color: 'warning'
+        color: 'warning',
       });
     }
   }
@@ -63,12 +65,14 @@ export class RegistroKilometrajePage implements OnInit {
       const registro = {
         ...this.formularioKilometraje.value,
         fecha: this.fechaActual.toISOString(),
-        vehiculo: this.vehiculoAsignado.patente || 'N/A'
+        vehiculo: this.vehiculoAsignado.patente || 'N/A',
       };
 
       try {
         await this.firebase.setDocument(
-          `kilometraje/${this.fechaActual.getTime()}`,
+          `kilometraje/${
+            this.vehiculoAsignado.patente
+          }_${this.fechaActual.getTime()}`,
           registro
         );
         this.utils.presentToast({

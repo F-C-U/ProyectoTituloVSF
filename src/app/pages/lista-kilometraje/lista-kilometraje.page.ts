@@ -14,15 +14,16 @@ import { FirebaseService } from 'src/app/services/firebase.service';
   styleUrls: ['./lista-kilometraje.page.scss'],
 })
 export class ListaKilometrajePage {
-
-  kilometrajes: { id: string; fecha: string; kilometraje: number; patenteVehiculo: string }[] = [];
+  kilometrajes: {
+    id: string;
+    fecha: string;
+    kilometraje: number;
+    patenteVehiculo: string;
+  }[] = [];
   mesSeleccionado: string = '';
   anioSeleccionado: string = '';
 
-  constructor(
-    private utils: UtilsService,
-    private firebase: FirebaseService
-  ) {}
+  constructor(private utils: UtilsService, private firebase: FirebaseService) {}
 
   ngOnInit() {
     this.obtenerKilometrajes();
@@ -30,28 +31,38 @@ export class ListaKilometrajePage {
 
   async obtenerKilometrajes() {
     this.firebase.getCollection('kilometraje').subscribe((data: any[]) => {
-      this.kilometrajes = data.map((kilometraje) => ({
-        id: kilometraje.id,
-        fecha: kilometraje.fecha,
-        kilometraje: kilometraje.kilometros,
-        patenteVehiculo: kilometraje.patenteVehiculo
-      }));
+      this.kilometrajes = data.map((kilometraje) => {
+        // Convierte la fecha a dd-mm-yyyy
+        let fechaOriginal = kilometraje.fecha;
+        let fechaObj = new Date(fechaOriginal);
+        let dia = String(fechaObj.getDate()).padStart(2, '0');
+        let mes = String(fechaObj.getMonth() + 1).padStart(2, '0');
+        let anio = fechaObj.getFullYear();
+        let fechaFormateada = `${dia}-${mes}-${anio}`;
+
+        return {
+          id: kilometraje.id,
+          fecha: fechaFormateada,
+          kilometraje: kilometraje.kilometros,
+          patenteVehiculo: kilometraje.vehiculo,
+        };
+      });
     });
   }
 
   // Getters para filtros
   get aniosDisponibles(): string[] {
-    const anios = new Set(this.kilometrajes.map(k => k.fecha.split('-')[0]));
+    const anios = new Set(this.kilometrajes.map((k) => k.fecha.split('-')[0]));
     return Array.from(anios).sort();
   }
 
   get mesesDisponibles(): string[] {
-    const meses = new Set(this.kilometrajes.map(k => k.fecha.split('-')[1]));
+    const meses = new Set(this.kilometrajes.map((k) => k.fecha.split('-')[1]));
     return Array.from(meses).sort();
   }
 
   get kilometrajesFiltrados() {
-    return this.kilometrajes.filter(k => {
+    return this.kilometrajes.filter((k) => {
       const [anio, mes] = k.fecha.split('-');
       return (
         (!this.mesSeleccionado || mes === this.mesSeleccionado) &&
@@ -62,13 +73,13 @@ export class ListaKilometrajePage {
 
   // Solo permite editar si la fecha del registro es igual a la de hoy
   editarRegistro(id: string) {
-    const registro = this.kilometrajes.find(k => k.id === id);
+    const registro = this.kilometrajes.find((k) => k.id === id);
 
     if (!registro) {
       this.utils.presentToast({
         message: 'Registro no encontrado',
         duration: 2000,
-        color: 'danger'
+        color: 'danger',
       });
       return;
     }
@@ -81,13 +92,13 @@ export class ListaKilometrajePage {
       this.utils.presentToast({
         message: 'Solo puedes editar registros creados hoy',
         duration: 3000,
-        color: 'warning'
+        color: 'warning',
       });
       return;
     }
 
     const xtras: NavigationExtras = {
-      state: { id }
+      state: { id },
     };
 
     this.utils.routerLinkWithExtras('editar-kilometraje', xtras);
