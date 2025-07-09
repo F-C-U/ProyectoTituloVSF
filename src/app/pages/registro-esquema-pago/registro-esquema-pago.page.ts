@@ -1,5 +1,5 @@
 // src/app/pages/registro-esquema-pago.page.ts
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormsModule,
@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { FirebaseService } from 'src/app/services/firebase.service';
+import { UtilsService } from 'src/app/services/utils.service';
 
 @Component({
   selector: 'app-registro-esquema-pago',
@@ -18,16 +19,23 @@ import { FirebaseService } from 'src/app/services/firebase.service';
   templateUrl: './registro-esquema-pago.page.html',
   styleUrls: ['./registro-esquema-pago.page.scss'],
 })
-export class RegistroEsquemaPagoPage {
+export class RegistroEsquemaPagoPage implements OnInit {
   formularioEsquema: FormGroup;
   tipos: string[] = ['Cuota fija', 'Porcentaje'];
+  conductores: any[] = [];
 
-  constructor(private fb: FormBuilder, private firebase: FirebaseService) {
+  constructor(
+    private fb: FormBuilder,
+    private firebase: FirebaseService,
+    private utils: UtilsService
+  ) {
     this.formularioEsquema = this.fb.group({
       nombreEsquema: ['', Validators.required],
       tipo: ['', Validators.required],
       montoMensual: [''],
       porcentajeGanancia: [''],
+      conductor: ['', Validators.required],
+      dueno: [''],
     });
 
     // Escuchar cambios en el tipo para mostrar el campo correspondiente
@@ -56,6 +64,14 @@ export class RegistroEsquemaPagoPage {
     });
   }
 
+  ngOnInit() {
+    this.firebase
+      .getCollectionWhere('usuarios', 'esConductor', '==', true)
+      .subscribe((data: any[]) => {
+        this.conductores = data;
+      });
+  }
+
   agregarPuntos(valor: string): string {
     return valor.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   }
@@ -79,6 +95,9 @@ export class RegistroEsquemaPagoPage {
     if (this.formularioEsquema.valid) {
       console.log('Esquema de pago registrado:', this.formularioEsquema.value);
       try {
+        this.formularioEsquema.patchValue({
+          dueno: this.utils.getFromlocalStorage('usuario').uid,
+        });
         this.firebase.setDocument(
           'esquema_pago/' + this.formularioEsquema.get('nombreEsquema')?.value,
           this.formularioEsquema.value
@@ -107,5 +126,9 @@ export class RegistroEsquemaPagoPage {
 
   get porcentajeGanancia() {
     return this.formularioEsquema.get('porcentajeGanancia');
+  }
+
+  get conductor() {
+    return this.formularioEsquema.get('conductor');
   }
 }

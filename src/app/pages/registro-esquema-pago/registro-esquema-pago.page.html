@@ -10,10 +10,20 @@
       <form [formGroup]="formularioEsquema" (ngSubmit)="registrarEsquema()">
         <!-- Campo: Nombre del esquema -->
         <div class="form-item">
-          <ion-label position="stacked" class="form-label">Nombre del esquema</ion-label>
-          <ion-input formControlName="nombreEsquema" type="text" required class="custom-input"
-            placeholder="Ej: Esquema Premium"></ion-input>
-          <div class="error-message" *ngIf="nombreEsquema?.invalid && nombreEsquema?.touched">
+          <ion-label position="stacked" class="form-label"
+            >Nombre del esquema</ion-label
+          >
+          <ion-input
+            formControlName="nombreEsquema"
+            type="text"
+            required
+            class="custom-input"
+            placeholder="Ej: Esquema Premium"
+          ></ion-input>
+          <div
+            class="error-message"
+            *ngIf="nombreEsquema?.invalid && nombreEsquema?.touched"
+          >
             <ion-icon name="alert-circle-outline"></ion-icon>
             <span>Este campo es obligatorio</span>
           </div>
@@ -21,9 +31,18 @@
 
         <!-- Campo: Tipo de esquema -->
         <div class="form-item">
-          <ion-label position="stacked" class="form-label">Tipo de esquema</ion-label>
-          <ion-select formControlName="tipo" interface="popover" placeholder="Selecciona el tipo" class="custom-select">
-            <ion-select-option *ngFor="let tipo of tipos" [value]="tipo">{{ tipo }}</ion-select-option>
+          <ion-label position="stacked" class="form-label"
+            >Tipo de esquema</ion-label
+          >
+          <ion-select
+            formControlName="tipo"
+            interface="popover"
+            placeholder="Selecciona el tipo"
+            class="custom-select"
+          >
+            <ion-select-option *ngFor="let tipo of tipos" [value]="tipo"
+              >{{ tipo }}</ion-select-option
+            >
           </ion-select>
           <div class="error-message" *ngIf="tipo?.invalid && tipo?.touched">
             <ion-icon name="alert-circle-outline"></ion-icon>
@@ -33,10 +52,21 @@
 
         <!-- Campo: Monto mensual (solo para Cuota fija) -->
         <div class="form-item" *ngIf="tipo?.value === 'Cuota fija'">
-          <ion-label position="stacked" class="form-label">Monto mensual ($)</ion-label>
-          <ion-input type="text" inputmode="numeric" [value]="agregarPuntos(montoMensual?.value?.toString() || '')"
-            (ionInput)="formatearMonto($event)" class="custom-input" placeholder="Ej: 500.000"></ion-input>
-          <div class="error-message" *ngIf="montoMensual?.invalid && montoMensual?.touched">
+          <ion-label position="stacked" class="form-label"
+            >Monto diario ($)</ion-label
+          >
+          <ion-input
+            type="text"
+            inputmode="numeric"
+            [value]="agregarPuntos(montoMensual?.value?.toString() || '')"
+            (ionInput)="formatearMonto($event)"
+            class="custom-input"
+            placeholder="Ej: 500.000"
+          ></ion-input>
+          <div
+            class="error-message"
+            *ngIf="montoMensual?.invalid && montoMensual?.touched"
+          >
             <ion-icon name="alert-circle-outline"></ion-icon>
             <span>Ingresa un monto válido mayor o igual a 0</span>
           </div>
@@ -44,17 +74,55 @@
 
         <!-- Campo: Porcentaje (solo para Porcentaje) -->
         <div class="form-item" *ngIf="tipo?.value === 'Porcentaje'">
-          <ion-label position="stacked" class="form-label">Porcentaje de ganancias (%)</ion-label>
-          <ion-input formControlName="porcentajeGanancia" type="number" min="0" max="100" class="custom-input"
-            placeholder="Ej: 25"></ion-input>
-          <div class="error-message" *ngIf="porcentajeGanancia?.invalid && porcentajeGanancia?.touched">
+          <ion-label position="stacked" class="form-label"
+            >Porcentaje de ganancias (%)</ion-label
+          >
+          <ion-input
+            formControlName="porcentajeGanancia"
+            type="number"
+            min="0"
+            max="100"
+            class="custom-input"
+            placeholder="Ej: 25"
+          ></ion-input>
+          <div
+            class="error-message"
+            *ngIf="porcentajeGanancia?.invalid && porcentajeGanancia?.touched"
+          >
             <ion-icon name="alert-circle-outline"></ion-icon>
             <span>Ingresa un porcentaje válido (0 - 100)</span>
           </div>
         </div>
 
+        <!-- Campo: Conductor -->
+        <div class="form-item">
+          <ion-label position="stacked" class="form-label">Conductor</ion-label>
+          <ion-select
+            formControlName="conductor"
+            interface="popover"
+            placeholder="Selecciona un conductor"
+            class="custom-select"
+          >
+            <ion-select-option *ngFor="let c of conductores" [value]="c.uid">
+              {{ c.nombre +' '+ c.apellido }}
+            </ion-select-option>
+          </ion-select>
+          <div
+            class="error-message"
+            *ngIf="conductor?.invalid && conductor?.touched"
+          >
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            <span>Debes seleccionar un conductor</span>
+          </div>
+        </div>
+
         <!-- Botón de registro -->
-        <ion-button expand="block" type="submit" class="btn-registrar" [disabled]="formularioEsquema.invalid">
+        <ion-button
+          expand="block"
+          type="submit"
+          class="btn-registrar"
+          [disabled]="formularioEsquema.invalid"
+        >
           Crear esquema
         </ion-button>
       </form>

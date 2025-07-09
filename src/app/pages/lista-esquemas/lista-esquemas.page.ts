@@ -3,13 +3,17 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-// <--- Importar ToastController
 import { AlertController, ToastController } from '@ionic/angular';
+import { FirebaseService } from 'src/app/services/firebase.service'; // <--- Importa tu servicio
+import { UtilsService } from 'src/app/services/utils.service';
 
 interface EsquemaPago {
+  id?: string;
   nombre: string;
   montoFijo?: number;
   porcentaje?: number;
+  tipo?: string;
+  conductor?: string;
 }
 
 @Component({
@@ -17,7 +21,7 @@ interface EsquemaPago {
   templateUrl: './lista-esquemas.page.html',
   styleUrls: ['./lista-esquemas.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule, FormsModule],
 })
 export class ListaEsquemasPage implements OnInit {
   esquemasDePago: EsquemaPago[] = [];
@@ -25,65 +29,75 @@ export class ListaEsquemasPage implements OnInit {
   errorCarga: boolean = false;
   mensajeError: string = '';
 
-  // <--- Inyectar ToastController
   constructor(
     private router: Router,
     private alertController: AlertController,
-    private toastController: ToastController // <-- Inyección del ToastController
-  ) { }
+    private toastController: ToastController,
+    private firebase: FirebaseService, // <--- Inyecta el servicio
+    private utils: UtilsService
+  ) {}
 
   ngOnInit() {
-    setTimeout(() => {
-      try {
-        this.esquemasDePago = this.generarEsquemasDePagoFalsos();
-        this.cargando = false;
-      } catch (error) {
-        this.errorCarga = true;
-        this.mensajeError = 'Hubo un error al cargar los esquemas de pago. Por favor, inténtelo de nuevo más tarde.';
-        console.error('Error al cargar esquemas de pago:', error);
-        this.cargando = false;
-      }
-    }, 1500);
+    this.obtenerEsquemasDePago();
   }
 
-  private generarEsquemasDePagoFalsos(): EsquemaPago[] {
-    return [
-      { nombre: '$ Juanito', montoFijo: 50000 },
-      { nombre: '% Vito', porcentaje: 30 },
-      { nombre: '$ Pancho', montoFijo: 15000 },
-      { nombre: '% Fran', porcentaje: 15 },
-      { nombre: '$ Zed', montoFijo: 120000 }, // Corregido 'montoFonto' a 'montoFijo'
-      { nombre: '% Sofia', porcentaje: 5 },
-      { nombre: '$ Miguel', montoFijo: 25000 }
-    ];
-  }
-
-  async refrescarEsquemas(event?: any) {
+  obtenerEsquemasDePago(event?: any) {
     this.cargando = true;
     this.errorCarga = false;
     this.mensajeError = '';
 
-    setTimeout(() => {
-      try {
-        this.esquemasDePago = this.generarEsquemasDePagoFalsos();
-        this.cargando = false;
-        if (event) {
-          event.target.complete();
-        }
-      } catch (error) {
-        this.errorCarga = true;
-        this.mensajeError = 'Hubo un error al refrescar los esquemas de pago.';
-        console.error('Error al refrescar esquemas de pago:', error);
-        this.cargando = false;
-        if (event) {
-          event.target.complete();
-        }
-      }
-    }, 1000);
+    // Obtén el usuario actual desde localStorage
+    const uid = this.utils.getFromlocalStorage('usuario')?.uid;
+
+    if (!uid) {
+      this.esquemasDePago = [];
+      this.cargando = false;
+      this.errorCarga = true;
+      this.mensajeError = 'No se pudo identificar el usuario actual.';
+      if (event) event.target.complete();
+      return;
+    }
+
+    // Filtra por el campo 'dueno' igual al UID del usuario actual
+    this.firebase
+      .getCollectionWhere('esquema_pago', 'dueno', '==', uid)
+      .subscribe({
+        next: (data: any[]) => {
+          this.esquemasDePago = data.map((item) => ({
+            id: item.id,
+            nombre: item.nombreEsquema,
+            montoFijo: item.montoMensual,
+            porcentaje: item.porcentajeGanancia,
+            tipo: item.tipo,
+            conductor: item.conductor,
+          }));
+          this.cargando = false;
+          if (event) {
+            event.target.complete();
+          }
+        },
+        error: (error) => {
+          this.errorCarga = true;
+          this.mensajeError =
+            'Hubo un error al cargar los esquemas de pago. Por favor, inténtelo de nuevo más tarde.';
+          console.error('Error al cargar esquemas de pago:', error);
+          this.cargando = false;
+          if (event) {
+            event.target.complete();
+          }
+        },
+      });
+  }
+
+  async refrescarEsquemas(event?: any) {
+    this.obtenerEsquemasDePago(event);
   }
 
   formatearMontoFijo(monto: number): string {
-    return new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(monto);
+    return new Intl.NumberFormat('es-CL', {
+      style: 'currency',
+      currency: 'CLP',
+    }).format(monto);
   }
 
   formatearPorcentaje(porcentaje: number): string {
@@ -91,22 +105,15 @@ export class ListaEsquemasPage implements OnInit {
   }
 
   asignarEsquema(esquema: EsquemaPago) {
-    console.log('Asignar esquema:', esquema);
     this.router.navigate(['/asignar-esquema-pago'], {
       queryParams: {
-        esquema: JSON.stringify(esquema)
-      }
+        esquema: JSON.stringify(esquema),
+      },
     });
   }
 
   editarEsquema(esquema: EsquemaPago) {
-    console.log('Editar esquema:', esquema);
-    // En una aplicación real, esto redirigiría a una página de edición o abriría un modal
     this.presentToast(`Editar esquema: ${esquema.nombre}`, 'warning');
-    // Ejemplo de redirección a una página de edición (asumiendo que existe una ruta /editar-esquema-pago)
-    // this.router.navigate(['/editar-esquema-pago'], {
-    //   queryParams: { esquema: JSON.stringify(esquema) }
-    // });
   }
 
   async eliminarEsquema(esquema: EsquemaPago, index: number) {
@@ -119,38 +126,42 @@ export class ListaEsquemasPage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
-            console.log('Eliminación cancelada');
-          }
+            // Cancelado
+          },
         },
         {
           text: 'Eliminar',
           cssClass: 'danger',
-          handler: async () => { // <--- Convertir handler a async para usar await en presentToast
-            console.log('Eliminar esquema:', esquema);
-            // Simular eliminación del array (en una app real, aquí llamarías a un servicio)
-            this.esquemasDePago.splice(index, 1);
-            // <--- Usar presentToast en lugar de alert()
-            await this.presentToast(`Esquema "${esquema.nombre}" eliminado correctamente.`, 'success');
-          }
-        }
-      ]
+          handler: async () => {
+            // Elimina de Firebase usando el id
+            if (esquema.id) {
+              await this.firebase.deleteDocument(`esquemasPago/${esquema.id}`);
+              this.esquemasDePago = this.esquemasDePago.filter(
+                (e) => e.id !== esquema.id
+              );
+              await this.presentToast(
+                `Esquema "${esquema.nombre}" eliminado correctamente.`,
+                'success'
+              );
+            }
+          },
+        },
+      ],
     });
 
     await alert.present();
   }
 
-  /**
-   * Método de utilidad para presentar un Toast (mensaje temporal).
-   * @param message El mensaje a mostrar.
-   * @param color El color del toast (primary, success, warning, danger, etc.).
-   * @param duration Duración en milisegundos (defecto: 2000).
-   */
-  async presentToast(message: string, color: string = 'primary', duration: number = 2000) {
+  async presentToast(
+    message: string,
+    color: string = 'primary',
+    duration: number = 2000
+  ) {
     const toast = await this.toastController.create({
       message: message,
       duration: duration,
       color: color,
-      position: 'bottom' // Puedes cambiar la posición (top, middle, bottom)
+      position: 'bottom',
     });
     toast.present();
   }
