@@ -15,7 +15,7 @@
     <div class="card-grid">
       <!-- Registrar vehículo: solo visible si NO es conductor -->
       <ion-card
-        *ngIf="!usuario.esConductor"
+        *ngIf="usuario.esDueno"
         button
         routerLink="/registro-vehiculo"
         class="menu-card"
@@ -71,7 +71,7 @@
 
       <!-- Crear esquema de pago: solo visible si NO es conductor -->
       <ion-card
-        *ngIf="!usuario.esConductor"
+        *ngIf="usuario.esDueno"
         button
         routerLink="/registro-esquema-pago"
         class="menu-card"
