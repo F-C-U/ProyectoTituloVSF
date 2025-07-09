@@ -10,7 +10,6 @@ import {
 } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { FirebaseService } from 'src/app/services/firebase.service';
-import { AnimateTimings } from '@angular/animations';
 import { UtilsService } from 'src/app/services/utils.service';
 
 @Component({
@@ -48,6 +47,7 @@ export class EditarVehiculoPage {
         this.vehiculo.patente || '',
         [Validators.required, Validators.pattern(/^[A-Z]{4}[0-9]{2}$/)],
       ],
+      marca: [this.vehiculo.marca, [Validators.required, Validators.maxLength(30)]],
       modelo: [
         this.vehiculo.modelo || '',
         [Validators.required, Validators.maxLength(50)],
@@ -64,6 +64,7 @@ export class EditarVehiculoPage {
         this.vehiculo.tipoCombustible || '',
         Validators.required,
       ],
+      octanaje: [this.vehiculo.octanaje || ''], // <--- Agrega este control
       activo: [this.vehiculo.activo || false],
     });
   }
@@ -123,7 +124,9 @@ export class EditarVehiculoPage {
   get patente() {
     return this.vehiculoForm.get('patente');
   }
-
+  get marca() {
+    return this.vehiculoForm.get('marca');
+  }
   get modelo() {
     return this.vehiculoForm.get('modelo');
   }
@@ -134,5 +137,8 @@ export class EditarVehiculoPage {
 
   get tipoCombustible() {
     return this.vehiculoForm.get('tipoCombustible');
+  }
+  get octanaje() {
+    return this.vehiculoForm.get('octanaje');
   }
 }

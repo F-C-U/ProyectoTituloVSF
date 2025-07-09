@@ -19,7 +19,9 @@ export class ListaVehiculosPage {
   constructor(private firebase: FirebaseService, private utils: UtilsService) {
     this.obtenerVehiculos();
   }
+
   registroVehiculos: {
+    id: string;
     patente: string;
     modelo: string;
     anio: number;
@@ -27,15 +29,19 @@ export class ListaVehiculosPage {
   }[] = [];
 
   obtenerVehiculos() {
-    let dueno = this.utils.getFromlocalStorage('usuario')
-    this.firebase.getCollectionWhere('vehiculos','uid','==',dueno.uid).subscribe((data: any[]) => {
-      this.registroVehiculos = data.map((vehiculo) => ({
-        patente: vehiculo.patente,
-        modelo: vehiculo.modelo,
-        anio: vehiculo.anio,
-        tipoCombustible: vehiculo.tipoCombustible,
-      }));
-    });
+    let dueno = this.utils.getFromlocalStorage('usuario');
+    // BUG FIX: El campo correcto es 'dueno', no 'uid'
+    this.firebase
+      .getCollectionWhere('vehiculos', 'dueno', '==', dueno.uid)
+      .subscribe((data: any[]) => {
+        this.registroVehiculos = data.map((vehiculo) => ({
+          id: vehiculo.id, // Asegúrate de guardar el id del documento
+          patente: vehiculo.patente,
+          modelo: vehiculo.modelo,
+          anio: vehiculo.anio,
+          tipoCombustible: vehiculo.tipoCombustible,
+        }));
+      });
   }
 
   async mostrarError(mensaje: string) {
@@ -55,7 +61,17 @@ export class ListaVehiculosPage {
     };
     this.utils.routerLinkWithExtras('editar-vehiculo', xtras);
   }
+
   eliminarVehiculo(vehiculoId: string) {
-    this.firebase.deleteDocument('vehiculos/' + vehiculoId);
+    // BUG FIX: Eliminar usando el id del documento, no la patente
+    this.firebase
+      .deleteDocument('vehiculos/' + vehiculoId)
+      .then(() => {
+        this.obtenerVehiculos();
+        this.mostrarError('Vehículo eliminado correctamente.');
+      })
+      .catch(() => {
+        this.mostrarError('Error al eliminar el vehículo.');
+      });
   }
 }
