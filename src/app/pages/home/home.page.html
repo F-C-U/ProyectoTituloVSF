@@ -13,7 +13,13 @@
   <!-- Grid de tarjetas mejorado -->
   <div class="card-grid-container">
     <div class="card-grid">
-      <ion-card button routerLink="/registro-vehiculo" class="menu-card">
+      <!-- Registrar vehículo: solo visible si NO es conductor -->
+      <ion-card
+        *ngIf="!usuario.esConductor"
+        button
+        routerLink="/registro-vehiculo"
+        class="menu-card"
+      >
         <div class="card-icon-container">
           <ion-icon name="car-sport-outline" class="menu-icon"></ion-icon>
         </div>
@@ -63,7 +69,13 @@
         </ion-card-content>
       </ion-card>
 
-      <ion-card button routerLink="/registro-esquema-pago" class="menu-card">
+      <!-- Crear esquema de pago: solo visible si NO es conductor -->
+      <ion-card
+        *ngIf="!usuario.esConductor"
+        button
+        routerLink="/registro-esquema-pago"
+        class="menu-card"
+      >
         <div class="card-icon-container">
           <ion-icon name="wallet-outline" class="menu-icon"></ion-icon>
         </div>
